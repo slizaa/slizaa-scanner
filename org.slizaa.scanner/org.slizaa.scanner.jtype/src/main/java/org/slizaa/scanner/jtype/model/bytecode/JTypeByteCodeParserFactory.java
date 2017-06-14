@@ -75,7 +75,7 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
   public void batchParseStop(ISystemDefinition systemDefinition, GraphDatabaseService graphDatabase, IProgressMonitor subMonitor) {
 
     // we have to create relationships between type references and types
-    new Linker().link(graphDatabase, subMonitor);
+    // new Linker().link(graphDatabase, subMonitor);
   }
 
   /**

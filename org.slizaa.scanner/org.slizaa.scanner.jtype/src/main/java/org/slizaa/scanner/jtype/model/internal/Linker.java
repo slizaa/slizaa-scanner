@@ -10,62 +10,45 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model.internal;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.ResourceIterator;
-import org.neo4j.graphdb.Transaction;
-import org.neo4j.helpers.collection.IteratorUtil;
-import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
-import com.google.common.base.Stopwatch;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 public class Linker {
 
-  public void link(GraphDatabaseService db, IProgressMonitor progressMonitor) {
-
-    Stopwatch stopWatch = Stopwatch.createStarted();
-
-    ExecutionEngine executionEngine = new ExecutionEngine(db);
-    try (Transaction transaction = db.beginTx()) {
-
-      // create type cache
-      final LoadingCache<String, List<Node>> typeNodesCache = CacheBuilder.newBuilder().build(
-          new CacheLoader<String, List<Node>>() {
-            public List<Node> load(String key) {
-              return new ArrayList<>();
-            }
-          });
-
-      //
-      String query;
-      ExecutionResult result;
-      ResourceIterator<Map<String, Object>> iterator;
-
-      //
-      System.out.println("Building cache..." + stopWatch.elapsed(TimeUnit.MILLISECONDS));
-
-      //
-      query = "MATCH (t:TYPE) RETURN t, t.fqn";
-      result = executionEngine.execute(query);
-      iterator = result.iterator();
-      while (iterator.hasNext()) {
-        Map<String, Object> map = iterator.next();
-        typeNodesCache.getUnchecked((String) map.get("t.fqn")).add((Node) map.get("t"));
-      }
-
-      //
-      System.out.println("resolving references..." + stopWatch.elapsed(TimeUnit.MILLISECONDS));
+//  public void link(GraphDatabaseService db, IProgressMonitor progressMonitor) {
+//
+//    Stopwatch stopWatch = Stopwatch.createStarted();
+//
+//    try (Transaction transaction = db.beginTx()) {
+//
+//      // create type cache
+//      final LoadingCache<String, List<Node>> typeNodesCache = CacheBuilder.newBuilder().build(
+//          new CacheLoader<String, List<Node>>() {
+//            public List<Node> load(String key) {
+//              return new ArrayList<>();
+//            }
+//          });
+//
+//      //
+//      String query;
+//      Result result;
+//
+//      //
+//      System.out.println("Building cache..." + stopWatch.elapsed(TimeUnit.MILLISECONDS));
+//
+//      //
+//      query = "MATCH (t:TYPE) RETURN t, t.fqn";
+//      result = db.execute(query);
+//      while (result.hasNext()) {
+//        Map<String, Object> map = result.next();
+//        typeNodesCache.getUnchecked((String) map.get("t.fqn")).add((Node) map.get("t"));
+//      }
+//
+//      //
+//      System.out.println("resolving references..." + stopWatch.elapsed(TimeUnit.MILLISECONDS));
 
       //
       // query =
@@ -83,31 +66,30 @@ public class Linker {
       // }
 
       //
-      query = "MATCH (t:TYPE_REFERENCE) WHERE NOT (t)-[:BOUND_TO]->() RETURN t, t.fqn";
-      result = executionEngine.execute(query);
-      iterator = result.iterator();
-      System.out.println("Before count...");
-      int count = IteratorUtil.count(iterator);
-      progressMonitor.beginTask("RESOLVING", count);
-      System.out.println("After count...");
-      result = executionEngine.execute(query);
-      iterator = result.iterator();
-      while (iterator.hasNext()) {
-        Map<String, Object> map = iterator.next();
-        String ref_fqn = (String) map.get("t.fqn");
-        // System.out.println(ref_fqn);
-        if (typeNodesCache.asMap().containsKey(ref_fqn)) {
-          Node node = (Node) map.get("t");
-          node.createRelationshipTo(typeNodesCache.asMap().get(ref_fqn).get(0), JTypeModelRelationshipType.BOUND_TO);
-        }
-        progressMonitor.worked(1);
-      }
-
-      transaction.success();
-    }
-
-    stopWatch.stop();
-    System.out.println("Stopwatch " + stopWatch.elapsed(TimeUnit.MILLISECONDS));
+//      query = "MATCH (t:TYPE_REFERENCE) WHERE NOT (t)-[:BOUND_TO]->() RETURN t, t.fqn";
+//      result = db.execute(query);
+//      System.out.println("Before count...");
+//     int count = IteratorUtil.count(iterator);
+//      progressMonitor.beginTask("RESOLVING", count);
+//      System.out.println("After count...");
+//      result = executionEngine.execute(query);
+//      iterator = result.iterator();
+//      while (iterator.hasNext()) {
+//        Map<String, Object> map = iterator.next();
+//        String ref_fqn = (String) map.get("t.fqn");
+//        // System.out.println(ref_fqn);
+//        if (typeNodesCache.asMap().containsKey(ref_fqn)) {
+//          Node node = (Node) map.get("t");
+//          node.createRelationshipTo(typeNodesCache.asMap().get(ref_fqn).get(0), JTypeModelRelationshipType.BOUND_TO);
+//        }
+//        progressMonitor.worked(1);
+//      }
+//
+//      transaction.success();
+//    }
+//
+//    stopWatch.stop();
+//    System.out.println("Stopwatch " + stopWatch.elapsed(TimeUnit.MILLISECONDS));
 
     /**************************/
 
@@ -169,7 +151,7 @@ public class Linker {
     // }
     // }
     // }
-  }
+//  }
 
   /**
    * <p>

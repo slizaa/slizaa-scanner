@@ -12,6 +12,7 @@ package org.slizaa.scanner.importer.internal.parser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +25,9 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.ResourceIterable;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.helpers.collection.IteratorUtil;
-import org.neo4j.tooling.GlobalGraphOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.importer.content.ISystemDefinition;
@@ -61,7 +60,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
   private IParserFactory[]     _parserFactories;
 
   /** - */
-  private int                  _resourcesCount = -1;
+  private long                  _resourcesCount = -1;
 
   /**
    * <p>
@@ -76,7 +75,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
     checkNotNull(path);
 
     //
-    _graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(path).newGraphDatabase();
+    _graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(new File(path)).newGraphDatabase();
     _parserFactories = parserFactories;
   }
 
@@ -86,15 +85,18 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
    *
    * @return
    */
-  public int getStoredResourceCount() {
+  public long getStoredResourceCount() {
 
     //
     if (_resourcesCount == -1) {
       try (Transaction transaction = _graphDb.beginTx()) {
 
-        ResourceIterable<Node> iterable = GlobalGraphOperations.at(_graphDb).getAllNodesWithLabel(
-            CoreModelElementType.Resource);
-        _resourcesCount = IteratorUtil.count(iterable);
+        //
+        Result result = _graphDb
+            .execute(String.format("MATCH (r:%s) RETURN count(r) as count", CoreModelElementType.Resource.name()));
+
+        //
+        _resourcesCount = (long) result.columnAs("count").next();
 
         // commit
         transaction.success();
@@ -144,9 +146,9 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
 
     //
     checkNotNull(systemDefinition);
-    
+
     monitor = monitor == null ? new NullProgressMonitor() : monitor;
-    
+
     // create the sub-monitor
     final SubMonitor subMonitor = SubMonitor.convert(monitor, _parserFactories.length);
 
@@ -193,30 +195,35 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
 
       //
       if (progressMonitor != null) {
-        progressMonitor.beginTask("Read stored resources...", getStoredResourceCount());
+        progressMonitor.beginTask("Read stored resources...", (int)getStoredResourceCount());
       }
 
       //
-      for (Node storeResource : GlobalGraphOperations.at(_graphDb).getAllNodesWithLabel(CoreModelElementType.Resource)) {
+      _graphDb.findNodes(CoreModelElementType.Resource).forEachRemaining(storeResource -> {
 
         //
         Relationship relationship = storeResource.getSingleRelationship(CoreModelRelationshipType.CONTAINS,
             Direction.INCOMING);
+
         if (relationship == null) {
           System.out.println("HAE: " + storeResource);
-          continue;
         }
-        Node moduleNode = relationship.getStartNode();
 
-        StoredResourceNode node = new StoredResourceNode(storeResource,
-            (String) moduleNode.getProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID));
-        map.put(node, node);
+        //
+        else {
+          Node moduleNode = relationship.getStartNode();
 
+          StoredResourceNode node = new StoredResourceNode(storeResource,
+              (String) moduleNode.getProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID));
+          map.put(node, node);
+
+        }
         //
         if (progressMonitor != null) {
           progressMonitor.worked(1);
         }
-      }
+
+      });
 
     } finally {
 
@@ -250,16 +257,17 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
     try {
 
       //
-      ResourceIterable<Node> iterable = GlobalGraphOperations.at(_graphDb).getAllNodesWithLabel(
-          CoreModelElementType.Module);
+      Result result = _graphDb
+          .execute(String.format("MATCH (r:%s) RETURN count(r) as count", CoreModelElementType.Module.name()));
+      long moduleCount = (long) result.columnAs("count").next();
 
       //
       if (progressMonitor != null) {
-        progressMonitor.beginTask("Read stored modules...", IteratorUtil.count(iterable));
+        progressMonitor.beginTask("Read stored modules...", (int)moduleCount);
       }
 
       //
-      for (Node storedModule : iterable) {
+      _graphDb.findNodes(CoreModelElementType.Module).stream().forEach(storedModule -> {
 
         //
         IModifiableNode moduleNodeBean = NodeFactory.createNode(storedModule.getId());
@@ -277,7 +285,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
         if (progressMonitor != null) {
           progressMonitor.worked(1);
         }
-      }
+      });
 
     } finally {
 

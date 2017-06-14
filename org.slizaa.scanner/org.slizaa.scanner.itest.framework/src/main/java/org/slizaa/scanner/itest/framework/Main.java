@@ -10,43 +10,40 @@
  ******************************************************************************/
 package org.slizaa.scanner.itest.framework;
 
+import java.io.File;
 import java.util.Map;
 
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.kernel.GraphDatabaseAPI;
 
 public class Main {
 
   public static void main(String[] args) {
 
     //
-    GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabase("D:\\50-Development\\environments\\slizaa-master\\ws\\org.slizaa.scanner\\org.slizaa.scanner.itest\\target\\unittests\\1497434344533SimpleJTypeJDKTest");
+    GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(new File(
+        "D:\\50-Development\\environments\\slizaa-master\\git\\slizaa-scanner\\org.slizaa.scanner\\org.slizaa.scanner.itest\\target\\unittests\\1497455718036SimpleJTypeJDKTest"));
     registerShutdownHook(graphDb);
-    
-    //
-      ExecutionEngine engine = new ExecutionEngine( graphDb );
 
-      try ( Transaction ignored = graphDb.beginTx() )
-      {
-        ExecutionResult result = engine.execute("MATCH(n) return n");
-        for (Map<String, Object> map : result) {
-          Node node = (Node) map.get("n");
-          System.out.println(node);
-          for (Label label : node.getLabels()) {
-            System.out.println(" - " + label);
-          }
-          for (String key : node.getPropertyKeys()) {
-            System.out.println(" - " + key + " : " + node.getProperty(key));
-          }
+    //
+    try (Transaction ignored = graphDb.beginTx()) {
+      Result result = graphDb.execute("MATCH(n) return n");
+      while (result.hasNext()) {
+        Map<String, Object> map = (Map<java.lang.String, java.lang.Object>) result.next();
+        Node node = (Node) map.get("n");
+        System.out.println(node);
+        for (Label label : node.getLabels()) {
+          System.out.println(" - " + label);
+        }
+        for (String key : node.getPropertyKeys()) {
+          System.out.println(" - " + key + " : " + node.getProperty(key));
         }
       }
-
+    }
 
     //
     graphDb.shutdown();

@@ -157,19 +157,18 @@ public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProv
       JTypeModelElementType typeType) {
 
     //
-    ResourceIterable<Node> resourceIterable = graphDatabase.findNodesByLabelAndProperty(typeType, "fqn",
+    ResourceIterator<Node> nodes = graphDatabase.findNodes(typeType, "fqn",
         primtiveDataType);
 
     //
     Node node = null;
 
     //
-    ResourceIterator<Node> iterator = resourceIterable.iterator();
-    if (!iterator.hasNext()) {
+    if (!nodes.hasNext()) {
       node = graphDatabase.createNode(typeType);
       node.setProperty("fqn", primtiveDataType);
     } else {
-      node = iterator.next();
+      node = nodes.next();
     }
 
     //

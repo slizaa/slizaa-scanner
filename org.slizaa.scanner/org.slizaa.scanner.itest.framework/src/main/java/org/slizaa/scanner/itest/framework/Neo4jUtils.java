@@ -14,9 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 
 public class Neo4jUtils {
@@ -26,43 +25,17 @@ public class Neo4jUtils {
     //
     Transaction tx = graphDatabaseService.beginTx();
 
-    Neo4jUtils.executeWithExecutionEngine(new Neo4jUtils.ExecuteEngineAction() {
-      @Override
-      public void executeWithExecutionEngine(ExecutionEngine engine) {
-        ExecutionResult result = engine.execute("MATCH(n:TYPE) return count(n)");
-        for (Map<String, Object> map : result) {
-          assertThat(map.entrySet()).hasSize(1);
-          System.out.println(map.get("count(n)"));
-        }
-      }
-    }, graphDatabaseService);
+    Result result = graphDatabaseService.execute("MATCH(n:TYPE) return count(n)");
 
-    //
-    tx.close();
-  }
+    while (result.hasNext()) {
+      Map<String, Object> map = (Map<String, Object>) result.next();
 
-  public static void executeWithExecutionEngine(ExecuteEngineAction action, GraphDatabaseService graphDatabaseService) {
-
-    //
-    ExecutionEngine engine = new ExecutionEngine(graphDatabaseService);
-    Transaction tx = graphDatabaseService.beginTx();
-
-    action.executeWithExecutionEngine(engine);
+      assertThat(map.entrySet()).hasSize(1);
+      System.out.println(map.get("count(n)"));
+    }
 
     //
     tx.success();
     tx.close();
-  }
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
-   * 
-   */
-  public static interface ExecuteEngineAction {
-
-    void executeWithExecutionEngine(ExecutionEngine engine);
   }
 }

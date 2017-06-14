@@ -60,7 +60,7 @@ public abstract class AbstractJTypeParserTest {
     String tempDir = parse();
 
     //
-    _graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(tempDir).newGraphDatabase();
+    _graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(new File(tempDir)).newGraphDatabase();
   }
 
   @Before
@@ -84,7 +84,7 @@ public abstract class AbstractJTypeParserTest {
   }
 
   protected Node getTypeNode(String fqn) {
-    return _graphDb.findNodesByLabelAndProperty(JTypeModelElementType.TYPE, "fqn", fqn).iterator().next();
+    return _graphDb.findNode(JTypeModelElementType.TYPE, "fqn", fqn);
   }
 
   /**

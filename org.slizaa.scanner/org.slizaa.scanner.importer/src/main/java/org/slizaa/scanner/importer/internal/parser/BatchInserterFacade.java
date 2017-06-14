@@ -12,6 +12,8 @@ package org.slizaa.scanner.importer.internal.parser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -67,8 +69,12 @@ public class BatchInserterFacade implements AutoCloseable {
     checkNotNull(storeDir);
     _storeDir = storeDir;
 
-    //
-    _batchInserter = BatchInserters.inserter(_storeDir);
+    // TODO!
+    try {
+      _batchInserter = BatchInserters.inserter(new File(_storeDir));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
 
     //
     _resourcesMap = new HashMap<>();
