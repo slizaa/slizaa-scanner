@@ -1,0 +1,97 @@
+/*******************************************************************************
+ * Copyright (c) 2011-2015 Slizaa project team.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *    Slizaa project team - initial API and implementation
+ ******************************************************************************/
+package org.slizaa.scanner.model.resource;
+
+import org.slizaa.scanner.model.INode;
+
+/**
+ * <p>
+ * Defines the interface for a resource node bean.
+ * </p>
+ * 
+ * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
+ */
+public interface IResourceNode extends INode {
+
+  /** the property 'analyseReferences' */
+  public static final String PROPERTY_ANALYSE_REFERENCES = "analyseReferences";
+
+  /** the property 'erroneous' */
+  public static final String PROPERTY_ERRONEOUS          = "erroneous";
+
+  /** the property 'timestamp' */
+  public static final String PROPERTY_TIMESTAMP          = "timestamp";
+
+  /** the property 'path' */
+  public static final String PROPERTY_PATH               = "path";
+
+  /** the property 'root' */
+  public static final String PROPERTY_ROOT               = "root";
+
+  /**
+   * <p>
+   * Returns the root directory or archive file that contains the resource (e.g. <code>'c:/dev/classes.zip'</code> or
+   * <code>'c:/dev/source'</code>). Note that resource paths are always slash-delimited ('/').
+   * </p>
+   * 
+   * @return the root directory or archive file that contains the resource.
+   */
+  public String getRoot();
+
+  /**
+   * <p>
+   * Returns the full path of the resource, e.g. <code>'org/example/Test.java'</code>. Note that resource paths are
+   * always slash-delimited ('/').
+   * </p>
+   * <p>
+   * The result of this method is equivalent to <code>'getDirectory() + "/" + getName()'</code>.
+   * </p>
+   * 
+   * @return the full path of the resource.
+   */
+  public String getPath();
+
+  /**
+   * <p>
+   * Returns the timestamp of the underlying resource.
+   * </p>
+   * 
+   * @return the timestamp of the underlying resource.
+   */
+  long getTimestamp();
+
+  /**
+   * <p>
+   * Return <code>true</code> if the last attempt to parse the resource returned one or more errors.
+   * </p>
+   * 
+   * @return <code>true</code> if the last attempt to parse the resource returned one or more errors.
+   */
+  boolean isErroneous();
+
+  /**
+   * <p>
+   * Return <code>true</code> if references of the underlying resource shoudl be parsed.
+   * </p>
+   * 
+   * @return <code>true</code> if the last attempt to parse the resource returned one or more errors.
+   */
+  boolean isAnalyzeReferences();
+
+  /**
+   * <p>
+   * Returns the type of the resource (either {@link ResourceType#SOURCE} or {@link ResourceType#BINARY}.
+   * </p>
+   * 
+   * @return the type of the resource (either {@link ResourceType#SOURCE} or {@link ResourceType#BINARY}.
+   */
+  ResourceType getResourceType();
+}
