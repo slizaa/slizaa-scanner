@@ -8,6 +8,7 @@ import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Type;
 import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.driver.v1.util.Pair;
@@ -40,7 +41,7 @@ public class BoltClient {
       TypeSystem typeSystem = session.typeSystem();
 
       // Auto-commit transactions are a quick and easy way to wrap a read.
-      StatementResult result = session.run("MATCH (m:TYPE) RETURN m");
+      StatementResult result = session.run("MATCH (d:Directory) RETURN d");
 
       int count = 0;
 
@@ -54,13 +55,20 @@ public class BoltClient {
 
         for (Pair<String, Value> pair : record.fields()) {
 
-          System.out.println(pair.key());
           System.out.println(pair.value().type().name());
 
           switch (pair.value().type().name()) {
           case "NODE": {
-            System.out.println("Handle node: " + pair.value().asNode());
-            System.out.println(pair.value().asNode().getClass());
+            System.out.println("-------------------------------");
+            Node node = pair.value().asNode();
+            System.out.println("ID: " + node.id());
+            for (String label : node.labels()) {
+              System.out.print(label + ", ");
+            }
+            System.out.println();
+            for (String key : node.keys()) {
+              System.out.println(key + " : " + node.get(key));
+            }
             break;
           }
           case "STRING": {
@@ -71,19 +79,9 @@ public class BoltClient {
           default:
             break;
           }
-
-          System.out.println(pair.value().type());
         }
 
-        // System.out.println("-------------------------------");
-        // Node node = record.get("m").asNode();
-        // System.out.println("ID: " + node.id());
-        // for (String label : node.labels()) {
-        // System.out.println(label);
-        // }
-        // for (String key : node.keys()) {
-        // System.out.println(key + " : " + node.get(key));
-        // }
+
       }
 
       System.out.println("Count: " + count);
