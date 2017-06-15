@@ -15,6 +15,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.TypePath;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import org.slizaa.scanner.model.IModifiableNode;
 
@@ -30,7 +31,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
   private TypeLocalReferenceCache _typeLocalReferenceCache;
 
   /** - */
-  private IModifiableNode                _methodNodeBean;
+  private IModifiableNode         _methodNodeBean;
 
   /**
    * <p>
@@ -97,19 +98,20 @@ public class JTypeMethodVisitor extends MethodVisitor {
     String ownerTypeName = Utils.getFullyQualifiedTypeName(Type.getObjectType(owner));
     String fieldType = Utils.getFullyQualifiedTypeName(Type.getType(desc));
 
-    FieldDescriptor fieldDescriptor = new FieldDescriptor(ownerTypeName, name, fieldType, opcode == Opcodes.GETSTATIC
-        || opcode == Opcodes.PUTSTATIC);
+    FieldDescriptor fieldDescriptor = new FieldDescriptor(ownerTypeName, name, fieldType,
+        opcode == Opcodes.GETSTATIC || opcode == Opcodes.PUTSTATIC);
 
     //
-    JTypeModelRelationshipType relationshipType = opcode == Opcodes.GETSTATIC || opcode == Opcodes.GETFIELD ? JTypeModelRelationshipType.READ
-        : JTypeModelRelationshipType.WRITE;
-    
+    JTypeModelRelationshipType relationshipType = opcode == Opcodes.GETSTATIC || opcode == Opcodes.GETFIELD
+        ? JTypeModelRelationshipType.READ : JTypeModelRelationshipType.WRITE;
+
     _typeLocalReferenceCache.addFieldReference(_methodNodeBean, fieldDescriptor, relationshipType);
   }
 
   /**
    * @inheritDoc
    */
+  @Override
   public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
 
     _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getType(desc),
@@ -119,6 +121,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
   /**
    * @inheritDoc
    */
+  @Override
   public void visitMethodInsn(int opcode, String owner, String name, String desc) {
     // System.out.println("owner" + owner);
     // System.out.println("name" + name);
@@ -177,6 +180,12 @@ public class JTypeMethodVisitor extends MethodVisitor {
    * @inheritDoc
    */
   public void visitTypeInsn(int opcode, String type) {
+
+    if (opcode != Opcodes.CHECKCAST && opcode != Opcodes.NEW && opcode != Opcodes.INSTANCEOF
+        && opcode != Opcodes.ANEWARRAY) {
+
+    }
+
     _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getObjectType(type),
         JTypeModelRelationshipType.REFERENCES);
   }
@@ -185,8 +194,26 @@ public class JTypeMethodVisitor extends MethodVisitor {
    * {@inheritDoc}
    */
   public void visitLdcInsn(Object cst) {
+    // TODO
     if (cst instanceof Type) {
       _typeLocalReferenceCache.addTypeReference(_methodNodeBean, (Type) cst, JTypeModelRelationshipType.REFERENCES);
     }
+  }
+
+  @Override
+  public void visitParameter(String name, int access) {
+    super.visitParameter(name, access);
+  }
+
+  @Override
+  public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String desc, boolean visible) {
+    // TODO Auto-generated method stub
+    return super.visitTypeAnnotation(typeRef, typePath, desc, visible);
+  }
+
+  @Override
+  public AnnotationVisitor visitTryCatchAnnotation(int typeRef, TypePath typePath, String desc, boolean visible) {
+    // TODO Auto-generated method stub
+    return super.visitTryCatchAnnotation(typeRef, typePath, desc, visible);
   }
 }

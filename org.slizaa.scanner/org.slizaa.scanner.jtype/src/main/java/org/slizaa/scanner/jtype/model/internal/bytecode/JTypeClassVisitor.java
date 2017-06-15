@@ -270,7 +270,7 @@ public class JTypeClassVisitor extends ClassVisitor {
   @Override
   public FieldVisitor visitField(int access, String name, String desc, String signature, final Object value) {
 
-    // TODO create bean and add it to the type bean
+    // create bean and add it to the type bean
     IModifiableNode fieldBean = NodeFactory.createNode();
     fieldBean.addLabel(JTypeModelElementType.FIELD);
     _typeBean.addRelationship(fieldBean, CoreModelRelationshipType.CONTAINS);
