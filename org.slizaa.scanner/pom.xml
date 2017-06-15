@@ -20,6 +20,7 @@
 		<module>org.slizaa.scanner.jtype</module>
 		<module>org.slizaa.scanner.itest.framework</module>
 		<module>org.slizaa.scanner.itest</module>
+		<module>org.slizaa.scanner.systemdefinition</module>
 	</modules>
 
 	<build>

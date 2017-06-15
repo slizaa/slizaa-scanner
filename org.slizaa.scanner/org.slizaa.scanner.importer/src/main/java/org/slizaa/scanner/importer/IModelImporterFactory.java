@@ -12,8 +12,8 @@ package org.slizaa.scanner.importer;
 
 import java.io.File;
 
-import org.slizaa.scanner.importer.content.ISystemDefinition;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ public interface IModelImporterFactory {
 
   /**
    * <p>
-   * Creates a new {@link IModelImporter} for the specified {@link ISystemDefinition}.
+   * Creates a new {@link IModelImporter} for the specified {@link IContentDefinitions}.
    * </p>
    * 
    * @param systemDefinition
@@ -36,6 +36,6 @@ public interface IModelImporterFactory {
    *          the parser factories that provide the parsers that should be used while analyzing the defined system
    * @return a new {@link IModelImporter} instance
    */
-  IModelImporter createModelImporter(ISystemDefinition systemDefinition, File databaseDirectory,
+  IModelImporter createModelImporter(IContentDefinitions systemDefinition, File databaseDirectory,
       IParserFactory... parserFactories);
 }

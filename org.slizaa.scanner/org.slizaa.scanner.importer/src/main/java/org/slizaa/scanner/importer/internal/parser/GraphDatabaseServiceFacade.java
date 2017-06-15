@@ -30,9 +30,9 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slizaa.scanner.importer.content.IResourceIdentifier;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.NodeFactory;
@@ -113,7 +113,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
    * 
    * @param systemDefinition
    */
-  public void batchParseStart(ISystemDefinition systemDefinition, IProgressMonitor monitor) {
+  public void batchParseStart(IContentDefinitions systemDefinition, IProgressMonitor monitor) {
 
     //
     checkNotNull(systemDefinition);
@@ -142,7 +142,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
    * 
    * @param systemDefinition
    */
-  public void batchParseStop(ISystemDefinition systemDefinition, IProgressMonitor monitor) {
+  public void batchParseStop(IContentDefinitions systemDefinition, IProgressMonitor monitor) {
 
     //
     checkNotNull(systemDefinition);

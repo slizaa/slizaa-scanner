@@ -18,10 +18,10 @@ import static org.slizaa.scanner.itest.framework.TestFrameworkUtils.getMapStruct
 import static org.slizaa.scanner.itest.framework.TestFrameworkUtils.getMapStructSourcesZip;
 import static org.slizaa.scanner.itest.framework.TestFrameworkUtils.getMapStructVersion;
 
-import org.slizaa.scanner.importer.content.AnalyzeMode;
-import org.slizaa.scanner.importer.content.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
+import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
 import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
+import org.slizaa.scanner.systemdefinition.ISystemDefinition;
 
 public class SystemDefinitionUtils {
 

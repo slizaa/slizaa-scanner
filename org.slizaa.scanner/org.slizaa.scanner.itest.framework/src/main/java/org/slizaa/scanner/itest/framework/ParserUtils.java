@@ -14,9 +14,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.slizaa.scanner.importer.content.IResource;
-import org.slizaa.scanner.importer.parser.IParser;
-import org.slizaa.scanner.importer.parser.IParser.ParserType;
+import org.slizaa.scanner.importer.spi.content.IResource;
+import org.slizaa.scanner.importer.spi.parser.IParser;
+import org.slizaa.scanner.importer.spi.parser.IParser.ParserType;
 
 public class ParserUtils {
 

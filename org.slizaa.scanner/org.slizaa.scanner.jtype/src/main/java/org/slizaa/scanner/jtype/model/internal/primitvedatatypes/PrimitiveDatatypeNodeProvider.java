@@ -12,7 +12,6 @@ package org.slizaa.scanner.jtype.model.internal.primitvedatatypes;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.ResourceIterable;
 import org.neo4j.graphdb.ResourceIterator;
 import org.slizaa.scanner.jtype.model.JTypeModelElementType;
 import org.slizaa.scanner.model.IModifiableNode;

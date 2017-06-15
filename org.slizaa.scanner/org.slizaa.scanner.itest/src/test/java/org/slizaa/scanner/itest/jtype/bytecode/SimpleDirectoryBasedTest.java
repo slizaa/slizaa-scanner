@@ -16,15 +16,15 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slizaa.scanner.importer.content.AnalyzeMode;
-import org.slizaa.scanner.importer.content.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
-import org.slizaa.scanner.importer.content.SystemDefinitionFactory;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.itest.framework.TestFrameworkUtils;
 import org.slizaa.scanner.jtype.model.bytecode.JTypeByteCodeParserFactory;
 import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
+import org.slizaa.scanner.systemdefinition.ISystemDefinition;
+import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
 
 import com.google.common.base.Stopwatch;
 

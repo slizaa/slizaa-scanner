@@ -23,9 +23,9 @@ import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.unsafe.batchinsert.BatchInserter;
 import org.neo4j.unsafe.batchinsert.BatchInserters;
-import org.slizaa.scanner.importer.content.IContentDefinition;
-import org.slizaa.scanner.importer.content.IResource;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
+import org.slizaa.scanner.importer.spi.content.IContentDefinition;
+import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.importer.spi.content.IResource;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.IRelationship;
@@ -165,7 +165,7 @@ public class BatchInserterFacade implements AutoCloseable {
    * @param systemDefinition
    * @param storedModulesMap
    */
-  public void setupModuleNodes(ISystemDefinition systemDefinition, Map<String, IModifiableNode> storedModulesMap) {
+  public void setupModuleNodes(IContentDefinitions systemDefinition, Map<String, IModifiableNode> storedModulesMap) {
 
     //
     for (IContentDefinition contentDefinition : systemDefinition.getContentDefinitions()) {

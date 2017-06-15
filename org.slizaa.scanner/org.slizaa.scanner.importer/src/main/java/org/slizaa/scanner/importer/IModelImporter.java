@@ -13,7 +13,7 @@ package org.slizaa.scanner.importer;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.slizaa.scanner.importer.parser.IProblem;
+import org.slizaa.scanner.importer.spi.parser.IProblem;
 
 /**
  * <p>
@@ -37,7 +37,7 @@ public interface IModelImporter {
 
   /**
    * <p>
-   * Parses the underlying {@link ISystemDefinition}.
+   * Parses the underlying {@link IContentDefinitions}.
    * </p>
    * 
    * @param monitor

@@ -23,6 +23,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slizaa.scanner</groupId>
+			<artifactId>org.slizaa.scanner.systemdefinition</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.slizaa.scanner</groupId>
 			<artifactId>org.slizaa.scanner.jtype</artifactId>
 			<version>${project.version}</version>
 		</dependency>

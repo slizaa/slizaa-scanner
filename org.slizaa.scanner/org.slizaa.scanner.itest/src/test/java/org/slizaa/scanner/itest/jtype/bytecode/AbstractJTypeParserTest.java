@@ -29,17 +29,17 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.slizaa.scanner.importer.content.AnalyzeMode;
-import org.slizaa.scanner.importer.content.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
-import org.slizaa.scanner.importer.content.SystemDefinitionFactory;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.itest.framework.TestFrameworkUtils;
 import org.slizaa.scanner.jtype.model.JTypeModelElementType;
 import org.slizaa.scanner.jtype.model.bytecode.JTypeByteCodeParserFactory;
 import org.slizaa.scanner.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
+import org.slizaa.scanner.systemdefinition.ISystemDefinition;
+import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
 
 public abstract class AbstractJTypeParserTest {
 

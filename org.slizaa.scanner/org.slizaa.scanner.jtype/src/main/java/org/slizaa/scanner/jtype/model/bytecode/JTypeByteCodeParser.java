@@ -13,11 +13,11 @@ package org.slizaa.scanner.jtype.model.bytecode;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.objectweb.asm.ClassReader;
-import org.slizaa.scanner.importer.content.IContentDefinition;
-import org.slizaa.scanner.importer.content.IResource;
-import org.slizaa.scanner.importer.parser.AbstractParser;
-import org.slizaa.scanner.importer.parser.IParser;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.content.IContentDefinition;
+import org.slizaa.scanner.importer.spi.content.IResource;
+import org.slizaa.scanner.importer.spi.parser.AbstractParser;
+import org.slizaa.scanner.importer.spi.parser.IParser;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.jtype.model.JavaUtils;
 import org.slizaa.scanner.jtype.model.internal.bytecode.JTypeClassVisitor;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;

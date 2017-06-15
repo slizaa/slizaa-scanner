@@ -18,12 +18,12 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
-import org.slizaa.scanner.importer.content.SystemDefinitionFactory;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.itest.framework.TestFrameworkUtils;
 import org.slizaa.scanner.jtype.model.bytecode.JTypeByteCodeParserFactory;
+import org.slizaa.scanner.systemdefinition.ISystemDefinition;
+import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
 
 import com.google.common.base.Stopwatch;
 

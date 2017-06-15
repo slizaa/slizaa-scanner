@@ -12,9 +12,9 @@ package org.slizaa.scanner.importer;
 
 import java.io.File;
 
-import org.slizaa.scanner.importer.content.ISystemDefinition;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 
 /**
  * <p>
@@ -28,7 +28,7 @@ public class ModelImporterFactory implements IModelImporterFactory {
    * {@inheritDoc}
    */
   @Override
-  public IModelImporter createModelImporter(ISystemDefinition systemDefniition, File databaseDirectory,
+  public IModelImporter createModelImporter(IContentDefinitions systemDefniition, File databaseDirectory,
       IParserFactory... parserFactories) {
 
     //

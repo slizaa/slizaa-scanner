@@ -31,15 +31,15 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.importer.IModelImporter;
-import org.slizaa.scanner.importer.content.AnalyzeMode;
-import org.slizaa.scanner.importer.content.IContentDefinition;
-import org.slizaa.scanner.importer.content.IResource;
-import org.slizaa.scanner.importer.content.IResourceIdentifier;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
 import org.slizaa.scanner.importer.internal.ZipFileCache;
-import org.slizaa.scanner.importer.parser.IParser;
-import org.slizaa.scanner.importer.parser.IParserFactory;
-import org.slizaa.scanner.importer.parser.IProblem;
+import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
+import org.slizaa.scanner.importer.spi.content.IContentDefinition;
+import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.importer.spi.content.IResource;
+import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.spi.parser.IParser;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.parser.IProblem;
 import org.slizaa.scanner.model.IModifiableNode;
 
 import com.google.common.base.Stopwatch;
@@ -62,7 +62,7 @@ public class ModelImporter implements IModelImporter {
   private final Logger                                 logger       = LoggerFactory.getLogger(ModelImporter.class);
 
   /** - */
-  private ISystemDefinition                            _systemDefinition;
+  private IContentDefinitions                            _systemDefinition;
 
   /** - */
   private File                                         _directory;
@@ -83,7 +83,7 @@ public class ModelImporter implements IModelImporter {
    * Creates a new instance of type {@link ModelImporter}.
    * </p>
    */
-  public ModelImporter(ISystemDefinition systemDefinition, File directory, IParserFactory... parserFactories) {
+  public ModelImporter(IContentDefinitions systemDefinition, File directory, IParserFactory... parserFactories) {
 
     checkNotNull(systemDefinition);
     checkNotNull(directory);
@@ -98,7 +98,7 @@ public class ModelImporter implements IModelImporter {
   /**
    * {@inheritDoc}
    */
-  public final ISystemDefinition getSystemDefinition() {
+  public final IContentDefinitions getSystemDefinition() {
     return _systemDefinition;
   }
 

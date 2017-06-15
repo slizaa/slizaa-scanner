@@ -16,10 +16,9 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.slizaa.scanner.importer.content.ISystemDefinition;
-import org.slizaa.scanner.importer.parser.IParser;
-import org.slizaa.scanner.importer.parser.IParserFactory;
-import org.slizaa.scanner.jtype.model.internal.Linker;
+import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.importer.spi.parser.IParser;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.jtype.model.internal.bytecode.PostProcessor;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.PrimitiveDatatypeNodeProvider;
 
@@ -33,7 +32,7 @@ import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.PrimitiveDataty
 public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implements IParserFactory {
 
   /** - */
-  private Map<ISystemDefinition, PrimitiveDatatypeNodeProvider> _datatypeNodeProviderMap;
+  private Map<IContentDefinitions, PrimitiveDatatypeNodeProvider> _datatypeNodeProviderMap;
 
   /**
    * <p>
@@ -43,27 +42,28 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
   public JTypeByteCodeParserFactory() {
 
     //
-    _datatypeNodeProviderMap = new HashMap<ISystemDefinition, PrimitiveDatatypeNodeProvider>();
+    _datatypeNodeProviderMap = new HashMap<IContentDefinitions, PrimitiveDatatypeNodeProvider>();
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public IParser createParser(ISystemDefinition systemDefinition) {
-    return new JTypeByteCodeParser(this, _datatypeNodeProviderMap.get(systemDefinition));
+  public IParser createParser(IContentDefinitions contentDefinition) {
+    return new JTypeByteCodeParser(this, _datatypeNodeProviderMap.get(contentDefinition));
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStart(ISystemDefinition systemDefinition, GraphDatabaseService graphDatabase, IProgressMonitor subMonitor) throws Exception {
+  public void batchParseStart(IContentDefinitions contentDefinition, GraphDatabaseService graphDatabase,
+      IProgressMonitor subMonitor) throws Exception {
 
     //
     synchronized (_datatypeNodeProviderMap) {
-      if (!_datatypeNodeProviderMap.containsKey(systemDefinition)) {
-        _datatypeNodeProviderMap.put(systemDefinition, new PrimitiveDatatypeNodeProvider(graphDatabase));
+      if (!_datatypeNodeProviderMap.containsKey(contentDefinition)) {
+        _datatypeNodeProviderMap.put(contentDefinition, new PrimitiveDatatypeNodeProvider(graphDatabase));
       }
     }
   }
@@ -72,7 +72,8 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStop(ISystemDefinition systemDefinition, GraphDatabaseService graphDatabase, IProgressMonitor subMonitor) {
+  public void batchParseStop(IContentDefinitions contentDefinition, GraphDatabaseService graphDatabase,
+      IProgressMonitor subMonitor) {
 
     // we have to create relationships between type references and types
     // new Linker().link(graphDatabase, subMonitor);

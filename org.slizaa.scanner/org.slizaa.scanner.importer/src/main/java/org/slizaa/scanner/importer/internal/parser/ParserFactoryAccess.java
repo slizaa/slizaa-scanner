@@ -12,7 +12,7 @@ package org.slizaa.scanner.importer.internal.parser;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.slizaa.scanner.importer.parser.IParserFactory;
+import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 
 /**
  * <p>
