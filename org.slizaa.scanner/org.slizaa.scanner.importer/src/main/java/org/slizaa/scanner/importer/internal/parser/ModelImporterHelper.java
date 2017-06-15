@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.slizaa.scanner.importer.content.IResource;
-import org.slizaa.scanner.importer.internal.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.content.IResourceIdentifier;
 
 /**
  * <p>

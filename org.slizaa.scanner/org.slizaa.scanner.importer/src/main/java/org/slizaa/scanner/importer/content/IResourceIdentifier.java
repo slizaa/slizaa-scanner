@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.importer.internal.content;
+package org.slizaa.scanner.importer.content;
 
 public interface IResourceIdentifier {
 
