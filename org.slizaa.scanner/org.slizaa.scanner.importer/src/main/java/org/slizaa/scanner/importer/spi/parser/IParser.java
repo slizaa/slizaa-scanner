@@ -52,14 +52,12 @@ public interface IParser {
    *          the resource to parse
    * @param resourceBean
    *          the resource bean that represents the resource that has to be parsed
-   * @param parseReferences
-   *          whether or not to parse references
-   * @param isBatchParse
-   *          whether or not this method is called within a batch parse
+   * @param parserContext
+   *          the parser context
    * @return
    */
   List<IProblem> parseResource(IContentDefinition contentDefinition, IResource resource, IModifiableNode resourceBean,
-      boolean parseReferences, boolean isBatchParse);
+      IParserContext parserContext);
 
   /**
    * <p>

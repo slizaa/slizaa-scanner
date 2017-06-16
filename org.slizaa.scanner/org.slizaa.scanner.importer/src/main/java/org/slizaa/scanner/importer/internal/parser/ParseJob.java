@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.importer.spi.content.IContentDefinition;
 import org.slizaa.scanner.importer.spi.content.IResource;
 import org.slizaa.scanner.importer.spi.parser.IParser;
-import org.slizaa.scanner.importer.spi.parser.IProblem;
 import org.slizaa.scanner.importer.spi.parser.IParser.ParserType;
+import org.slizaa.scanner.importer.spi.parser.IProblem;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.resource.IResourceNode;
 import org.slizaa.scanner.model.resource.ResourceType;
@@ -98,7 +98,7 @@ public class ParseJob implements Callable<List<IProblem>> {
   public List<IProblem> call() throws Exception {
 
     logger.debug("Starting parse job...");
-    
+
     //
     List<IProblem> problems = new LinkedList<IProblem>();
 
@@ -114,13 +114,13 @@ public class ParseJob implements Callable<List<IProblem>> {
 
         //
         if (!directory.getSourceResources().isEmpty()) {
-          problems.addAll(parse(_content, directory.getSourceResources(), ResourceType.SOURCE, _parser,
-              _progressMonitor));
+          problems
+              .addAll(parse(_content, directory.getSourceResources(), ResourceType.SOURCE, _parser, _progressMonitor));
         }
       }
 
       for (Directory directory : _directories) {
-        
+
         //
         logger.debug("Parsing directory {}...", directory.getPath());
 
@@ -132,8 +132,8 @@ public class ParseJob implements Callable<List<IProblem>> {
 
         //
         if (!directory.getBinaryResources().isEmpty()) {
-          problems.addAll(parse(_content, directory.getBinaryResources(), ResourceType.BINARY, _parser,
-              _progressMonitor));
+          problems
+              .addAll(parse(_content, directory.getBinaryResources(), ResourceType.BINARY, _parser, _progressMonitor));
         }
       }
     } catch (Exception e) {
@@ -171,7 +171,7 @@ public class ParseJob implements Callable<List<IProblem>> {
           //
           if (parser.canParse(resource)) {
 
-            List<IProblem> problems = parser.parseResource(content, resource, resourceNode, true, true);
+            List<IProblem> problems = parser.parseResource(content, resource, resourceNode, new ParserContext(true));
             resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, problems != null && !problems.isEmpty());
           }
         }

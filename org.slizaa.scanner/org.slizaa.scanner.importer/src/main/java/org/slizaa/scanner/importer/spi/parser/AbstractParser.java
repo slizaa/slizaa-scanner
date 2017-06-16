@@ -78,13 +78,13 @@ public abstract class AbstractParser<P extends IParserFactory> implements IParse
    */
   @Override
   public final List<IProblem> parseResource(IContentDefinition content, IResource resource,
-      IModifiableNode resourceBean, boolean parseReferences, boolean isBatchParse) {
+      IModifiableNode resourceBean, IParserContext context) {
 
     // Reset problem list
     _problems = new LinkedList<IProblem>();
 
     // do the parsing
-    doParseResource(content, resource, resourceBean, parseReferences, isBatchParse);
+    doParseResource(content, resource, resourceBean, context);
 
     //
     return _problems;
@@ -98,7 +98,7 @@ public abstract class AbstractParser<P extends IParserFactory> implements IParse
    * @param context
    */
   protected abstract void doParseResource(IContentDefinition content, IResource resource, IModifiableNode resourceBean,
-      boolean parseReferences, boolean isBatchParse);
+      IParserContext context);
 
   /**
    * <p>

@@ -17,6 +17,7 @@ import org.slizaa.scanner.importer.spi.content.IContentDefinition;
 import org.slizaa.scanner.importer.spi.content.IResource;
 import org.slizaa.scanner.importer.spi.parser.AbstractParser;
 import org.slizaa.scanner.importer.spi.parser.IParser;
+import org.slizaa.scanner.importer.spi.parser.IParserContext;
 import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.jtype.model.JavaUtils;
 import org.slizaa.scanner.jtype.model.internal.bytecode.JTypeClassVisitor;
@@ -80,7 +81,7 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
    */
   @Override
   protected void doParseResource(IContentDefinition content, IResource resource, IModifiableNode resourceBean,
-      boolean parseReferences, boolean isBatchParse) {
+      IParserContext context) {
 
     // create the visitor...
     JTypeClassVisitor visitor = new JTypeClassVisitor(_primitiveDatatypeNodeProvider);
