@@ -13,11 +13,11 @@ package org.slizaa.scanner.importer.internal.parser;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.neo4j.graphdb.Node;
-import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
 import org.slizaa.scanner.model.resource.IResourceNode;
 import org.slizaa.scanner.model.resource.ResourceType;
 
-public class StoredResourceNode implements IResourceIdentifier {
+public class StoredResourceNode implements IPathIdentifier {
 
   private String       _contentDefinitionId;
 
@@ -117,11 +117,11 @@ public class StoredResourceNode implements IResourceIdentifier {
   }
 
   public int hashCode() {
-    return IResourceIdentifier.Helper.hashCode(this);
+    return IPathIdentifier.Helper.hashCode(this);
   }
 
   @Override
   public boolean equals(Object obj) {
-    return IResourceIdentifier.Helper.equals(this, obj);
+    return IPathIdentifier.Helper.equals(this, obj);
   }
 }

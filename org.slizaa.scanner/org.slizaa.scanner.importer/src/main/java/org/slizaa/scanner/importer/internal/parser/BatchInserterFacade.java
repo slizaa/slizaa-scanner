@@ -99,7 +99,7 @@ public class BatchInserterFacade implements AutoCloseable {
 
       //
       IModifiableNode moduleNode = NodeFactory.createNode();
-      moduleNode.addLabel(CoreModelElementType.Module);
+      moduleNode.addLabel(CoreModelElementType.MODULE);
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_NAME, contentDefinition.getName());
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_VERSION, contentDefinition.getVersion());
       moduleNode.putProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID, contentDefinitionId);
@@ -125,7 +125,7 @@ public class BatchInserterFacade implements AutoCloseable {
       @Override
       public IModifiableNode createBean() {
         IModifiableNode resourceNode = NodeFactory.createNode();
-        resourceNode.addLabel(CoreModelElementType.Resource);
+        resourceNode.addLabel(CoreModelElementType.RESOURCE);
         resourceNode.addLabel(resourceType);
         resourceNode.putProperty(IResourceNode.PROPERTY_ROOT, resource.getRoot());
         resourceNode.putProperty(IResourceNode.PROPERTY_PATH, resource.getPath());

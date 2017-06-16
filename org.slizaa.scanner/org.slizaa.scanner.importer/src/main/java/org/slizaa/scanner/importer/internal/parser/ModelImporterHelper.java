@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.slizaa.scanner.importer.spi.content.IResource;
-import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
 
 /**
  * <p>
@@ -32,7 +32,7 @@ public class ModelImporterHelper {
    * @return
    */
   public static Set<IResource> computeNewAndModifiedResources(Collection<IResource> specifiedResources,
-      Map<IResourceIdentifier, StoredResourceNode> storedResources) {
+      Map<IPathIdentifier, StoredResourceNode> storedResources) {
 
     //
     Set<IResource> result = new HashSet<IResource>();

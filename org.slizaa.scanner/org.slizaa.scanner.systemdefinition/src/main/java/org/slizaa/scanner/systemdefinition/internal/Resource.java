@@ -22,7 +22,7 @@ import java.util.zip.ZipFile;
 
 import org.slizaa.scanner.importer.internal.ZipFileCache;
 import org.slizaa.scanner.importer.spi.content.IResource;
-import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
 
 /**
  * <p>
@@ -33,7 +33,7 @@ import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
  * 
  * @noextend This class is not intended to be extended by clients.
  */
-public class Resource implements IResource, IResourceIdentifier {
+public class Resource implements IResource, IPathIdentifier {
 
   /** the root of the resource */
   private String _root;
@@ -205,9 +205,9 @@ public class Resource implements IResource, IResourceIdentifier {
       return true;
     if (obj == null)
       return false;
-    if (!(IResourceIdentifier.class.isAssignableFrom(obj.getClass())))
+    if (!(IPathIdentifier.class.isAssignableFrom(obj.getClass())))
       return false;
-    IResourceIdentifier other = (IResourceIdentifier) obj;
+    IPathIdentifier other = (IPathIdentifier) obj;
     if (!_path.equals(other.getPath()))
       return false;
     if (!_root.equals(other.getRoot()))

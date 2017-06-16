@@ -20,71 +20,45 @@ import org.slizaa.scanner.model.INode;
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
 public interface IResourceNode extends INode {
-
-  /** the property 'analyseReferences' */
-  public static final String PROPERTY_ANALYSE_REFERENCES = "analyseReferences";
-
-  /** the property 'erroneous' */
-  public static final String PROPERTY_ERRONEOUS          = "erroneous";
-
-  /** the property 'timestamp' */
-  public static final String PROPERTY_TIMESTAMP          = "timestamp";
-
-  /** the property 'path' */
+  
+  /**
+   * <p>
+   * The full path of the resource, e.g. <code>'org/example/Test.java'</code>. Note that resource paths are always
+   * slash-delimited ('/').
+   * </p>
+   */
   public static final String PROPERTY_PATH               = "path";
 
-  /** the property 'root' */
-  public static final String PROPERTY_ROOT               = "root";
-
   /**
    * <p>
-   * Returns the root directory or archive file that contains the resource (e.g. <code>'c:/dev/classes.zip'</code> or
+   * the root directory or archive file that contains the resource (e.g. <code>'c:/dev/classes.zip'</code> or
    * <code>'c:/dev/source'</code>). Note that resource paths are always slash-delimited ('/').
    * </p>
-   * 
-   * @return the root directory or archive file that contains the resource.
    */
-  public String getRoot();
+  public static final String PROPERTY_ROOT               = "root";
+
 
   /**
    * <p>
-   * Returns the full path of the resource, e.g. <code>'org/example/Test.java'</code>. Note that resource paths are
-   * always slash-delimited ('/').
+   * Return <code>true</code> if references of the underlying resource should be parsed.
    * </p>
-   * <p>
-   * The result of this method is equivalent to <code>'getDirectory() + "/" + getName()'</code>.
-   * </p>
-   * 
-   * @return the full path of the resource.
    */
-  public String getPath();
-
-  /**
-   * <p>
-   * Returns the timestamp of the underlying resource.
-   * </p>
-   * 
-   * @return the timestamp of the underlying resource.
-   */
-  long getTimestamp();
+  public static final String PROPERTY_ANALYSE_REFERENCES = "analyseReferences";
 
   /**
    * <p>
    * Return <code>true</code> if the last attempt to parse the resource returned one or more errors.
    * </p>
-   * 
-   * @return <code>true</code> if the last attempt to parse the resource returned one or more errors.
    */
-  boolean isErroneous();
+  public static final String PROPERTY_ERRONEOUS          = "erroneous";
 
   /**
    * <p>
-   * Return <code>true</code> if references of the underlying resource shoudl be parsed.
+   * Returns the timestamp of the underlying resource.
    * </p>
-   * 
-   * @return <code>true</code> if the last attempt to parse the resource returned one or more errors.
    */
-  boolean isAnalyzeReferences();
+  public static final String PROPERTY_TIMESTAMP          = "timestamp";
+
 
   /**
    * <p>

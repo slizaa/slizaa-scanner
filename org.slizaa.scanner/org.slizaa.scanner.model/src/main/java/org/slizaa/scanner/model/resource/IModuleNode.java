@@ -21,30 +21,24 @@ import org.slizaa.scanner.model.INode;
  */
 public interface IModuleNode extends INode {
 
-  /** the property 'moduleName' */
-  public String PROPERTY_MODULE_NAME     = "moduleName";
-
-  /** the property 'moduleVersion' */
-  public String PROPERTY_MODULE_VERSION  = "moduleVersion";
-
-  /** - */
-  public String PROPERTY_CONTENT_ENTRY_ID = "contentEntryId";
-
   /**
    * <p>
    * Returns the module name.
    * </p>
-   * 
-   * @return the name of the module.
    */
-  String getModuleName();
+  public static final String PROPERTY_MODULE_NAME      = "moduleName";
 
   /**
    * <p>
    * Returns the module version.
    * </p>
-   * 
-   * @return the module version.
    */
-  String getModuleVersion();
+  public static final  String PROPERTY_MODULE_VERSION   = "moduleVersion";
+
+  /**
+   * <p>
+   * Returns the module version.
+   * </p>
+   */
+  public static final String PROPERTY_CONTENT_ENTRY_ID = "contentEntryId";
 }

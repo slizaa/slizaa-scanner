@@ -31,7 +31,7 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
-import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
 import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
@@ -93,7 +93,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
 
         //
         Result result = _graphDb
-            .execute(String.format("MATCH (r:%s) RETURN count(r) as count", CoreModelElementType.Resource.name()));
+            .execute(String.format("MATCH (r:%s) RETURN count(r) as count", CoreModelElementType.RESOURCE.name()));
 
         //
         _resourcesCount = (long) result.columnAs("count").next();
@@ -178,13 +178,13 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
    * 
    * @return
    */
-  public Map<IResourceIdentifier, StoredResourceNode> readStoredResourceNodes(IProgressMonitor progressMonitor) {
+  public Map<IPathIdentifier, StoredResourceNode> readStoredResourceNodes(IProgressMonitor progressMonitor) {
 
     //
     logger.debug("entered readStoredResourceNodes()");
 
     //
-    Map<IResourceIdentifier, StoredResourceNode> map = new HashMap<IResourceIdentifier, StoredResourceNode>();
+    Map<IPathIdentifier, StoredResourceNode> map = new HashMap<IPathIdentifier, StoredResourceNode>();
 
     try (Transaction tx = _graphDb.beginTx()) {
 
@@ -199,7 +199,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
       }
 
       //
-      _graphDb.findNodes(CoreModelElementType.Resource).forEachRemaining(storeResource -> {
+      _graphDb.findNodes(CoreModelElementType.RESOURCE).forEachRemaining(storeResource -> {
 
         //
         Relationship relationship = storeResource.getSingleRelationship(CoreModelRelationshipType.CONTAINS,
@@ -258,7 +258,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
 
       //
       Result result = _graphDb
-          .execute(String.format("MATCH (r:%s) RETURN count(r) as count", CoreModelElementType.Module.name()));
+          .execute(String.format("MATCH (r:%s) RETURN count(r) as count", CoreModelElementType.MODULE.name()));
       long moduleCount = (long) result.columnAs("count").next();
 
       //
@@ -267,11 +267,11 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
       }
 
       //
-      _graphDb.findNodes(CoreModelElementType.Module).stream().forEach(storedModule -> {
+      _graphDb.findNodes(CoreModelElementType.MODULE).stream().forEach(storedModule -> {
 
         //
         IModifiableNode moduleNodeBean = NodeFactory.createNode(storedModule.getId());
-        moduleNodeBean.addLabel(CoreModelElementType.Module);
+        moduleNodeBean.addLabel(CoreModelElementType.MODULE);
         moduleNodeBean.putProperty(IModuleNode.PROPERTY_MODULE_NAME,
             storedModule.getProperty(IModuleNode.PROPERTY_MODULE_NAME));
         moduleNodeBean.putProperty(IModuleNode.PROPERTY_MODULE_VERSION,

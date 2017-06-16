@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.importer.spi.content;
 
-public interface IResourceIdentifier {
+public interface IPathIdentifier {
 
   /**
    * <p>
@@ -50,7 +50,7 @@ public interface IResourceIdentifier {
      * @param resId
      * @return
      */
-    public static int hashCode(IResourceIdentifier resId) {
+    public static int hashCode(IPathIdentifier resId) {
       final int prime = 31;
       int result = 1;
       result = prime * result + ((resId.getPath() == null) ? 0 : resId.getPath().hashCode());
@@ -66,14 +66,14 @@ public interface IResourceIdentifier {
      * @param obj
      * @return
      */
-    public static boolean equals(IResourceIdentifier resId, Object obj) {
+    public static boolean equals(IPathIdentifier resId, Object obj) {
       if (resId == obj)
         return true;
       if (obj == null)
         return false;
-      if (!(IResourceIdentifier.class.isAssignableFrom(obj.getClass())))
+      if (!(IPathIdentifier.class.isAssignableFrom(obj.getClass())))
         return false;
-      IResourceIdentifier other = (IResourceIdentifier) obj;
+      IPathIdentifier other = (IPathIdentifier) obj;
       if (resId.getPath() == null) {
         if (other.getPath() != null)
           return false;

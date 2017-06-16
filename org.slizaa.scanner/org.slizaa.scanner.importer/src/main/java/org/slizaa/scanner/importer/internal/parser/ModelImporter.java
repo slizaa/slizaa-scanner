@@ -36,7 +36,7 @@ import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
 import org.slizaa.scanner.importer.spi.content.IContentDefinition;
 import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
 import org.slizaa.scanner.importer.spi.content.IResource;
-import org.slizaa.scanner.importer.spi.content.IResourceIdentifier;
+import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
 import org.slizaa.scanner.importer.spi.parser.IParser;
 import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.importer.spi.parser.IProblem;
@@ -70,7 +70,7 @@ public class ModelImporter implements IModelImporter {
   /** - */
   private IParserFactory[]                             _parserFactories;
 
-  private Map<IResourceIdentifier, StoredResourceNode> _storedResourcesMap;
+  private Map<IPathIdentifier, StoredResourceNode> _storedResourcesMap;
 
   private Map<String, IModifiableNode>                 _storedModulesMap;
 

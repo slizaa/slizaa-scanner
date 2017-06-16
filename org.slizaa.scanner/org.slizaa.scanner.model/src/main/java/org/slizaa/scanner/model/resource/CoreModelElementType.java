@@ -20,5 +20,5 @@ import org.neo4j.graphdb.Label;
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
 public enum CoreModelElementType implements Label {
-  Group, Module, Directory, Resource
+  GROUP, MODULE, DIRECTORY, RESOURCE
 }

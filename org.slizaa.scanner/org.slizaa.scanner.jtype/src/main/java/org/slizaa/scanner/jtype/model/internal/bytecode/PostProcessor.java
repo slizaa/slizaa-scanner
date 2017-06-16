@@ -85,7 +85,7 @@ public class PostProcessor {
 
     //
     for (Node visitedNode : traverser.nodes()) {
-      if (!visitedNode.hasLabel(CoreModelElementType.Resource)) {
+      if (!visitedNode.hasLabel(CoreModelElementType.RESOURCE)) {
         for (Relationship relationship : visitedNode.getRelationships()) {
           relationship.delete();
         }
