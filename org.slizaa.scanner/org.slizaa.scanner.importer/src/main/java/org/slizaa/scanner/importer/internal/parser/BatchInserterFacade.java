@@ -15,9 +15,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
@@ -45,16 +46,16 @@ import org.slizaa.scanner.model.resource.ResourceType;
 public class BatchInserterFacade implements AutoCloseable {
 
   /** - */
-  private BatchInserter                   _batchInserter;
+  private BatchInserter                             _batchInserter;
 
   /** - */
-  private String                          _storeDir;
+  private String                                    _storeDir;
 
   /** - */
-  private Map<IResource, IModifiableNode> _resourcesMap;
+  private ConcurrentMap<IResource, IModifiableNode> _resourcesMap;
 
   /** - */
-  private Map<String, INode>              _modulesMap;
+  private ConcurrentMap<String, IModifiableNode>    _modulesMap;
 
   /**
    * <p>
@@ -77,8 +78,8 @@ public class BatchInserterFacade implements AutoCloseable {
     }
 
     //
-    _resourcesMap = new HashMap<>();
-    _modulesMap = new HashMap<>();
+    _resourcesMap = new ConcurrentHashMap<>();
+    _modulesMap = new ConcurrentHashMap<>();
   }
 
   /**
@@ -90,24 +91,17 @@ public class BatchInserterFacade implements AutoCloseable {
    * @return
    */
   public IModifiableNode getOrCreateModuleNode(final IContentDefinition contentDefinition) {
-
+    
     //
-    String contentDefinitionId = contentDefinition.getId();
-
-    //
-    if (!_modulesMap.containsKey(contentDefinitionId)) {
-
-      //
+    return _modulesMap.computeIfAbsent(contentDefinition.getId(), id -> {
       IModifiableNode moduleNode = NodeFactory.createNode();
       moduleNode.addLabel(CoreModelElementType.MODULE);
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_NAME, contentDefinition.getName());
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_VERSION, contentDefinition.getVersion());
-      moduleNode.putProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID, contentDefinitionId);
-      _modulesMap.put(contentDefinitionId, moduleNode);
-    }
+      moduleNode.putProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID, id);
+      return moduleNode;
+    });
 
-    //
-    return (IModifiableNode) _modulesMap.get(contentDefinitionId);
   }
 
   /**
@@ -220,18 +214,24 @@ public class BatchInserterFacade implements AutoCloseable {
    * @param nodeCreator
    * @return
    */
-  private synchronized IModifiableNode getOrCreateResourceNode(IResource resourceId, INodeCreator nodeCreator) {
-
-    //
-    if (!_resourcesMap.containsKey(resourceId)) {
-      _resourcesMap.put(resourceId, nodeCreator.createBean());
-    }
-
-    //
-    return _resourcesMap.get(resourceId);
+  private IModifiableNode getOrCreateResourceNode(IResource resourceId, INodeCreator nodeCreator) {
+    return _resourcesMap.computeIfAbsent(resourceId, r -> nodeCreator.createBean());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public synchronized void close() {
     _batchInserter.shutdown();
+  }
+
+  /**
+   * <p>
+   * </p>
+   */
+  public void getOrCreateDirectoyNode(IContentDefinition contentDefinition, Directory directory,
+      IModifiableNode moduleNode) {
+
+    System.out.println(contentDefinition.getName() + " : " + directory.getPath());
   }
 }

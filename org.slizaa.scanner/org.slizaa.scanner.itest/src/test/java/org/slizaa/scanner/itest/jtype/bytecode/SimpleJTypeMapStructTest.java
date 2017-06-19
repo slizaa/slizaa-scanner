@@ -55,6 +55,7 @@ public class SimpleJTypeMapStructTest {
     Stopwatch stopwatch = Stopwatch.createStarted();
     executer.parse(new DummyProgressMonitor());
     stopwatch.stop();
+    System.out.printf("Created database: %s", databaseDirectory);
     System.out.printf("Time elapsed: %s", stopwatch.elapsed(TimeUnit.MILLISECONDS));
   }
 }
