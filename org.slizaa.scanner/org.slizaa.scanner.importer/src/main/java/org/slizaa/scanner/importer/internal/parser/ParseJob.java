@@ -113,7 +113,7 @@ public class ParseJob implements Callable<List<IProblem>> {
           return problems;
         }
 
-        _batchInserter.getOrCreateDirectoyNode(_content, directory, _moduleNode);
+        _batchInserter.getOrCreateDirectoyNode(directory, _moduleNode);
       }
 
       // parse sources

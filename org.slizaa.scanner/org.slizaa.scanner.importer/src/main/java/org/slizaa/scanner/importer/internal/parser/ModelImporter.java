@@ -35,8 +35,8 @@ import org.slizaa.scanner.importer.internal.ZipFileCache;
 import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
 import org.slizaa.scanner.importer.spi.content.IContentDefinition;
 import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
-import org.slizaa.scanner.importer.spi.content.IResource;
 import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
+import org.slizaa.scanner.importer.spi.content.IResource;
 import org.slizaa.scanner.importer.spi.parser.IParser;
 import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.importer.spi.parser.IProblem;
@@ -56,27 +56,31 @@ import com.google.common.cache.LoadingCache;
 public class ModelImporter implements IModelImporter {
 
   /** THREAD_COUNT */
-  static final int                                     THREAD_COUNT = Runtime.getRuntime().availableProcessors();
+  static final int                                 THREAD_COUNT = Runtime.getRuntime().availableProcessors();
 
   /** - */
-  private final Logger                                 logger       = LoggerFactory.getLogger(ModelImporter.class);
+  private final Logger                             logger       = LoggerFactory.getLogger(ModelImporter.class);
 
   /** - */
-  private IContentDefinitions                            _systemDefinition;
+  private IContentDefinitions                      _systemDefinition;
 
   /** - */
-  private File                                         _directory;
+  private File                                     _directory;
 
   /** - */
-  private IParserFactory[]                             _parserFactories;
+  private IParserFactory[]                         _parserFactories;
 
+  /** - */
   private Map<IPathIdentifier, StoredResourceNode> _storedResourcesMap;
 
-  private Map<String, IModifiableNode>                 _storedModulesMap;
+  /** - */
+  private Map<String, IModifiableNode>             _storedModulesMap;
 
-  private List<IProblem>                               _result;
+  /** - */
+  private List<IProblem>                           _result;
 
-  private ExecutorService                              _executorService;
+  /** - */
+  private ExecutorService                          _executorService;
 
   /**
    * <p>
@@ -163,12 +167,12 @@ public class ModelImporter implements IModelImporter {
   }
 
   private void postProcess(final SubMonitor progressMonitor) {
-    try (GraphDatabaseServiceFacade databaseServiceFacade = new GraphDatabaseServiceFacade(
-        _directory.getAbsolutePath(), _parserFactories)) {
+    try (GraphDatabaseServiceFacade databaseServiceFacade = new GraphDatabaseServiceFacade(_directory.getAbsolutePath(),
+        _parserFactories)) {
 
       // delete old resources
       progressMonitor.subTask("Deleting old resources...");
-      
+
       IProgressMonitor subMonitor = progressMonitor.newChild(10);
       subMonitor.beginTask("Deleting old resources...", _storedResourcesMap.size());
       databaseServiceFacade.deleteResourceNodes(_storedResourcesMap.values(), subMonitor);
@@ -180,7 +184,7 @@ public class ModelImporter implements IModelImporter {
 
       //
       progressMonitor.subTask("Post-processing model...");
-      
+
       subMonitor = progressMonitor.newChild(20);
       subMonitor.beginTask("Post-processing model...", _storedModulesMap.size());
       databaseServiceFacade.batchParseStop(_systemDefinition, subMonitor);
@@ -203,25 +207,25 @@ public class ModelImporter implements IModelImporter {
       _executorService = Executors.newFixedThreadPool(THREAD_COUNT);
 
       //
-      final SubMonitor progressMonitor = SubMonitor.convert(submonitor, _systemDefinition.getContentDefinitions()
-          .size());
+      final SubMonitor progressMonitor = SubMonitor.convert(submonitor,
+          _systemDefinition.getContentDefinitions().size());
 
       for (IContentDefinition contentDefinition : _systemDefinition.getContentDefinitions()) {
 
         //
-        batchInserter.clearResourceMap();
+        batchInserter.clearResourceAndDirectoryMaps();
 
         //
-        Set<IResource> newAndModifiedBinaryResources = ModelImporterHelper.computeNewAndModifiedResources(
-            contentDefinition.getBinaryResources(), _storedResourcesMap);
+        Set<IResource> newAndModifiedBinaryResources = ModelImporterHelper
+            .computeNewAndModifiedResources(contentDefinition.getBinaryResources(), _storedResourcesMap);
 
         //
         Set<IResource> newAndModifiedSourceResources = Collections.emptySet();
 
         //
         if (AnalyzeMode.BINARIES_AND_SOURCES.equals(contentDefinition.getAnalyzeMode())) {
-          newAndModifiedSourceResources = ModelImporterHelper.computeNewAndModifiedResources(
-              contentDefinition.getSourceResources(), _storedResourcesMap);
+          newAndModifiedSourceResources = ModelImporterHelper
+              .computeNewAndModifiedResources(contentDefinition.getSourceResources(), _storedResourcesMap);
         }
 
         //
@@ -243,7 +247,7 @@ public class ModelImporter implements IModelImporter {
       logger.debug("Save to disk...");
       _executorService.shutdown();
       _executorService = null;
-      
+
       //
       if (submonitor != null) {
         submonitor.done();
@@ -260,8 +264,8 @@ public class ModelImporter implements IModelImporter {
   private void readFromDatabase(final SubMonitor progressMonitor) {
 
     //
-    try (GraphDatabaseServiceFacade databaseServiceFacade = new GraphDatabaseServiceFacade(
-        _directory.getAbsolutePath(), _parserFactories)) {
+    try (GraphDatabaseServiceFacade databaseServiceFacade = new GraphDatabaseServiceFacade(_directory.getAbsolutePath(),
+        _parserFactories)) {
 
       progressMonitor.subTask("Preparing model...");
       databaseServiceFacade.batchParseStart(_systemDefinition, progressMonitor.newChild(10));
@@ -295,8 +299,8 @@ public class ModelImporter implements IModelImporter {
 
     try {
 
-      LoadingCache<String, Directory> directories = CacheBuilder.newBuilder().build(
-          new CacheLoader<String, Directory>() {
+      LoadingCache<String, Directory> directories = CacheBuilder.newBuilder()
+          .build(new CacheLoader<String, Directory>() {
             public Directory load(String key) {
               return new Directory(key);
             }

@@ -14,7 +14,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +32,7 @@ import org.slizaa.scanner.model.IRelationship;
 import org.slizaa.scanner.model.NodeFactory;
 import org.slizaa.scanner.model.resource.CoreModelElementType;
 import org.slizaa.scanner.model.resource.CoreModelRelationshipType;
+import org.slizaa.scanner.model.resource.IDirectoryNode;
 import org.slizaa.scanner.model.resource.IModuleNode;
 import org.slizaa.scanner.model.resource.IResourceNode;
 import org.slizaa.scanner.model.resource.ResourceType;
@@ -57,6 +57,9 @@ public class BatchInserterFacade implements AutoCloseable {
   /** - */
   private ConcurrentMap<String, IModifiableNode>    _modulesMap;
 
+  /** - */
+  private ConcurrentMap<String, IModifiableNode>    _directoriesMap;
+
   /**
    * <p>
    * Creates a new instance of type {@link BatchInserterFacade}.
@@ -80,6 +83,7 @@ public class BatchInserterFacade implements AutoCloseable {
     //
     _resourcesMap = new ConcurrentHashMap<>();
     _modulesMap = new ConcurrentHashMap<>();
+    _directoriesMap = new ConcurrentHashMap<>();
   }
 
   /**
@@ -91,7 +95,7 @@ public class BatchInserterFacade implements AutoCloseable {
    * @return
    */
   public IModifiableNode getOrCreateModuleNode(final IContentDefinition contentDefinition) {
-    
+
     //
     return _modulesMap.computeIfAbsent(contentDefinition.getId(), id -> {
       IModifiableNode moduleNode = NodeFactory.createNode();
@@ -107,28 +111,49 @@ public class BatchInserterFacade implements AutoCloseable {
   /**
    * <p>
    * </p>
-   * 
-   * @param resource
+   */
+  public IModifiableNode getOrCreateDirectoyNode(Directory directory, IModifiableNode moduleNode) {
+
+    //
+    IModifiableNode result = getOrCreateDirectoyNode(directory.getPath(), moduleNode);
+
+    //
+    result.putProperty(IDirectoryNode.PROPERTY_IS_EMPTY, false);
+
+    //
+    return result;
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param directoryPath
+   * @param moduleNode
    * @return
    */
-  public IModifiableNode getOrCreateResourceNode(final IModifiableNode parentModuleNode, final IResource resource,
-      final ResourceType resourceType) {
+  private IModifiableNode getOrCreateDirectoyNode(String directoryPath, IModifiableNode moduleNode) {
 
-    return getOrCreateResourceNode(resource, new INodeCreator() {
+    //
+    IModifiableNode parentDirectory = parentDirectory(directoryPath, moduleNode);
 
-      @Override
-      public IModifiableNode createBean() {
-        IModifiableNode resourceNode = NodeFactory.createNode();
-        resourceNode.addLabel(CoreModelElementType.RESOURCE);
-        resourceNode.addLabel(resourceType);
-        resourceNode.putProperty(IResourceNode.PROPERTY_ROOT, resource.getRoot());
-        resourceNode.putProperty(IResourceNode.PROPERTY_PATH, resource.getPath());
-        resourceNode.putProperty(IResourceNode.PROPERTY_TIMESTAMP, resource.getTimestamp());
-        resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, false);
-        resourceNode.putProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES, true);
-        parentModuleNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
-        return resourceNode;
+    //
+    return _directoriesMap.computeIfAbsent(directoryPath, id -> {
+
+      //
+      IModifiableNode directoryNode = NodeFactory.createNode();
+      directoryNode.addLabel(CoreModelElementType.DIRECTORY);
+      directoryNode.putProperty(IDirectoryNode.PROPERTY_PATH, directoryPath);
+      directoryNode.putProperty(IDirectoryNode.PROPERTY_IS_EMPTY, true);
+
+      //
+      if (parentDirectory != null) {
+        parentDirectory.addRelationship(directoryNode, CoreModelRelationshipType.CONTAINS);
       }
+      moduleNode.addRelationship(directoryNode, CoreModelRelationshipType.CONTAINS);
+
+      //
+      return directoryNode;
     });
   }
 
@@ -136,20 +161,30 @@ public class BatchInserterFacade implements AutoCloseable {
    * <p>
    * </p>
    * 
+   * @param resource
    * @return
    */
-  public Map<IResource, IModifiableNode> getResourcesMap() {
-    return Collections.unmodifiableMap(_resourcesMap);
-  }
+  public IModifiableNode getOrCreateResourceNode(final IModifiableNode parentModuleNode, final IResource resource,
+      final ResourceType resourceType) {
 
-  /**
-   * <p>
-   * </p>
-   * 
-   * @return
-   */
-  public Map<String, INode> getModulesMap() {
-    return Collections.unmodifiableMap(_modulesMap);
+    return _resourcesMap.computeIfAbsent(resource, r -> {
+
+      //
+      IModifiableNode parentDirectory = getOrCreateDirectoyNode(resource.getDirectory(), parentModuleNode);
+
+      //
+      IModifiableNode resourceNode = NodeFactory.createNode();
+      resourceNode.addLabel(CoreModelElementType.RESOURCE);
+      resourceNode.addLabel(resourceType);
+      resourceNode.putProperty(IResourceNode.PROPERTY_ROOT, resource.getRoot());
+      resourceNode.putProperty(IResourceNode.PROPERTY_PATH, resource.getPath());
+      resourceNode.putProperty(IResourceNode.PROPERTY_TIMESTAMP, resource.getTimestamp());
+      resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, false);
+      resourceNode.putProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES, true);
+      parentModuleNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
+      parentDirectory.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
+      return resourceNode;
+    });
   }
 
   /**
@@ -169,7 +204,7 @@ public class BatchInserterFacade implements AutoCloseable {
     }
   }
 
-  public void clearResourceMap() {
+  public void clearResourceAndDirectoryMaps() {
     _resourcesMap.clear();
   }
 
@@ -207,18 +242,6 @@ public class BatchInserterFacade implements AutoCloseable {
   }
 
   /**
-   * <p>
-   * </p>
-   * 
-   * @param resourceId
-   * @param nodeCreator
-   * @return
-   */
-  private IModifiableNode getOrCreateResourceNode(IResource resourceId, INodeCreator nodeCreator) {
-    return _resourcesMap.computeIfAbsent(resourceId, r -> nodeCreator.createBean());
-  }
-
-  /**
    * {@inheritDoc}
    */
   public synchronized void close() {
@@ -228,10 +251,18 @@ public class BatchInserterFacade implements AutoCloseable {
   /**
    * <p>
    * </p>
+   *
+   * @param directoryPath
+   * @param moduleNode
+   * @return
    */
-  public void getOrCreateDirectoyNode(IContentDefinition contentDefinition, Directory directory,
-      IModifiableNode moduleNode) {
-
-    System.out.println(contentDefinition.getName() + " : " + directory.getPath());
+  private IModifiableNode parentDirectory(String directoryPath, IModifiableNode moduleNode) {
+    IModifiableNode parentDirectory = null;
+    int index = directoryPath.lastIndexOf('/');
+    if (index != -1) {
+      String parentDirectoryPath = directoryPath.substring(0, index);
+      parentDirectory = getOrCreateDirectoyNode(parentDirectoryPath, moduleNode);
+    }
+    return parentDirectory;
   }
 }
