@@ -21,6 +21,7 @@
 		<module>org.slizaa.scanner.itest.framework</module>
 		<module>org.slizaa.scanner.itest</module>
 		<module>org.slizaa.scanner.systemdefinition</module>
+		<module>org.slizaa.scanner.cmdline</module>
 	</modules>
 
 	<build>
