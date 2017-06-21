@@ -41,7 +41,7 @@ public class BoltClient {
       TypeSystem typeSystem = session.typeSystem();
 
       // Auto-commit transactions are a quick and easy way to wrap a read.
-      StatementResult result = session.run("MATCH (d:DIRECTORY) WHERE d.isEmpty = true RETURN DISTINCT d");
+      StatementResult result = session.run("MATCH (m:MODULE)-[:CONTAINS]->(d:DIRECTORY) RETURN DISTINCT d.path");
 
       int count = 0;
 
@@ -55,7 +55,7 @@ public class BoltClient {
 
         for (Pair<String, Value> pair : record.fields()) {
 
-          System.out.println(pair.value().type().name());
+//          System.out.println(pair.value().type().name());
 
           switch (pair.value().type().name()) {
           case "NODE": {
@@ -73,13 +73,11 @@ public class BoltClient {
             break;
           }
           case "STRING": {
-            System.out.println("Handle node: " + pair.value().asString());
-            System.out.println(pair.value().asString().getClass());
+            System.out.println("STRING: " + pair.value().asString());
             break;
           }
           case "INTEGER": {
             System.out.println("INTEGER: " + pair.value().asInt());
-            System.out.println(pair.value().asInt());
             break;
           }
           default:
