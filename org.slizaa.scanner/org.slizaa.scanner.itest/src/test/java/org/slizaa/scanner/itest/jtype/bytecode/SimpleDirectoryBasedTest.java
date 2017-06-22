@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
@@ -35,11 +34,10 @@ public class SimpleDirectoryBasedTest {
    * </p>
    */
   @Test
-  @Ignore
   public void test() {
 
     //
-    File directory = new File("/home/wuetherich/development/eclipse-workspaces/runtime-bundlemaker-II/Test/.slizaa");
+    File directory = new File("samples");
 
     //
     File databaseDirectory = TestFrameworkUtils.createTempDirectory(SimpleDirectoryBasedTest.class.getSimpleName());
