@@ -41,7 +41,7 @@ public class BoltClient {
       TypeSystem typeSystem = session.typeSystem();
 
       // Auto-commit transactions are a quick and easy way to wrap a read.
-      StatementResult result = session.run("MATCH (m:MODULE)-[:CONTAINS]->(d:DIRECTORY) RETURN DISTINCT d.path");
+      StatementResult result = session.run("MATCH (n) RETURN id(n)");
 
       int count = 0;
 
@@ -94,7 +94,8 @@ public class BoltClient {
   }
 
   public static void main(String... args) {
-    BoltClient example = new BoltClient("bolt://localhost:7687");
+//    BoltClient example = new BoltClient("bolt://localhost:7687");
+    BoltClient example = new BoltClient("bolt://localhost:5001");
     example.printModules();
     example.close();
   }
