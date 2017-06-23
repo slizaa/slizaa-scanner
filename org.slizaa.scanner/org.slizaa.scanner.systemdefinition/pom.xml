@@ -11,13 +11,20 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.slizaa.scanner</groupId>
-			<artifactId>org.slizaa.scanner.importer</artifactId>
+			<artifactId>org.slizaa.scanner.spi.content</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner</groupId>
-			<artifactId>org.slizaa.scanner.model</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

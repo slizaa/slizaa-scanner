@@ -16,7 +16,7 @@ import static org.slizaa.scanner.systemdefinition.TestHelper.createContentDefini
 import java.io.File;
 
 import org.junit.Test;
-import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.VariablePath;
 

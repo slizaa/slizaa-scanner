@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.slizaa.scanner.importer.internal.ZipFileCache;
 import org.slizaa.scanner.spi.content.IPathIdentifier;
 import org.slizaa.scanner.spi.content.IResource;
 
@@ -169,8 +168,7 @@ public class Resource implements IResource, IPathIdentifier {
 
     // jar file?
     if (getRoot().endsWith(".jar") || getRoot().endsWith(".zip")) {
-      try {
-        ZipFile zipFile = ZipFileCache.instance().getZipFile(getRoot());
+      try (ZipFile zipFile =  new ZipFile(getRoot())) {
         ZipEntry zipEntry = zipFile.getEntry(getPath());
         return zipEntry.getTime();
       } catch (Exception e) {

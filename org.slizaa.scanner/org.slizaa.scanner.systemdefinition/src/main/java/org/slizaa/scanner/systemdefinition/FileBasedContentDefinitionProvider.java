@@ -18,9 +18,9 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.slizaa.scanner.model.resource.ResourceType;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.internal.SystemDefinition;
 
 import com.google.gson.annotations.Expose;
