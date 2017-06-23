@@ -15,15 +15,10 @@
 	</properties>
 
 	<modules>
-		<module>org.slizaa.scanner.model</module>
-		<module>org.slizaa.scanner.importer</module>
-		<module>org.slizaa.scanner.jtype</module>
-		<module>org.slizaa.scanner.itest.framework</module>
-		<module>org.slizaa.scanner.itest</module>
-		<module>org.slizaa.scanner.systemdefinition</module>
-		<module>org.slizaa.scanner.cmdline</module>
-		<module>org.slizaa.scanner.spi.content</module>
-		<module>org.slizaa.scanner.spi.parser</module>
+		<module>core</module>
+		<module>itest</module>
+		<module>parser</module>
+		<module>tool</module>
 	</modules>
 
 	<build>

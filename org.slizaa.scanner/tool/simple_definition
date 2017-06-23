@@ -1,0 +1,16 @@
+[
+  {
+    "name": "TestName",
+	"version": "1.2.3.4",
+	"binary-paths": ["Z:\\repositories\\slizaa-scanner\\org.slizaa.scanner\\tool\\org.slizaa.scanner.systemdefinition\\target"],
+	"source-paths": [],
+	"analyse": "BINARIES_ONLY"
+  },
+  {
+    "name": "TestName",
+	"version": "5.6.7.8",
+	"binary-paths": ["Z:\\repositories\\slizaa-scanner\\org.slizaa.scanner\\tool\\org.slizaa.scanner.systemdefinition\\target"],
+	"source-paths": [],
+	"analyse": "BINARIES_ONLY"
+  }
+]
