@@ -32,15 +32,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.importer.IModelImporter;
 import org.slizaa.scanner.importer.internal.ZipFileCache;
-import org.slizaa.scanner.importer.spi.parser.IParser;
-import org.slizaa.scanner.importer.spi.parser.IParserFactory;
-import org.slizaa.scanner.importer.spi.parser.IProblem;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.content.IPathIdentifier;
 import org.slizaa.scanner.spi.content.IResource;
+import org.slizaa.scanner.spi.parser.IParser;
+import org.slizaa.scanner.spi.parser.IParserFactory;
+import org.slizaa.scanner.spi.parser.IProblem;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.cache.CacheBuilder;

@@ -21,14 +21,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slizaa.scanner.importer.spi.parser.IParser;
-import org.slizaa.scanner.importer.spi.parser.IParser.ParserType;
-import org.slizaa.scanner.importer.spi.parser.IProblem;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.resource.IResourceNode;
 import org.slizaa.scanner.model.resource.ResourceType;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IResource;
+import org.slizaa.scanner.spi.parser.IParser;
+import org.slizaa.scanner.spi.parser.IProblem;
+import org.slizaa.scanner.spi.parser.IParser.ParserType;
 
 public class ParseJob implements Callable<List<IProblem>> {
 

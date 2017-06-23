@@ -13,7 +13,7 @@ package org.slizaa.scanner.importer;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.slizaa.scanner.importer.spi.parser.IProblem;
+import org.slizaa.scanner.spi.parser.IProblem;
 
 /**
  * <p>

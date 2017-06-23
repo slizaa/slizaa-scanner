@@ -13,8 +13,8 @@ package org.slizaa.scanner.importer;
 import java.io.File;
 
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.parser.IParserFactory;
 
 /**
  * <p>

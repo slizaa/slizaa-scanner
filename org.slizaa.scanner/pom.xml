@@ -23,6 +23,7 @@
 		<module>org.slizaa.scanner.systemdefinition</module>
 		<module>org.slizaa.scanner.cmdline</module>
 		<module>org.slizaa.scanner.spi.content</module>
+		<module>org.slizaa.scanner.spi.parser</module>
 	</modules>
 
 	<build>

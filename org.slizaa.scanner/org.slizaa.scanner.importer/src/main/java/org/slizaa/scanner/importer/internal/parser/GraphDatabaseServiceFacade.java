@@ -30,7 +30,6 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.NodeFactory;
@@ -39,6 +38,7 @@ import org.slizaa.scanner.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.model.resource.IModuleNode;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.content.IPathIdentifier;
+import org.slizaa.scanner.spi.parser.IParserFactory;
 
 import com.google.common.base.Stopwatch;
 

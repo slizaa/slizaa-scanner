@@ -1,6 +1,6 @@
 package org.slizaa.scanner.importer.internal.parser;
 
-import org.slizaa.scanner.importer.spi.parser.IParserContext;
+import org.slizaa.scanner.spi.parser.IParserContext;
 
 /**
  * <p>
