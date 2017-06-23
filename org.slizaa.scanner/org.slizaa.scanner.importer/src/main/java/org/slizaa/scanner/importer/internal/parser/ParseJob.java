@@ -103,20 +103,7 @@ public class ParseJob implements Callable<List<IProblem>> {
     List<IProblem> problems = new LinkedList<IProblem>();
 
     try {
-
-      // create directory nodes
-      for (final Directory directory : _directories) {
-
-        //
-        if (checkIfCanceled(_progressMonitor)) {
-          _canceled = true;
-          return problems;
-        }
-
-        _batchInserter.getOrCreateDirectoyNode(directory, _moduleNode);
-      }
-
-      // parse sources
+      //
       for (final Directory directory : _directories) {
 
         //
@@ -132,7 +119,6 @@ public class ParseJob implements Callable<List<IProblem>> {
         }
       }
 
-      // parse binaries
       for (Directory directory : _directories) {
 
         //

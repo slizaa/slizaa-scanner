@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.itest.jtype.bytecode;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -27,6 +28,7 @@ import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
@@ -83,6 +85,10 @@ public abstract class AbstractJTypeParserTest {
     _transaction = null;
   }
 
+  protected Result executeStatement(String statement) {
+    return _graphDb.execute(checkNotNull(statement));
+  }
+
   protected Node getTypeNode(String fqn) {
     return _graphDb.findNode(JTypeModelElementType.TYPE, "fqn", fqn);
   }
@@ -100,7 +106,8 @@ public abstract class AbstractJTypeParserTest {
     for (Relationship relationship : node.getRelationships(relationshipType, Direction.OUTGOING)) {
       Node typeReference = relationship.getEndNode();
       System.out.println(typeReference.getProperty("fqn"));
-      if (typeReference.hasLabel(JTypeModelElementType.TYPE_REFERENCE) && fqn.equals(typeReference.getProperty("fqn"))) {
+      if (typeReference.hasLabel(JTypeModelElementType.TYPE_REFERENCE)
+          && fqn.equals(typeReference.getProperty("fqn"))) {
         return;
       }
     }

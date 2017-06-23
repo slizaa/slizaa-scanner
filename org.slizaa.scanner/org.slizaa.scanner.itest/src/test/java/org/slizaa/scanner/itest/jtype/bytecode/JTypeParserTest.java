@@ -18,6 +18,7 @@ import java.util.List;
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Result;
 import org.slizaa.scanner.itest.jtype.bytecode.example.AbstractExampleClass;
 import org.slizaa.scanner.itest.jtype.bytecode.example.ExampleAnnotation;
 import org.slizaa.scanner.itest.jtype.bytecode.example.ExampleClass;
@@ -32,6 +33,15 @@ import org.slizaa.scanner.jtype.model.TypeType;
 
 public class JTypeParserTest extends AbstractJTypeParserTest {
 
+  
+  @Test
+  public void testDirectories() {
+  
+    Result result = executeStatement("Match (m:MODULE)-[:CONTAINS]->(d:DIRECTORY) return d");
+
+    result.forEachRemaining(m -> System.out.println( ((Node)m.get("d")).getAllProperties() ));
+  }
+  
   /**
    * <p>
    * </p>

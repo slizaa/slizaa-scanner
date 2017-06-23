@@ -70,16 +70,12 @@ public class ModelImporter implements IModelImporter {
   /** - */
   private IParserFactory[]                         _parserFactories;
 
-  /** - */
   private Map<IPathIdentifier, StoredResourceNode> _storedResourcesMap;
 
-  /** - */
   private Map<String, IModifiableNode>             _storedModulesMap;
 
-  /** - */
   private List<IProblem>                           _result;
 
-  /** - */
   private ExecutorService                          _executorService;
 
   /**
@@ -213,7 +209,7 @@ public class ModelImporter implements IModelImporter {
       for (IContentDefinition contentDefinition : _systemDefinition.getContentDefinitions()) {
 
         //
-        batchInserter.clearResourceAndDirectoryMaps();
+        batchInserter.clearResourceAndDirectoriesMap();
 
         //
         Set<IResource> newAndModifiedBinaryResources = ModelImporterHelper
@@ -313,6 +309,12 @@ public class ModelImporter implements IModelImporter {
       for (IResource resource : sourceResources) {
         directories.getUnchecked(resource.getDirectory()).addSourceResource(resource);
       }
+      
+      // create directory nodes (still single-threaded!)
+      for (final Directory directory : directories.asMap().values()) {
+        batchInserter.getOrCreateDirectoyNode(directory, moduleBean);
+      }
+      
 
       // compute the part size
       float partSizeAsFloat = directories.size() / (float) THREAD_COUNT;

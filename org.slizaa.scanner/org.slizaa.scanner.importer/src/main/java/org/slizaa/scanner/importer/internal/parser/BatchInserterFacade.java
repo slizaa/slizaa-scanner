@@ -14,10 +14,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.function.Supplier;
 
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
@@ -46,19 +47,19 @@ import org.slizaa.scanner.model.resource.ResourceType;
 public class BatchInserterFacade implements AutoCloseable {
 
   /** - */
-  private BatchInserter                             _batchInserter;
+  private BatchInserter                   _batchInserter;
 
   /** - */
-  private String                                    _storeDir;
+  private String                          _storeDir;
 
   /** - */
-  private ConcurrentMap<IResource, IModifiableNode> _resourcesMap;
+  private Map<String, IModifiableNode>    _directoriesMap;
 
   /** - */
-  private ConcurrentMap<String, IModifiableNode>    _modulesMap;
+  private Map<IResource, IModifiableNode> _resourcesMap;
 
   /** - */
-  private ConcurrentMap<String, IModifiableNode>    _directoriesMap;
+  private Map<String, INode>              _modulesMap;
 
   /**
    * <p>
@@ -81,9 +82,9 @@ public class BatchInserterFacade implements AutoCloseable {
     }
 
     //
-    _resourcesMap = new ConcurrentHashMap<>();
-    _modulesMap = new ConcurrentHashMap<>();
-    _directoriesMap = new ConcurrentHashMap<>();
+    _resourcesMap = new HashMap<>();
+    _modulesMap = new HashMap<>();
+    _directoriesMap = new HashMap<>();
   }
 
   /**
@@ -97,64 +98,22 @@ public class BatchInserterFacade implements AutoCloseable {
   public IModifiableNode getOrCreateModuleNode(final IContentDefinition contentDefinition) {
 
     //
-    return _modulesMap.computeIfAbsent(contentDefinition.getId(), id -> {
+    String contentDefinitionId = contentDefinition.getId();
+
+    //
+    if (!_modulesMap.containsKey(contentDefinitionId)) {
+
+      //
       IModifiableNode moduleNode = NodeFactory.createNode();
       moduleNode.addLabel(CoreModelElementType.MODULE);
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_NAME, contentDefinition.getName());
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_VERSION, contentDefinition.getVersion());
-      moduleNode.putProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID, id);
-      return moduleNode;
-    });
-
-  }
-
-  /**
-   * <p>
-   * </p>
-   */
-  public IModifiableNode getOrCreateDirectoyNode(Directory directory, IModifiableNode moduleNode) {
+      moduleNode.putProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID, contentDefinitionId);
+      _modulesMap.put(contentDefinitionId, moduleNode);
+    }
 
     //
-    IModifiableNode result = getOrCreateDirectoyNode(directory.getPath(), moduleNode);
-
-    //
-    result.putProperty(IDirectoryNode.PROPERTY_IS_EMPTY, false);
-
-    //
-    return result;
-  }
-
-  /**
-   * <p>
-   * </p>
-   *
-   * @param directoryPath
-   * @param moduleNode
-   * @return
-   */
-  private IModifiableNode getOrCreateDirectoyNode(String directoryPath, IModifiableNode moduleNode) {
-
-    //
-    IModifiableNode parentDirectory = parentDirectory(directoryPath, moduleNode);
-
-    //
-    return _directoriesMap.computeIfAbsent(directoryPath, id -> {
-
-      //
-      IModifiableNode directoryNode = NodeFactory.createNode();
-      directoryNode.addLabel(CoreModelElementType.DIRECTORY);
-      directoryNode.putProperty(IDirectoryNode.PROPERTY_PATH, directoryPath);
-      directoryNode.putProperty(IDirectoryNode.PROPERTY_IS_EMPTY, true);
-
-      //
-      if (parentDirectory != null) {
-        parentDirectory.addRelationship(directoryNode, CoreModelRelationshipType.CONTAINS);
-      }
-      moduleNode.addRelationship(directoryNode, CoreModelRelationshipType.CONTAINS);
-
-      //
-      return directoryNode;
-    });
+    return (IModifiableNode) _modulesMap.get(contentDefinitionId);
   }
 
   /**
@@ -167,12 +126,8 @@ public class BatchInserterFacade implements AutoCloseable {
   public IModifiableNode getOrCreateResourceNode(final IModifiableNode parentModuleNode, final IResource resource,
       final ResourceType resourceType) {
 
-    return _resourcesMap.computeIfAbsent(resource, r -> {
-
-      //
-      IModifiableNode parentDirectory = getOrCreateDirectoyNode(resource.getDirectory(), parentModuleNode);
-
-      //
+    //
+    return getOrCreateResourceNode(resource, () -> {
       IModifiableNode resourceNode = NodeFactory.createNode();
       resourceNode.addLabel(CoreModelElementType.RESOURCE);
       resourceNode.addLabel(resourceType);
@@ -182,9 +137,28 @@ public class BatchInserterFacade implements AutoCloseable {
       resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, false);
       resourceNode.putProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES, true);
       parentModuleNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
-      parentDirectory.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
       return resourceNode;
     });
+  }
+
+  /**
+   * <p>
+   * </p>
+   * 
+   * @return
+   */
+  public Map<IResource, IModifiableNode> getResourcesMap() {
+    return Collections.unmodifiableMap(_resourcesMap);
+  }
+
+  /**
+   * <p>
+   * </p>
+   * 
+   * @return
+   */
+  public Map<String, INode> getModulesMap() {
+    return Collections.unmodifiableMap(_modulesMap);
   }
 
   /**
@@ -204,8 +178,9 @@ public class BatchInserterFacade implements AutoCloseable {
     }
   }
 
-  public void clearResourceAndDirectoryMaps() {
+  public void clearResourceAndDirectoriesMap() {
     _resourcesMap.clear();
+    _directoriesMap.clear();
   }
 
   /**
@@ -241,28 +216,86 @@ public class BatchInserterFacade implements AutoCloseable {
     return id;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public synchronized void close() {
-    _batchInserter.shutdown();
+  public IModifiableNode getOrCreateDirectoyNode(Directory directoryPath, IModifiableNode moduleNode) {
+
+    //
+    String[] pathElements = directoryPath.getPath().split("/");
+
+    // create complete structure
+    String currentPath = "";
+    IModifiableNode hierarchicalParent = moduleNode;
+    IModifiableNode currentDirectory = null;
+    for (String element : pathElements) {
+      currentPath = currentPath.isEmpty() ? element : currentPath + "/" + element;
+      currentDirectory = _getOrCreateDirectoyNode(currentPath, hierarchicalParent, moduleNode);
+      hierarchicalParent = currentDirectory;
+    }
+
+    //
+    currentDirectory.putProperty(IDirectoryNode.PROPERTY_IS_EMPTY, false);
+
+    //
+    return currentDirectory;
   }
 
   /**
    * <p>
    * </p>
    *
-   * @param directoryPath
-   * @param moduleNode
+   * ${tags}
+   */
+  private IModifiableNode _getOrCreateDirectoyNode(String path, IModifiableNode hierarchicalParent,
+      IModifiableNode moduleNode) {
+
+    //
+    return _directoriesMap.computeIfAbsent(path, id -> {
+
+      //
+      IModifiableNode directoryNode = NodeFactory.createNode();
+      directoryNode.addLabel(CoreModelElementType.DIRECTORY);
+      directoryNode.putProperty(IDirectoryNode.PROPERTY_PATH, path);
+      directoryNode.putProperty(IDirectoryNode.PROPERTY_IS_EMPTY, true);
+
+      //
+      if (hierarchicalParent != null && !hierarchicalParent.equals(moduleNode)) {
+        hierarchicalParent.addRelationship(directoryNode, CoreModelRelationshipType.CONTAINS);
+      }
+      moduleNode.addRelationship(directoryNode, CoreModelRelationshipType.CONTAINS);
+
+      //
+      return directoryNode;
+    });
+  }
+
+  /**
+   * <p>
+   * </p>
+   * 
+   * @param resourceId
+   * @param nodeCreator
    * @return
    */
-  private IModifiableNode parentDirectory(String directoryPath, IModifiableNode moduleNode) {
-    IModifiableNode parentDirectory = null;
-    int index = directoryPath.lastIndexOf('/');
-    if (index != -1) {
-      String parentDirectoryPath = directoryPath.substring(0, index);
-      parentDirectory = getOrCreateDirectoyNode(parentDirectoryPath, moduleNode);
+  private IModifiableNode getOrCreateResourceNode(IResource resourceId, Supplier<IModifiableNode> nodeCreator) {
+
+    //
+    IModifiableNode node = _resourcesMap.get(resourceId);
+    if (node == null) {
+      synchronized (this) {
+        if (!_resourcesMap.containsKey(resourceId)) {
+          node = nodeCreator.get();
+          _resourcesMap.put(resourceId, node);
+        }
+      }
     }
-    return parentDirectory;
+
+    //
+    return _resourcesMap.get(resourceId);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public synchronized void close() {
+    _batchInserter.shutdown();
   }
 }
