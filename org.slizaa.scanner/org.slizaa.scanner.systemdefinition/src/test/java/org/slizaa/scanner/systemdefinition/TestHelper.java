@@ -12,8 +12,8 @@ package org.slizaa.scanner.systemdefinition;
 
 import java.io.File;
 
-import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
 import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.systemdefinition.internal.SystemDefinition;
 import org.slizaa.scanner.systemdefinition.internal.SystemDefinitionWithWorkingCopy;
 

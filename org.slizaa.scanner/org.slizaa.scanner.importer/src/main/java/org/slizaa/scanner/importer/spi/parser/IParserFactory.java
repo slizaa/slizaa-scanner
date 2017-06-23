@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
-import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IContentDefinitions;
 
 /**
  * <p>

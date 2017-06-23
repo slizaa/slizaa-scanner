@@ -13,7 +13,7 @@ package org.slizaa.scanner.systemdefinition;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
+import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.systemdefinition.internal.SystemDefinitionWithWorkingCopy;
 
 public class SystemDefinitionWithWorkingCopy_HasWorkingCopyChanged_Test {

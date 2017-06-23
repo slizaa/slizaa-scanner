@@ -25,10 +25,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.eclipse.core.runtime.CoreException;
-import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
-import org.slizaa.scanner.importer.spi.content.IResource;
-import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.spi.content.AnalyzeMode;
+import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IResource;
+import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.VariablePath;
 

@@ -12,9 +12,9 @@ package org.slizaa.scanner.importer.spi.parser;
 
 import java.util.List;
 
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
-import org.slizaa.scanner.importer.spi.content.IResource;
 import org.slizaa.scanner.model.IModifiableNode;
+import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IResource;
 
 /**
  * <p>

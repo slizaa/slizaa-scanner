@@ -12,7 +12,7 @@ package org.slizaa.scanner.systemdefinition;
 
 import java.util.List;
 
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IContentDefinition;
 
 /**
  * <p>

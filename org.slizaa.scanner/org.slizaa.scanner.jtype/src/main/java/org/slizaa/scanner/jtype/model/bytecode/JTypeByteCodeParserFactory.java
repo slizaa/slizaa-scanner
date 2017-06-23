@@ -16,11 +16,11 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
 import org.slizaa.scanner.importer.spi.parser.IParser;
 import org.slizaa.scanner.importer.spi.parser.IParserFactory;
 import org.slizaa.scanner.jtype.model.internal.bytecode.PostProcessor;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.PrimitiveDatatypeNodeProvider;
+import org.slizaa.scanner.spi.content.IContentDefinitions;
 
 /**
  * <p>

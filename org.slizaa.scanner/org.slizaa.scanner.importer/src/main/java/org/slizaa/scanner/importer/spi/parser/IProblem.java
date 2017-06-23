@@ -12,8 +12,8 @@ package org.slizaa.scanner.importer.spi.parser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
-import org.slizaa.scanner.importer.spi.content.IResource;
+import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IResource;
 
 /**
  * <p>

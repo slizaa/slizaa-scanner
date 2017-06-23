@@ -21,8 +21,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.slizaa.scanner.importer.internal.ZipFileCache;
-import org.slizaa.scanner.importer.spi.content.IResource;
-import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
+import org.slizaa.scanner.spi.content.IPathIdentifier;
+import org.slizaa.scanner.spi.content.IResource;
 
 /**
  * <p>

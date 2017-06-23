@@ -14,7 +14,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
-import org.slizaa.scanner.importer.spi.content.IResource;
+import org.slizaa.scanner.spi.content.IResource;
 
 public class ResourceTest {
 

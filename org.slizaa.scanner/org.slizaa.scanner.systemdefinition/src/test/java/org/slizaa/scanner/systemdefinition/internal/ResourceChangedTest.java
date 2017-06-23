@@ -18,9 +18,9 @@ import java.lang.reflect.Method;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
-import org.slizaa.scanner.importer.spi.content.IResource;
-import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IResource;
+import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.AbstractContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.ResourceChangedEvent;

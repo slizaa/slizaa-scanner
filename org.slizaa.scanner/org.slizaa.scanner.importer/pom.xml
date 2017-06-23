@@ -17,6 +17,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.slizaa.scanner</groupId>
+			<artifactId>org.slizaa.scanner.spi.content</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j</artifactId>
 		</dependency>

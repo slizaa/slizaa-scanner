@@ -24,9 +24,6 @@ import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.unsafe.batchinsert.BatchInserter;
 import org.neo4j.unsafe.batchinsert.BatchInserters;
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
-import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
-import org.slizaa.scanner.importer.spi.content.IResource;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.IRelationship;
@@ -37,6 +34,9 @@ import org.slizaa.scanner.model.resource.IDirectoryNode;
 import org.slizaa.scanner.model.resource.IModuleNode;
 import org.slizaa.scanner.model.resource.IResourceNode;
 import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IResource;
 
 /**
  * <p>

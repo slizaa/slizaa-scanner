@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.systemdefinition.AbstractContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.IResourceChangedListener;

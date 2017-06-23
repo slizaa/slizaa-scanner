@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.slizaa.scanner.systemdefinition.internal;
 
-import org.slizaa.scanner.importer.spi.content.AnalyzeMode;
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
-import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.spi.content.AnalyzeMode;
+import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
 
 /**

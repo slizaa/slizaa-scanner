@@ -14,8 +14,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.slizaa.scanner.importer.spi.content.IContentDefinition;
-import org.slizaa.scanner.importer.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IContentDefinitions;
 
 /**
  * <p>

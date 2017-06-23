@@ -13,9 +13,9 @@ package org.slizaa.scanner.importer.internal.parser;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.neo4j.graphdb.Node;
-import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
 import org.slizaa.scanner.model.resource.IResourceNode;
 import org.slizaa.scanner.model.resource.ResourceType;
+import org.slizaa.scanner.spi.content.IPathIdentifier;
 
 public class StoredResourceNode implements IPathIdentifier {
 

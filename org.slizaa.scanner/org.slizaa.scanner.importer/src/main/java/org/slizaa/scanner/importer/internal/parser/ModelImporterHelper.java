@@ -15,8 +15,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.slizaa.scanner.importer.spi.content.IResource;
-import org.slizaa.scanner.importer.spi.content.IPathIdentifier;
+import org.slizaa.scanner.spi.content.IPathIdentifier;
+import org.slizaa.scanner.spi.content.IResource;
 
 /**
  * <p>
