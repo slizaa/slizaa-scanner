@@ -17,6 +17,7 @@
 		<module>org.slizaa.scanner.cmdline</module>
 		<module>org.slizaa.scanner.systemdefinition</module>
 		<module>org.slizaa.scanner.simpledefinition</module>
+		<module>org.slizaa.scanner.statementrunner</module>
 	</modules>
 
 </project>
