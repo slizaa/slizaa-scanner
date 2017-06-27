@@ -5,8 +5,11 @@ import java.io.IOException;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.graphdb.factory.GraphDatabaseSettings;
 import org.neo4j.kernel.configuration.BoltConnector;
 import org.neo4j.kernel.configuration.Connector.ConnectorType;
+import org.neo4j.kernel.impl.proc.Procedures;
+import org.neo4j.kernel.internal.GraphDatabaseAPI;
 
 /**
  * <p>
@@ -29,11 +32,14 @@ public class BoltServer {
     File storeDir = new File(args[0]);
 
     BoltConnector bolt = new BoltConnector("0");
+    // TODO: GraphDatabaseSettings.plugin_dir 
+    // ((GraphDatabaseAPI)graphDb).getDependencyResolver().resolveDependency(Procedures.class).register(proc);
 
     GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(storeDir)
         .setConfig(bolt.type, ConnectorType.BOLT.name()).setConfig(bolt.enabled, "true")
         .setConfig(bolt.listen_address, "localhost:7687").setConfig(bolt.encryption_level, "DISABLED")
         .newGraphDatabase();
+    
 
     System.out.println("Press ENTER to quit.");
     System.in.read();
