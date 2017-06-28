@@ -15,10 +15,11 @@
 	</properties>
 
 	<modules>
-		<module>core</module>
-		<module>itest</module>
+		<module>api</module>
+		<module>importer</module>
 		<module>parser</module>
 		<module>tool</module>
+		<module>itest</module>
 	</modules>
 
 	<build>
@@ -85,16 +86,19 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
 				<version>2.8.9</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.assertj</groupId>
 				<artifactId>assertj-core</artifactId>
 				<version>3.8.0</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
