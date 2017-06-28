@@ -8,23 +8,44 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model;
-
-import java.util.Map;
+package org.slizaa.scanner.api.model;
 
 /**
  * <p>
  * </p>
- * 
+ *
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public interface IRelationship {
+public interface IModifiableNode extends INode {
 
-  INode getTargetBean();
+  /**
+   * <p>
+   * </p>
+   * 
+   * @param targetBean
+   * @param relationshipType
+   * @return
+   */
+  IRelationship addRelationship(INode targetBean, RelationshipType relationshipType);
+  
+  void clearRelationships();
 
-  RelationshipType getRelationshipType();
+  /**
+   * <p>
+   * </p>
+   * 
+   * @param key
+   * @param value
+   */
+  void putProperty(String key, Object value);
 
-  Map<String, Object> getRelationshipProperties();
-
-  void putRelationshipProperty(String key, Object value);
+  /**
+   * <p>
+   * </p>
+   * 
+   * @param label
+   */
+  void addLabel(Label label);
+  
+  void setNodeId(long id);
 }

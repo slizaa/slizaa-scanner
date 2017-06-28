@@ -8,29 +8,37 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model.resource;
+package org.slizaa.scanner.api.model.resource;
 
-import org.slizaa.scanner.model.INode;
+import org.slizaa.scanner.api.model.INode;
 
 /**
  * <p>
- * Defines the interface for a group node bean.
+ * Defines the interface for a module node bean.
  * </p>
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public interface IGroupNode extends INode  {
-  
-  /** the property 'path' */
-  public static final String PROPERTY_PATH               = "path";
+public interface IModuleNode extends INode {
 
-//  /**
-//   * <p>
-//   * Returns the full path of the group, e.g. <code>core/mygroup'</code>. Note that group paths are
-//   * always slash-delimited ('/').
-//   * </p>
-//   * 
-//   * @return the full path of the group.
-//   */
-//  public String getPath();
+  /**
+   * <p>
+   * Returns the module name.
+   * </p>
+   */
+  public static final String PROPERTY_MODULE_NAME      = "moduleName";
+
+  /**
+   * <p>
+   * Returns the module version.
+   * </p>
+   */
+  public static final  String PROPERTY_MODULE_VERSION   = "moduleVersion";
+
+  /**
+   * <p>
+   * Returns the module version.
+   * </p>
+   */
+  public static final String PROPERTY_CONTENT_ENTRY_ID = "contentEntryId";
 }

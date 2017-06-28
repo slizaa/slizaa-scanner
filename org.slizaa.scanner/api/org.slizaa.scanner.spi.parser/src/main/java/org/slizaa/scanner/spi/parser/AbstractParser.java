@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.slizaa.scanner.model.IModifiableNode;
+import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IResource;
 

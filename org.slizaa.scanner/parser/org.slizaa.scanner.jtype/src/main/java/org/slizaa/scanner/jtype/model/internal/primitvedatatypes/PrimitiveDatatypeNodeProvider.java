@@ -14,10 +14,10 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.ResourceIterator;
+import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.api.model.INode;
+import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.jtype.model.JTypeModelElementType;
-import org.slizaa.scanner.model.IModifiableNode;
-import org.slizaa.scanner.model.INode;
-import org.slizaa.scanner.model.NodeFactory;
 
 public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProvider {
 

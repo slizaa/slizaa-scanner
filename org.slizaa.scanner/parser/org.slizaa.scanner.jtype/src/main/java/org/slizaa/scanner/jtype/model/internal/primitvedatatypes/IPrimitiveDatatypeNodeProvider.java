@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model.internal.primitvedatatypes;
 
-import org.slizaa.scanner.model.INode;
+import org.slizaa.scanner.api.model.INode;
 
 /**
  * <p>

@@ -25,9 +25,9 @@ import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
+import org.slizaa.scanner.api.model.resource.CoreModelElementType;
 import org.slizaa.scanner.jtype.model.JTypeModelElementType;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
-import org.slizaa.scanner.model.resource.CoreModelElementType;
 
 /**
  * <p>

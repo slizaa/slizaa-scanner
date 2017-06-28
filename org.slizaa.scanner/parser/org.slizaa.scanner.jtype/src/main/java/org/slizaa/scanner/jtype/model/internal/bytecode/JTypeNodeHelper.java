@@ -11,11 +11,11 @@
 package org.slizaa.scanner.jtype.model.internal.bytecode;
 
 import org.objectweb.asm.Type;
+import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.jtype.model.IFieldReferenceNode;
 import org.slizaa.scanner.jtype.model.ITypeReferenceNode;
 import org.slizaa.scanner.jtype.model.JTypeModelElementType;
-import org.slizaa.scanner.model.IModifiableNode;
-import org.slizaa.scanner.model.NodeFactory;
 
 public class JTypeNodeHelper {
 

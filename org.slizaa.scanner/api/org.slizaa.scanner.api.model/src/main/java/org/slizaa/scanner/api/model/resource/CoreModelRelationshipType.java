@@ -8,44 +8,17 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model;
+package org.slizaa.scanner.api.model.resource;
+
+import org.slizaa.scanner.api.model.RelationshipType;
 
 /**
  * <p>
+ * Defines the core relationship types for the underlying resource model.
  * </p>
  *
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public interface IModifiableNode extends INode {
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @param targetBean
-   * @param relationshipType
-   * @return
-   */
-  IRelationship addRelationship(INode targetBean, RelationshipType relationshipType);
-  
-  void clearRelationships();
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @param key
-   * @param value
-   */
-  void putProperty(String key, Object value);
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @param label
-   */
-  void addLabel(Label label);
-  
-  void setNodeId(long id);
+public enum CoreModelRelationshipType implements RelationshipType {
+    CONTAINS
 }

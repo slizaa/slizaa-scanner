@@ -19,6 +19,11 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
 import org.objectweb.asm.signature.SignatureReader;
+import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.api.model.INode;
+import org.slizaa.scanner.api.model.IRelationship;
+import org.slizaa.scanner.api.model.NodeFactory;
+import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.jtype.model.AccessLevel;
 import org.slizaa.scanner.jtype.model.IFieldNode;
 import org.slizaa.scanner.jtype.model.IMethodNode;
@@ -28,11 +33,6 @@ import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import org.slizaa.scanner.jtype.model.JavaTypeUtils;
 import org.slizaa.scanner.jtype.model.TypeType;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
-import org.slizaa.scanner.model.IModifiableNode;
-import org.slizaa.scanner.model.INode;
-import org.slizaa.scanner.model.IRelationship;
-import org.slizaa.scanner.model.NodeFactory;
-import org.slizaa.scanner.model.resource.CoreModelRelationshipType;
 
 /**
  */

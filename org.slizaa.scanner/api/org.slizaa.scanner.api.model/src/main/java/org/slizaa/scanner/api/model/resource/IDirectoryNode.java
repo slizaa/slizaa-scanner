@@ -1,4 +1,4 @@
-package org.slizaa.scanner.model.resource;
+package org.slizaa.scanner.api.model.resource;
 
 public interface IDirectoryNode {
 

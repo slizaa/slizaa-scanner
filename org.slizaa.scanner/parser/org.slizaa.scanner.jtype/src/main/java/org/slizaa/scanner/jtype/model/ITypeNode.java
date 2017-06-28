@@ -12,7 +12,7 @@ package org.slizaa.scanner.jtype.model;
 
 import java.util.List;
 
-import org.slizaa.scanner.model.INode;
+import org.slizaa.scanner.api.model.INode;
 
 public interface ITypeNode extends INode {
 

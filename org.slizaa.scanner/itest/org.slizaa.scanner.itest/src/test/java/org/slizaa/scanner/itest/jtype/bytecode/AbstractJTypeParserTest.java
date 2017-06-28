@@ -31,11 +31,11 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.itest.framework.TestFrameworkUtils;
 import org.slizaa.scanner.jtype.model.JTypeModelElementType;
 import org.slizaa.scanner.jtype.model.bytecode.JTypeByteCodeParserFactory;
-import org.slizaa.scanner.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.spi.parser.IParserFactory;
@@ -85,11 +85,11 @@ public abstract class AbstractJTypeParserTest {
     _transaction = null;
   }
 
-  public Label convert(org.slizaa.scanner.model.Label label) {
+  public Label convert(org.slizaa.scanner.api.model.Label label) {
     return Label.label(label.name());
   }
 
-  public RelationshipType convert(org.slizaa.scanner.model.RelationshipType relationshipType) {
+  public RelationshipType convert(org.slizaa.scanner.api.model.RelationshipType relationshipType) {
     return RelationshipType.withName(relationshipType.name());
   }
 

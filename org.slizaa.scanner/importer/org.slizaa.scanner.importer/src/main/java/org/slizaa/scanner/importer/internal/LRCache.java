@@ -34,7 +34,7 @@ public class LRCache {
     return _instance;
   }
 
-  public static Label convert(org.slizaa.scanner.model.Label slizaaLabel) {
+  public static Label convert(org.slizaa.scanner.api.model.Label slizaaLabel) {
     return instance().getLabel(slizaaLabel);
   }
 
@@ -45,7 +45,7 @@ public class LRCache {
    * @param slizaaLabels
    * @return
    */
-  public static Label[] convert(org.slizaa.scanner.model.Label[] slizaaLabels) {
+  public static Label[] convert(org.slizaa.scanner.api.model.Label[] slizaaLabels) {
 
     //
     Label[] result = new Label[checkNotNull(slizaaLabels.length)];
@@ -59,7 +59,7 @@ public class LRCache {
     return result;
   }
 
-  public static RelationshipType convert(org.slizaa.scanner.model.RelationshipType relationshipType) {
+  public static RelationshipType convert(org.slizaa.scanner.api.model.RelationshipType relationshipType) {
     return instance().getRelationship(relationshipType);
   }
 
@@ -70,11 +70,11 @@ public class LRCache {
    * @param slizaaLabel
    * @return
    */
-  public Label getLabel(org.slizaa.scanner.model.Label slizaaLabel) {
+  public Label getLabel(org.slizaa.scanner.api.model.Label slizaaLabel) {
     return _labelCache.getUnchecked(checkNotNull(slizaaLabel.name()));
   }
 
-  public RelationshipType getRelationship(org.slizaa.scanner.model.RelationshipType relationshipType) {
+  public RelationshipType getRelationship(org.slizaa.scanner.api.model.RelationshipType relationshipType) {
     return _relationshipTypeCache.getUnchecked(checkNotNull(relationshipType.name()));
   }
 }

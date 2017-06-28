@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model;
+package org.slizaa.scanner.api.model;
 
 import java.util.List;
 import java.util.Map;

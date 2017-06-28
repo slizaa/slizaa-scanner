@@ -8,17 +8,23 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model.resource;
+package org.slizaa.scanner.api.model;
 
-import org.slizaa.scanner.model.Label;
+import java.util.Map;
 
 /**
  * <p>
- * Defines the core model element types for the underlying resource model.
  * </p>
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public enum CoreModelElementType implements Label {
-  GROUP, MODULE, DIRECTORY, RESOURCE
+public interface IRelationship {
+
+  INode getTargetBean();
+
+  RelationshipType getRelationshipType();
+
+  Map<String, Object> getRelationshipProperties();
+
+  void putRelationshipProperty(String key, Object value);
 }

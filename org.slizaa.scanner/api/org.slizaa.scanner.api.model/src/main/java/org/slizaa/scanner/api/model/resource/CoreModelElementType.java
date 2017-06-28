@@ -8,24 +8,17 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model.resource;
+package org.slizaa.scanner.api.model.resource;
 
-import org.slizaa.scanner.model.Label;
+import org.slizaa.scanner.api.model.Label;
 
 /**
  * <p>
- * Enum that defines the type of a resource (SOURCE or BINARY).
+ * Defines the core model element types for the underlying resource model.
  * </p>
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
- * 
- * @noextend This class is not intended to be extended by clients.
  */
-public enum ResourceType implements Label {
-
-	/** source content */
-	SOURCE,
-
-	/** binary content */
-	BINARY;
+public enum CoreModelElementType implements Label {
+  GROUP, MODULE, DIRECTORY, RESOURCE
 }

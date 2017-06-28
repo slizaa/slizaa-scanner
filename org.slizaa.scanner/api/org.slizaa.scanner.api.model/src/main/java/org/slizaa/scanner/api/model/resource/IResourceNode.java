@@ -8,9 +8,9 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model.resource;
+package org.slizaa.scanner.api.model.resource;
 
-import org.slizaa.scanner.model.INode;
+import org.slizaa.scanner.api.model.INode;
 
 /**
  * <p>

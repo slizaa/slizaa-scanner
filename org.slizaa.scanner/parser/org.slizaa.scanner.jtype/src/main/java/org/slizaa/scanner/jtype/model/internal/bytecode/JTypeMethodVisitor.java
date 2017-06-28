@@ -16,8 +16,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
+import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
-import org.slizaa.scanner.model.IModifiableNode;
 
 /**
  * <p>

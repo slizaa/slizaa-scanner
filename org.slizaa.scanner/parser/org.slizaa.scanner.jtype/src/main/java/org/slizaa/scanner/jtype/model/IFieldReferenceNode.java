@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model;
 
-import org.slizaa.scanner.model.INode;
+import org.slizaa.scanner.api.model.INode;
 
 public interface IFieldReferenceNode extends INode {
 

@@ -11,7 +11,7 @@
 package org.slizaa.scanner.jtype.model;
 
 import org.objectweb.asm.Opcodes;
-import org.slizaa.scanner.model.Label;
+import org.slizaa.scanner.api.model.Label;
 
 /**
  * <p>

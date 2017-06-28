@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model.internal;
+package org.slizaa.scanner.api.model.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -20,11 +20,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.slizaa.scanner.model.IModifiableNode;
-import org.slizaa.scanner.model.INode;
-import org.slizaa.scanner.model.IRelationship;
-import org.slizaa.scanner.model.Label;
-import org.slizaa.scanner.model.RelationshipType;
+import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.api.model.INode;
+import org.slizaa.scanner.api.model.IRelationship;
+import org.slizaa.scanner.api.model.Label;
+import org.slizaa.scanner.api.model.RelationshipType;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

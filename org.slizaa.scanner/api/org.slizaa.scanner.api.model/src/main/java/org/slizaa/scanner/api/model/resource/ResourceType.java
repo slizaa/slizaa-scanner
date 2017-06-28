@@ -8,17 +8,24 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.model.resource;
+package org.slizaa.scanner.api.model.resource;
 
-import org.slizaa.scanner.model.RelationshipType;
+import org.slizaa.scanner.api.model.Label;
 
 /**
  * <p>
- * Defines the core relationship types for the underlying resource model.
+ * Enum that defines the type of a resource (SOURCE or BINARY).
  * </p>
- *
+ * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
+ * 
+ * @noextend This class is not intended to be extended by clients.
  */
-public enum CoreModelRelationshipType implements RelationshipType {
-    CONTAINS
+public enum ResourceType implements Label {
+
+	/** source content */
+	SOURCE,
+
+	/** binary content */
+	BINARY;
 }
