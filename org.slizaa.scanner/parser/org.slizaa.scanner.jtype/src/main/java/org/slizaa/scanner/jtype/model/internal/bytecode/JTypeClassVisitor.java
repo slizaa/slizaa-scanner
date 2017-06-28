@@ -195,8 +195,8 @@ public class JTypeClassVisitor extends ClassVisitor {
     }
 
     // class annotation
-    _classLocalTypeReferenceCache
-        .addTypeReference(_typeBean, Type.getType(desc), JTypeModelRelationshipType.REFERENCES);
+    _classLocalTypeReferenceCache.addTypeReference(_typeBean, Type.getType(desc),
+        JTypeModelRelationshipType.REFERENCES);
 
     //
     return null;
@@ -275,10 +275,10 @@ public class JTypeClassVisitor extends ClassVisitor {
     fieldBean.addLabel(JTypeModelElementType.FIELD);
     _typeBean.addRelationship(fieldBean, CoreModelRelationshipType.CONTAINS);
 
-    // add method name
+    // add field name
     fieldBean.putProperty(INode.NODETYPE, JTypeModelElementType.FIELD.name());
-    fieldBean.putProperty(IMethodNode.NAME, name);
-    fieldBean.putProperty(IMethodNode.FQN, Utils.getFieldSignature(name, desc));
+    // TODO!!
+    // fieldBean.putProperty(IMethodNode.FQN, Utils.getFieldSignature(name, desc));
 
     // get the type
     addReference(fieldBean, Type.getType(desc), JTypeModelRelationshipType.IS_OF_TYPE);
@@ -407,11 +407,12 @@ public class JTypeClassVisitor extends ClassVisitor {
    * @param fieldBean
    * @param type
    */
-  private IRelationship addReference(IModifiableNode fieldBean, Type type, JTypeModelRelationshipType relationshipType) {
+  private IRelationship addReference(IModifiableNode fieldBean, Type type,
+      JTypeModelRelationshipType relationshipType) {
 
     //
     Type t = Utils.resolveArrayType(type);
-    
+
     //
     if (Utils.isVoid(type)) {
       return null;

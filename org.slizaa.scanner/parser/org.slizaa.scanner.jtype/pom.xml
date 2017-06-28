@@ -15,31 +15,37 @@
 			<groupId>org.slizaa.scanner</groupId>
 			<artifactId>org.slizaa.scanner.api.model</artifactId>
 			<version>${project.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slizaa.scanner</groupId>
-			<artifactId>org.slizaa.scanner.importer</artifactId>
+			<artifactId>org.slizaa.scanner.spi.parser</artifactId>
 			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm</artifactId>
-			<version>5.0.2</version>
+			<version>5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-util</artifactId>
-			<version>5.0.2</version>
+			<version>5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-tree</artifactId>
-			<version>5.0.2</version>
+			<version>5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-analysis</artifactId>
-			<version>5.0.2</version>
+			<version>5.2</version>
 		</dependency>
 	</dependencies>
 

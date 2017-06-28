@@ -18,6 +18,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slizaa.scanner</groupId>
+			<artifactId>org.slizaa.scanner.api.importer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slizaa.scanner</groupId>
+			<artifactId>org.slizaa.scanner.spi.parser</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slizaa.scanner</groupId>
 			<artifactId>org.slizaa.scanner.importer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
