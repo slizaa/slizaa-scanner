@@ -13,9 +13,6 @@ package org.slizaa.scanner.model;
 import java.util.List;
 import java.util.Map;
 
-import org.neo4j.graphdb.Label;
-import org.neo4j.graphdb.RelationshipType;
-
 /**
  * <p>
  * Represents and encapsulates a node in the underlying graph database model.

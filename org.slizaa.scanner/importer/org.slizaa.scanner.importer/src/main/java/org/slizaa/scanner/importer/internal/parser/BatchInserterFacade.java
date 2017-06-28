@@ -20,14 +20,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.neo4j.graphdb.Label;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.unsafe.batchinsert.BatchInserter;
 import org.neo4j.unsafe.batchinsert.BatchInserters;
+import org.slizaa.scanner.importer.internal.LRCache;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.IRelationship;
+import org.slizaa.scanner.model.Label;
 import org.slizaa.scanner.model.NodeFactory;
+import org.slizaa.scanner.model.RelationshipType;
 import org.slizaa.scanner.model.resource.CoreModelElementType;
 import org.slizaa.scanner.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.model.resource.IDirectoryNode;
@@ -198,7 +199,8 @@ public class BatchInserterFacade implements AutoCloseable {
     if (!nodeBean.hasNodeId()) {
 
       //
-      id = _batchInserter.createNode(nodeBean.getProperties(), nodeBean.getLabels().toArray(new Label[0]));
+      id = _batchInserter.createNode(nodeBean.getProperties(),
+          LRCache.convert(nodeBean.getLabels().toArray(new Label[0])));
       ((IModifiableNode) nodeBean).setNodeId(id);
     } else {
       id = nodeBean.getId();
@@ -208,7 +210,8 @@ public class BatchInserterFacade implements AutoCloseable {
     for (Map.Entry<RelationshipType, List<IRelationship>> entry : nodeBean.getRelationships().entrySet()) {
       for (IRelationship relationship : entry.getValue()) {
         long newId = create(relationship.getTargetBean());
-        _batchInserter.createRelationship(id, newId, entry.getKey(), relationship.getRelationshipProperties());
+        _batchInserter.createRelationship(id, newId, LRCache.convert(entry.getKey()),
+            relationship.getRelationshipProperties());
       }
     }
 

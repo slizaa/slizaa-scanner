@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model;
 
-import org.neo4j.graphdb.Label;
 import org.objectweb.asm.Opcodes;
+import org.slizaa.scanner.model.Label;
 
 /**
  * <p>

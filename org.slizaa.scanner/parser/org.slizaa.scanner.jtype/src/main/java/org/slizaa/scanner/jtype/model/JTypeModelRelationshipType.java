@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model;
 
-import org.neo4j.graphdb.RelationshipType;
+import org.slizaa.scanner.model.RelationshipType;
 
 /**
  * <p>

@@ -12,12 +12,12 @@ package org.slizaa.scanner.jtype.model.internal.bytecode;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.neo4j.graphdb.RelationshipType;
 import org.objectweb.asm.Type;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.IRelationship;
+import org.slizaa.scanner.model.RelationshipType;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

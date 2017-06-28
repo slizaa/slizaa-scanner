@@ -12,8 +12,6 @@ package org.slizaa.scanner.spi.parser;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 
@@ -55,10 +53,13 @@ public interface IParserFactory {
    * </p>
    * 
    * @param systemDefinition
-   * @param subMonitor TODO
+   * @param subMonitor
+   *          TODO
    * @throws Exception
    */
-  void batchParseStart(IContentDefinitions systemDefinition, GraphDatabaseService graphDatabase, IProgressMonitor subMonitor) throws Exception;
+  // TODO
+  void batchParseStart(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+      throws Exception;
 
   /**
    * <p>
@@ -66,10 +67,13 @@ public interface IParserFactory {
    * 
    * @param systemDefinition
    * @param graphDatabase
-   * @param subMonitor TODO
+   * @param subMonitor
+   *          TODO
    * @throws Exception
    */
-  void batchParseStop(IContentDefinitions systemDefinition, GraphDatabaseService graphDatabase, IProgressMonitor subMonitor) throws Exception;
+  // TODO
+  void batchParseStop(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+      throws Exception;
 
   /**
    * <p>
@@ -95,7 +99,8 @@ public interface IParserFactory {
    * 
    * @param node
    */
-  void beforeDeleteResourceNode(Node node);
+  // TODO!
+  void beforeDeleteResourceNode(Object node);
 
   /**
    * <p>
@@ -125,7 +130,7 @@ public interface IParserFactory {
      * {@inheritDoc}
      */
     @Override
-    public void batchParseStart(IContentDefinitions systemDefinition, GraphDatabaseService graphDatabase, IProgressMonitor subMonitor)
+    public void batchParseStart(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
         throws Exception {
       // empty default implementation
     }
@@ -134,7 +139,8 @@ public interface IParserFactory {
      * {@inheritDoc}
      */
     @Override
-    public void batchParseStop(IContentDefinitions systemDefinition, GraphDatabaseService graphDatabase, IProgressMonitor subMonitor) throws Exception {
+    public void batchParseStop(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+        throws Exception {
       // empty default implementation
     }
 
@@ -158,7 +164,7 @@ public interface IParserFactory {
      * {@inheritDoc}
      */
     @Override
-    public void beforeDeleteResourceNode(Node node) {
+    public void beforeDeleteResourceNode(Object node) {
       // empty default implementation
     }
   }

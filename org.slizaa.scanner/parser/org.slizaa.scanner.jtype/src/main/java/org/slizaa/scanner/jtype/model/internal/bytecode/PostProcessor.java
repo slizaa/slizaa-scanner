@@ -14,10 +14,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.PathExpander;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.traversal.BranchState;
 import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
@@ -51,7 +53,7 @@ public class PostProcessor {
 
             List<Relationship> relationships = new LinkedList<Relationship>();
             for (Relationship relationship : path.endNode().getRelationships(Direction.OUTGOING)) {
-              if (!relationship.isType(JTypeModelRelationshipType.BOUND_TO)) {
+              if (!relationship.isType(RelationshipType.withName((JTypeModelRelationshipType.BOUND_TO.name())))) {
                 relationships.add(relationship);
               }
             }
@@ -72,7 +74,7 @@ public class PostProcessor {
               return Evaluation.EXCLUDE_AND_CONTINUE;
             }
 
-            if (path.endNode().hasLabel(JTypeModelElementType.PRIMITIVE_DATA_TYPE)) {
+            if (path.endNode().hasLabel(Label.label(JTypeModelElementType.PRIMITIVE_DATA_TYPE.name()))) {
               return Evaluation.EXCLUDE_AND_PRUNE;
             }
 
@@ -85,7 +87,7 @@ public class PostProcessor {
 
     //
     for (Node visitedNode : traverser.nodes()) {
-      if (!visitedNode.hasLabel(CoreModelElementType.RESOURCE)) {
+      if (!visitedNode.hasLabel(Label.label(CoreModelElementType.RESOURCE.name()))) {
         for (Relationship relationship : visitedNode.getRelationships()) {
           relationship.delete();
         }
@@ -93,8 +95,5 @@ public class PostProcessor {
       }
     }
   }
-
-
-
 
 }

@@ -20,11 +20,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.neo4j.graphdb.Label;
-import org.neo4j.graphdb.RelationshipType;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.IRelationship;
+import org.slizaa.scanner.model.Label;
+import org.slizaa.scanner.model.RelationshipType;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

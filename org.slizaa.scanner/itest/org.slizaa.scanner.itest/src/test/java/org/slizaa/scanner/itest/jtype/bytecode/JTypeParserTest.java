@@ -33,15 +33,14 @@ import org.slizaa.scanner.jtype.model.TypeType;
 
 public class JTypeParserTest extends AbstractJTypeParserTest {
 
-  
   @Test
   public void testDirectories() {
-  
+
     Result result = executeStatement("Match (m:MODULE)-[:CONTAINS]->(d:DIRECTORY) return d");
 
-    result.forEachRemaining(m -> System.out.println( ((Node)m.get("d")).getAllProperties() ));
+    result.forEachRemaining(m -> System.out.println(((Node) m.get("d")).getAllProperties()));
   }
-  
+
   /**
    * <p>
    * </p>
@@ -50,20 +49,20 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
   public void testTypeType() {
 
     Node node = getTypeNode(ExampleClass.class.getName());
-    assertThat(node.hasLabel(JTypeModelElementType.TYPE), is(true));
-    assertThat(node.hasLabel(TypeType.CLASS), is(true));
+    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(TypeType.CLASS)), is(true));
 
     node = getTypeNode(ExampleInterface.class.getName());
-    assertThat(node.hasLabel(JTypeModelElementType.TYPE), is(true));
-    assertThat(node.hasLabel(TypeType.INTERFACE), is(true));
+    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(TypeType.INTERFACE)), is(true));
 
     node = getTypeNode(ExampleEnum.class.getName());
-    assertThat(node.hasLabel(JTypeModelElementType.TYPE), is(true));
-    assertThat(node.hasLabel(TypeType.ENUM), is(true));
+    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(TypeType.ENUM)), is(true));
 
     node = getTypeNode(ExampleAnnotation.class.getName());
-    assertThat(node.hasLabel(JTypeModelElementType.TYPE), is(true));
-    assertThat(node.hasLabel(TypeType.ANNOTATION), is(true));
+    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(TypeType.ANNOTATION)), is(true));
   }
 
   /**
@@ -74,7 +73,7 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
   public void testImplements() {
 
     Node node = getTypeNode(ExampleClass.class.getName());
-    assertTypeReference(node, JTypeModelRelationshipType.IMPLEMENTS, SuperInterface.class.getName());
+    assertTypeReference(node, convert(JTypeModelRelationshipType.IMPLEMENTS), SuperInterface.class.getName());
   }
 
   /**
@@ -85,13 +84,11 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
   public void testExtends() {
 
     Node node = getTypeNode(ExampleClass.class.getName());
-    assertTypeReference(node, JTypeModelRelationshipType.EXTENDS,
-        SuperClass.class.getName());
+    assertTypeReference(node, convert(JTypeModelRelationshipType.EXTENDS), SuperClass.class.getName());
 
     node = getTypeNode(ExampleInterface.class.getName());
-    assertTypeReference(node, JTypeModelRelationshipType.EXTENDS, "java.lang.Object");
-    assertTypeReference(node, JTypeModelRelationshipType.EXTENDS,
-        SuperInterface.class.getName());
+    assertTypeReference(node, convert(JTypeModelRelationshipType.EXTENDS), "java.lang.Object");
+    assertTypeReference(node, convert(JTypeModelRelationshipType.EXTENDS), SuperInterface.class.getName());
   }
 
   /**
@@ -115,7 +112,7 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
     // Feld: private Serializable _serializable;
     List<Node> fields = getFields(node, "_serializable");
     assertThat(fields.size(), is(1));
-    assertTypeReference(fields.get(0), JTypeModelRelationshipType.IS_OF_TYPE, "java.io.Serializable");
+    assertTypeReference(fields.get(0), convert(JTypeModelRelationshipType.IS_OF_TYPE), "java.io.Serializable");
   }
 
   @Test
@@ -125,11 +122,11 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
 
     List<Node> fields = getFields(node, "field_1");
     assertThat(fields.size(), is(1));
-    assertDataTypeReference(fields.get(0), JTypeModelRelationshipType.IS_OF_TYPE, "int");
-    
+    assertDataTypeReference(fields.get(0), convert(JTypeModelRelationshipType.IS_OF_TYPE), "int");
+
     fields = getFields(node, "field_2");
     assertThat(fields.size(), is(1));
-    assertDataTypeReference(fields.get(0), JTypeModelRelationshipType.IS_OF_TYPE, "boolean");
+    assertDataTypeReference(fields.get(0), convert(JTypeModelRelationshipType.IS_OF_TYPE), "boolean");
   }
 
   @Test
@@ -139,7 +136,7 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
 
     List<Node> methods = getMethods(node, "test");
     assertThat(methods.size(), is(1));
-    assertDataTypeReference(methods.get(0), JTypeModelRelationshipType.HAS_PARAMETER, "int");
+    assertDataTypeReference(methods.get(0), convert(JTypeModelRelationshipType.HAS_PARAMETER), "int");
   }
 
   @Test
@@ -150,8 +147,8 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
 
     for (Node methodNode : getMethods(node, "<init>")) {
 
-      System.out.println(" - "
-          + methodNode.getSingleRelationship(JTypeModelRelationshipType.RETURNS, Direction.OUTGOING));
+      System.out.println(
+          " - " + methodNode.getSingleRelationship(convert(JTypeModelRelationshipType.RETURNS), Direction.OUTGOING));
     }
   }
 }

@@ -11,6 +11,7 @@
 package org.slizaa.scanner.jtype.model.internal.primitvedatatypes;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.ResourceIterator;
 import org.slizaa.scanner.jtype.model.JTypeModelElementType;
@@ -156,15 +157,17 @@ public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProv
       JTypeModelElementType typeType) {
 
     //
-    ResourceIterator<Node> nodes = graphDatabase.findNodes(typeType, "fqn",
-        primtiveDataType);
+    Label label = Label.label(typeType.name());
+
+    //
+    ResourceIterator<Node> nodes = graphDatabase.findNodes(label, "fqn", primtiveDataType);
 
     //
     Node node = null;
 
     //
     if (!nodes.hasNext()) {
-      node = graphDatabase.createNode(typeType);
+      node = graphDatabase.createNode(label);
       node.setProperty("fqn", primtiveDataType);
     } else {
       node = nodes.next();

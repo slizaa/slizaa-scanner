@@ -57,13 +57,14 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStart(IContentDefinitions contentDefinition, GraphDatabaseService graphDatabase,
-      IProgressMonitor subMonitor) throws Exception {
+  public void batchParseStart(IContentDefinitions contentDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+      throws Exception {
 
     //
     synchronized (_datatypeNodeProviderMap) {
       if (!_datatypeNodeProviderMap.containsKey(contentDefinition)) {
-        _datatypeNodeProviderMap.put(contentDefinition, new PrimitiveDatatypeNodeProvider(graphDatabase));
+        _datatypeNodeProviderMap.put(contentDefinition,
+            new PrimitiveDatatypeNodeProvider((GraphDatabaseService) graphDatabase));
       }
     }
   }
@@ -72,8 +73,7 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStop(IContentDefinitions contentDefinition, GraphDatabaseService graphDatabase,
-      IProgressMonitor subMonitor) {
+  public void batchParseStop(IContentDefinitions contentDefinition, Object graphDatabase, IProgressMonitor subMonitor) {
 
     // we have to create relationships between type references and types
     // new Linker().link(graphDatabase, subMonitor);
@@ -83,9 +83,9 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void beforeDeleteResourceNode(final Node node) {
+  public void beforeDeleteResourceNode(final Object node) {
 
     //
-    PostProcessor.deleteAllJTypeRelatedNodesForResourceNode(node);
+    PostProcessor.deleteAllJTypeRelatedNodesForResourceNode((Node) node);
   }
 }

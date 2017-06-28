@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.model.resource;
 
-import org.neo4j.graphdb.Label;
+import org.slizaa.scanner.model.Label;
 
 /**
  * <p>

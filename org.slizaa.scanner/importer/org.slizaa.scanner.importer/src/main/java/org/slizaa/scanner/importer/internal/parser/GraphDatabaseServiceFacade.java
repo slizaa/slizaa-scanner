@@ -30,6 +30,7 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slizaa.scanner.importer.internal.LRCache;
 import org.slizaa.scanner.model.IModifiableNode;
 import org.slizaa.scanner.model.INode;
 import org.slizaa.scanner.model.NodeFactory;
@@ -199,10 +200,10 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
       }
 
       //
-      _graphDb.findNodes(CoreModelElementType.RESOURCE).forEachRemaining(storeResource -> {
+      _graphDb.findNodes(LRCache.convert(CoreModelElementType.RESOURCE)).forEachRemaining(storeResource -> {
 
         //
-        Relationship relationship = storeResource.getSingleRelationship(CoreModelRelationshipType.CONTAINS,
+        Relationship relationship = storeResource.getSingleRelationship(LRCache.convert(CoreModelRelationshipType.CONTAINS),
             Direction.INCOMING);
 
         if (relationship == null) {
@@ -267,7 +268,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
       }
 
       //
-      _graphDb.findNodes(CoreModelElementType.MODULE).stream().forEach(storedModule -> {
+      _graphDb.findNodes(LRCache.convert(CoreModelElementType.MODULE)).stream().forEach(storedModule -> {
 
         //
         IModifiableNode moduleNodeBean = NodeFactory.createNode(storedModule.getId());

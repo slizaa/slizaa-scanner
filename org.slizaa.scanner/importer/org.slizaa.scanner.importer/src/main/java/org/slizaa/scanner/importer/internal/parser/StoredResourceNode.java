@@ -13,6 +13,7 @@ package org.slizaa.scanner.importer.internal.parser;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.neo4j.graphdb.Node;
+import org.slizaa.scanner.importer.internal.LRCache;
 import org.slizaa.scanner.model.resource.IResourceNode;
 import org.slizaa.scanner.model.resource.ResourceType;
 import org.slizaa.scanner.spi.content.IPathIdentifier;
@@ -38,10 +39,10 @@ public class StoredResourceNode implements IPathIdentifier {
   public StoredResourceNode(String contentDefinitionId, long id, String root, String path, ResourceType resourceType,
       long timestamp, boolean isErroneous, boolean isAnalyzeReferences) {
 
-   checkNotNull(contentDefinitionId);
-   checkNotNull(root);
-   checkNotNull(path);
-   checkNotNull(resourceType);
+    checkNotNull(contentDefinitionId);
+    checkNotNull(root);
+    checkNotNull(path);
+    checkNotNull(resourceType);
 
     //
     _contentDefinitionId = contentDefinitionId;
@@ -73,12 +74,14 @@ public class StoredResourceNode implements IPathIdentifier {
     _isErroneous = (boolean) node.getProperty(IResourceNode.PROPERTY_ERRONEOUS);
     _isAnalyzeReferences = (boolean) node.getProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES);
 
-    if (node.hasLabel(ResourceType.SOURCE)) {
+    //
+    if (node.hasLabel(LRCache.convert(ResourceType.SOURCE))) {
       _resourceType = ResourceType.SOURCE;
-    } else if (node.hasLabel(ResourceType.BINARY)) {
+    } else if (node.hasLabel(LRCache.convert(ResourceType.BINARY))) {
       _resourceType = ResourceType.BINARY;
     }
 
+    //
     _contentDefinitionId = contentDefinitionId;
   }
 

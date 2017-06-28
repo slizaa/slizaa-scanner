@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model;
 
-import org.neo4j.graphdb.Label;
+import org.slizaa.scanner.model.Label;
 
 public enum JTypeModelElementType implements Label {
   VOID, PRIMITIVE_DATA_TYPE, TYPE, METHOD, FIELD, TYPE_REFERENCE, METHOD_REFERENCE, FIELD_REFERENCE;

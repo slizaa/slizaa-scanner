@@ -12,8 +12,6 @@ package org.slizaa.scanner.model;
 
 import java.util.Map;
 
-import org.neo4j.graphdb.RelationshipType;
-
 /**
  * <p>
  * </p>
