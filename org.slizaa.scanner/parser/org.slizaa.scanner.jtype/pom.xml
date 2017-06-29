@@ -47,10 +47,65 @@
 			<artifactId>asm-analysis</artifactId>
 			<version>5.2</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>1.7.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+				<version>2.0.0</version>
+
+				<executions>
+					<execution>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>generate-assertions</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+
+					<classes>
+						<param>org.slizaa.scanner.api.model.INode</param>
+						<param>org.slizaa.scanner.api.model.IRelationship</param>
+					</classes>
+
+					<hierarchical>true</hierarchical>
+
+					<entryPointClassPackage>org.assertj</entryPointClassPackage>
+
+					<targetDir>${project.build.directory}/generated-assertions</targetDir>
+
+					<generateAssertions>true</generateAssertions>
+					<generateBddAssertions>true</generateBddAssertions>
+					<generateSoftAssertions>true</generateSoftAssertions>
+					<generateJUnitSoftAssertions>true</generateJUnitSoftAssertions>
+
+				</configuration>
+			</plugin>
+
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>

@@ -22,9 +22,6 @@ import java.util.Map;
  */
 public interface INode {
 
-  /** the key for the attribute 'nodetype' */
-  public static final String NODETYPE = "nodetype";
-
   /** the key for the attribute 'fqn' */
   public static final String FQN      = "fqn";
 
@@ -39,14 +36,6 @@ public interface INode {
    * @return the internal id of the underlying database node.
    */
   long getId();
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @return
-   */
-  String getNodetype();
 
   /**
    * <p>
@@ -75,6 +64,15 @@ public interface INode {
   /**
    * <p>
    * </p>
+   *
+   * @param key
+   * @return
+   */
+  Object getProperty(String key);
+
+  /**
+   * <p>
+   * </p>
    * 
    * @return
    */
@@ -87,6 +85,15 @@ public interface INode {
    * @return
    */
   Map<RelationshipType, List<IRelationship>> getRelationships();
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param key
+   * @return
+   */
+  List<IRelationship> getRelationships(RelationshipType key);
 
   /**
    * <p>

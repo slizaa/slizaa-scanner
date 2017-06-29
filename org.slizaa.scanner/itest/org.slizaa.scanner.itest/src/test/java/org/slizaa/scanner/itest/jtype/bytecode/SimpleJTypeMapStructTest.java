@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.itest.framework.TestFrameworkUtils;
-import org.slizaa.scanner.jtype.model.bytecode.JTypeByteCodeParserFactory;
+import org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory;
 import org.slizaa.scanner.spi.parser.IParserFactory;
 import org.slizaa.scanner.systemdefinition.ISystemDefinition;
 import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;

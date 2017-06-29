@@ -15,7 +15,7 @@ import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.jtype.model.IFieldReferenceNode;
 import org.slizaa.scanner.jtype.model.ITypeReferenceNode;
-import org.slizaa.scanner.jtype.model.JTypeModelElementType;
+import org.slizaa.scanner.jtype.model.JTypeLabel;
 
 public class JTypeNodeHelper {
 
@@ -57,7 +57,7 @@ public class JTypeNodeHelper {
   public static IModifiableNode createTypeReferenceNode(final String fullyQualifiedName) {
 
     IModifiableNode node = NodeFactory.createNode();
-    node.addLabel(JTypeModelElementType.TYPE_REFERENCE);
+    node.addLabel(JTypeLabel.TYPE_REFERENCE);
     node.putProperty(ITypeReferenceNode.FQN, fullyQualifiedName.replace('/', '.'));
     return node;
   }
@@ -73,7 +73,7 @@ public class JTypeNodeHelper {
 
     //
     IModifiableNode node = NodeFactory.createNode();
-    node.addLabel(JTypeModelElementType.FIELD_REFERENCE);
+    node.addLabel(JTypeLabel.FIELD_REFERENCE);
     node.putProperty(IFieldReferenceNode.OWNER_TYPE_NAME, fieldDescriptor.getOwnerTypeName().replace('/', '.'));
     node.putProperty(IFieldReferenceNode.NAME, fieldDescriptor.getFieldName());
     node.putProperty(IFieldReferenceNode.TYPE, fieldDescriptor.getFieldType());

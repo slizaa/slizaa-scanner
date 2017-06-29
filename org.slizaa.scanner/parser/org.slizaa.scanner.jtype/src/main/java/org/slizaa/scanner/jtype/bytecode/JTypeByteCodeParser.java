@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model.bytecode;
+package org.slizaa.scanner.jtype.bytecode;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

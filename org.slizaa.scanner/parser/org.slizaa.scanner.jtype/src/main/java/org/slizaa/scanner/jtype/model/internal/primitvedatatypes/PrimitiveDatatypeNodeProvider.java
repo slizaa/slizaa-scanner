@@ -17,7 +17,7 @@ import org.neo4j.graphdb.ResourceIterator;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.INode;
 import org.slizaa.scanner.api.model.NodeFactory;
-import org.slizaa.scanner.jtype.model.JTypeModelElementType;
+import org.slizaa.scanner.jtype.model.JTypeLabel;
 
 public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProvider {
 
@@ -123,29 +123,29 @@ public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProv
 
     // we have to create nodes for the primitive data types (byte, short, int etc.) if they don't already exist
     _primitiveDatatypeByte = createPrimitveDataTypeIfNotExists(graphDatabase, "byte",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
     _primitiveDatatypeShort = createPrimitveDataTypeIfNotExists(graphDatabase, "short",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
     _primitiveDatatypeInt = createPrimitveDataTypeIfNotExists(graphDatabase, "int",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
     _primitiveDatatypeLong = createPrimitveDataTypeIfNotExists(graphDatabase, "long",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
     _primitiveDatatypeFloat = createPrimitveDataTypeIfNotExists(graphDatabase, "float",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
     _primitiveDatatypeDouble = createPrimitveDataTypeIfNotExists(graphDatabase, "double",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
     _primitiveDatatypeChar = createPrimitveDataTypeIfNotExists(graphDatabase, "char",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
     _primitiveDatatypeBoolean = createPrimitveDataTypeIfNotExists(graphDatabase, "boolean",
-        JTypeModelElementType.PRIMITIVE_DATA_TYPE);
+        JTypeLabel.PRIMITIVE_DATA_TYPE);
 
     // void
-    _void = createPrimitveDataTypeIfNotExists(graphDatabase, "void", JTypeModelElementType.VOID);
+    _void = createPrimitveDataTypeIfNotExists(graphDatabase, "void", JTypeLabel.VOID);
   }
 
   /**
    * <p>
-   * Tests if the database contains a node with the label {@link JTypeModelElementType#PRIMITIVE_DATA_TYPE} that
+   * Tests if the database contains a node with the label {@link JTypeLabel#PRIMITIVE_DATA_TYPE} that
    * represents the specified primitive data type). If the node does not exist, a new node will be created.
    * </p>
    * 
@@ -154,7 +154,7 @@ public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProv
    * @return
    */
   private IModifiableNode createPrimitveDataTypeIfNotExists(GraphDatabaseService graphDatabase, String primtiveDataType,
-      JTypeModelElementType typeType) {
+      JTypeLabel typeType) {
 
     //
     Label label = Label.label(typeType.name());

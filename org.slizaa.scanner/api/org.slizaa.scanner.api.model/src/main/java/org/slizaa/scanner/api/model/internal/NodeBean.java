@@ -90,11 +90,6 @@ public final class NodeBean implements IModifiableNode {
   }
 
   @Override
-  public String getNodetype() {
-    return (String) _properties.get(INode.NODETYPE);
-  }
-
-  @Override
   public String getFullyQualifiedName() {
     return (String) _properties.get(INode.FQN);
   }
@@ -232,12 +227,16 @@ public final class NodeBean implements IModifiableNode {
     return _relationships == null ? EMPTY_MAP : _relationships.asMap();
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  @Override
+  public List<IRelationship> getRelationships(RelationshipType key) {
+    return _relationships == null || !_relationships.asMap().containsKey(checkNotNull(key)) ? Collections.emptyList()
+        : _relationships.asMap().get(key);
+  }
+
   @Override
   public String toString() {
-    return this.getClass().getSimpleName() + " [_labels=" + _labels + ", _properties " + _properties + "]";
+    return "NodeBean [_nodeId=" + _nodeId + ", _properties=" + _properties + ", _labels=" + _labels
+        + ", _relationships=" + _relationships.asMap() + "]";
   }
 
   /**
@@ -260,78 +259,5 @@ public final class NodeBean implements IModifiableNode {
     }
     //
     return _relationships;
-  }
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
-   */
-  private static class Relationship implements IRelationship {
-
-    //
-    private static final Map<String, Object> EMPTY_MAP = Collections.emptyMap();
-
-    /** - */
-    private INode                            _targetBean;
-
-    /** - */
-    private RelationshipType                 _relationshipType;
-
-    /** - */
-    private Map<String, Object>              _properties;
-
-    /**
-     * <p>
-     * Creates a new instance of type {@link Relationship}.
-     * </p>
-     * 
-     * @param targetBean
-     * @param relationshipType
-     */
-    public Relationship(INode targetBean, RelationshipType relationshipType) {
-      _targetBean = checkNotNull(targetBean);
-      _relationshipType = checkNotNull(relationshipType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public INode getTargetBean() {
-      return _targetBean;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public RelationshipType getRelationshipType() {
-      return _relationshipType;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, Object> getRelationshipProperties() {
-      return _properties == null ? EMPTY_MAP : Collections.unmodifiableMap(_properties);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void putRelationshipProperty(String key, Object value) {
-      checkNotNull(key);
-      checkNotNull(value);
-      
-      if (_properties == null) {
-        _properties = new HashMap<>();
-      }
-      
-       _properties.put(key, value);
-    }
   }
 }

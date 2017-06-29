@@ -26,7 +26,7 @@ import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.slizaa.scanner.api.model.resource.CoreModelElementType;
-import org.slizaa.scanner.jtype.model.JTypeModelElementType;
+import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
 /**
@@ -74,7 +74,7 @@ public class PostProcessor {
               return Evaluation.EXCLUDE_AND_CONTINUE;
             }
 
-            if (path.endNode().hasLabel(Label.label(JTypeModelElementType.PRIMITIVE_DATA_TYPE.name()))) {
+            if (path.endNode().hasLabel(Label.label(JTypeLabel.PRIMITIVE_DATA_TYPE.name()))) {
               return Evaluation.EXCLUDE_AND_PRUNE;
             }
 

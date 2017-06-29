@@ -20,7 +20,6 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
 import org.objectweb.asm.signature.SignatureReader;
 import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.INode;
 import org.slizaa.scanner.api.model.IRelationship;
 import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
@@ -28,10 +27,9 @@ import org.slizaa.scanner.jtype.model.AccessLevel;
 import org.slizaa.scanner.jtype.model.IFieldNode;
 import org.slizaa.scanner.jtype.model.IMethodNode;
 import org.slizaa.scanner.jtype.model.ITypeNode;
-import org.slizaa.scanner.jtype.model.JTypeModelElementType;
+import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import org.slizaa.scanner.jtype.model.JavaTypeUtils;
-import org.slizaa.scanner.jtype.model.TypeType;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
 
 /**
@@ -81,48 +79,25 @@ public class JTypeClassVisitor extends ClassVisitor {
 
     // TODO: get the NodeBean from the cache
     _typeBean = NodeFactory.createNode();
-    _typeBean.addLabel(JTypeModelElementType.TYPE);
+    _typeBean.addLabel(JTypeLabel.TYPE);
 
     // add the type of the type
-    switch (TypeType.getTypeType(access)) {
-    case ANNOTATION: {
-      _typeBean.addLabel(TypeType.ANNOTATION);
-      _typeBean.putProperty(ITypeNode.NODETYPE, TypeType.ANNOTATION.name());
-      break;
-    }
-    case CLASS: {
-      _typeBean.addLabel(TypeType.CLASS);
-      _typeBean.putProperty(ITypeNode.NODETYPE, TypeType.CLASS.name());
-      break;
-    }
-    case ENUM: {
-      _typeBean.addLabel(TypeType.ENUM);
-      _typeBean.putProperty(ITypeNode.NODETYPE, TypeType.ENUM.name());
-      break;
-    }
-    case INTERFACE: {
-      _typeBean.addLabel(TypeType.INTERFACE);
-      _typeBean.putProperty(ITypeNode.NODETYPE, TypeType.INTERFACE.name());
-      break;
-    }
-    }
+    _typeBean.addLabel(getJTypeLabel(access));
 
     // class name
     _typeBean.putProperty(ITypeNode.FQN, name.replace('/', '.'));
     _typeBean.putProperty(ITypeNode.NAME, JavaTypeUtils.getSimpleName(name.replace('/', '.')));
 
     // class version
-    int major = version & 0xFFFF;
-    int minor = version >>> 16;
-    _typeBean.putProperty(ITypeNode.CLASS_VERSION, String.format("%s.%s (%s)", major, minor, version));
+    _typeBean.putProperty(ITypeNode.CLASS_VERSION, Integer.toString(version));
 
     // deprecated
     if ((access & Opcodes.ACC_DEPRECATED) == Opcodes.ACC_DEPRECATED) {
       _typeBean.putProperty(ITypeNode.DEPRECATED, true);
     }
 
-    // access flags
-    _typeBean.putProperty(ITypeNode.ACCESS_FLAGS, Integer.toHexString(access).toUpperCase());
+    // // access flags
+    // _typeBean.putProperty(ITypeNode.ACCESS_FLAGS, Integer.toHexString(access).toUpperCase());
 
     //
     if ((access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT) {
@@ -141,11 +116,19 @@ public class JTypeClassVisitor extends ClassVisitor {
 
     //
     if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-      _typeBean.putProperty(ITypeNode.ACCESS_LEVEL, AccessLevel.PUBLIC.name());
+      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PUBLIC.name());
+    }
+    //
+    else if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
+      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PRIVATE.name());
+    }
+    //
+    else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
+      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PROTECTED.name());
     }
     //
     else {
-      _typeBean.putProperty(ITypeNode.ACCESS_LEVEL, AccessLevel.PACKAGE_PRIVATE.name());
+      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PACKAGE_PRIVATE.name());
     }
 
     // TODO!!
@@ -168,16 +151,14 @@ public class JTypeClassVisitor extends ClassVisitor {
     // add 'implements' references
     for (String ifaceName : interfaces) {
 
-      switch (TypeType.getTypeType(access)) {
+      switch (getJTypeLabel(access)) {
       case CLASS:
         _classLocalTypeReferenceCache.addTypeReference(_typeBean, ifaceName, JTypeModelRelationshipType.IMPLEMENTS);
         break;
       case INTERFACE:
         _classLocalTypeReferenceCache.addTypeReference(_typeBean, ifaceName, JTypeModelRelationshipType.EXTENDS);
         break;
-      case ENUM:
-        break;
-      case ANNOTATION:
+      default:
         break;
       }
     }
@@ -213,8 +194,7 @@ public class JTypeClassVisitor extends ClassVisitor {
     _typeBean.addRelationship(methodBean, CoreModelRelationshipType.CONTAINS);
 
     // set labels and 'nodetype' property
-    methodBean.putProperty(INode.NODETYPE, JTypeModelElementType.METHOD.name());
-    methodBean.addLabel(JTypeModelElementType.METHOD);
+    methodBean.addLabel(JTypeLabel.METHOD);
 
     // add method name
     methodBean.putProperty(IMethodNode.NAME, name);
@@ -272,11 +252,9 @@ public class JTypeClassVisitor extends ClassVisitor {
 
     // create bean and add it to the type bean
     IModifiableNode fieldBean = NodeFactory.createNode();
-    fieldBean.addLabel(JTypeModelElementType.FIELD);
+    fieldBean.addLabel(JTypeLabel.FIELD);
     _typeBean.addRelationship(fieldBean, CoreModelRelationshipType.CONTAINS);
 
-    // add field name
-    fieldBean.putProperty(INode.NODETYPE, JTypeModelElementType.FIELD.name());
     // TODO!!
     // fieldBean.putProperty(IMethodNode.FQN, Utils.getFieldSignature(name, desc));
 
@@ -331,8 +309,7 @@ public class JTypeClassVisitor extends ClassVisitor {
 
   @Override
   public void visitSource(String source, String debug) {
-    // TODO Auto-generated method stub
-    super.visitSource(source, debug);
+    _typeBean.putProperty(ITypeNode.SOURCE_FILE_NAME, source);
   }
 
   @Override
@@ -420,6 +397,26 @@ public class JTypeClassVisitor extends ClassVisitor {
       return fieldBean.addRelationship(Utils.getPrimitiveDatatypeNode(t, _primitiveDatatypeNodes), relationshipType);
     } else {
       return _classLocalTypeReferenceCache.addTypeReference(fieldBean, t.getClassName(), relationshipType);
+    }
+  }
+
+  public JTypeLabel getJTypeLabel(int access) {
+
+    // handle annotation
+    if ((access & Opcodes.ACC_ANNOTATION) == Opcodes.ACC_ANNOTATION) {
+      return JTypeLabel.ANNOTATION;
+    }
+    // handle interface
+    else if ((access & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE) {
+      return JTypeLabel.INTERFACE;
+    }
+    // handle enum
+    else if ((access & Opcodes.ACC_ENUM) == Opcodes.ACC_ENUM) {
+      return JTypeLabel.ENUM;
+    }
+    // handle class
+    else {
+      return JTypeLabel.CLASS;
     }
   }
 }

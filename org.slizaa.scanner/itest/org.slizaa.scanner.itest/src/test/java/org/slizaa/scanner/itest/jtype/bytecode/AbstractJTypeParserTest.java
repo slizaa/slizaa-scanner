@@ -34,8 +34,8 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.itest.framework.TestFrameworkUtils;
-import org.slizaa.scanner.jtype.model.JTypeModelElementType;
-import org.slizaa.scanner.jtype.model.bytecode.JTypeByteCodeParserFactory;
+import org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory;
+import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.spi.parser.IParserFactory;
@@ -98,7 +98,7 @@ public abstract class AbstractJTypeParserTest {
   }
 
   protected Node getTypeNode(String fqn) {
-    return _graphDb.findNode(convert(JTypeModelElementType.TYPE), "fqn", fqn);
+    return _graphDb.findNode(convert(JTypeLabel.TYPE), "fqn", fqn);
   }
 
   /**
@@ -114,7 +114,7 @@ public abstract class AbstractJTypeParserTest {
     for (Relationship relationship : node.getRelationships(relationshipType, Direction.OUTGOING)) {
       Node typeReference = relationship.getEndNode();
       System.out.println(typeReference.getProperty("fqn"));
-      if (typeReference.hasLabel(convert(JTypeModelElementType.TYPE_REFERENCE))
+      if (typeReference.hasLabel(convert(JTypeLabel.TYPE_REFERENCE))
           && fqn.equals(typeReference.getProperty("fqn"))) {
         return;
       }
@@ -132,7 +132,7 @@ public abstract class AbstractJTypeParserTest {
       for (Label label : typeReference.getLabels()) {
         System.out.println(label);
       }
-      if (typeReference.hasLabel(convert(JTypeModelElementType.PRIMITIVE_DATA_TYPE))
+      if (typeReference.hasLabel(convert(JTypeLabel.PRIMITIVE_DATA_TYPE))
           && fqn.equals(typeReference.getProperty("fqn"))) {
         return;
       }
@@ -150,7 +150,7 @@ public abstract class AbstractJTypeParserTest {
         convert(CoreModelRelationshipType.CONTAINS))) {
 
       //
-      if (contains.getEndNode().hasLabel(convert(JTypeModelElementType.METHOD))
+      if (contains.getEndNode().hasLabel(convert(JTypeLabel.METHOD))
           && name.equals(contains.getEndNode().getProperty("name"))) {
 
         //
@@ -172,7 +172,7 @@ public abstract class AbstractJTypeParserTest {
         convert(CoreModelRelationshipType.CONTAINS))) {
 
       //
-      if (contains.getEndNode().hasLabel(convert(JTypeModelElementType.FIELD))
+      if (contains.getEndNode().hasLabel(convert(JTypeLabel.FIELD))
           && name.equals(contains.getEndNode().getProperty("name"))) {
 
         //

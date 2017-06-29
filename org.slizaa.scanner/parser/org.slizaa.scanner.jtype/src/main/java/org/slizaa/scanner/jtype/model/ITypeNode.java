@@ -28,7 +28,7 @@ public interface ITypeNode extends INode {
 
   public static final String FINAL                    = "final";
 
-  public static final String ACCESS_LEVEL             = "accessLevel";
+  public static final String VISIBILITY               = "visibility";
 
   public static final String STATIC                   = "static";
 
@@ -39,6 +39,8 @@ public interface ITypeNode extends INode {
   public static final String INNER_CLASS_ACCESS_FLAGS = "innerClassAccessFlags";
 
   public static final String OUTER_CLASSNAME          = "outerClassName";
+
+  public static final String SOURCE_FILE_NAME         = "sourceFileName";
 
   String getFullyQualifiedName();
 

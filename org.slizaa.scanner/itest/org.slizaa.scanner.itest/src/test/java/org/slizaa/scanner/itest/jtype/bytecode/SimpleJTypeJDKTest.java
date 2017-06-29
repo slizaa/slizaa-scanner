@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.itest.framework.TestFrameworkUtils;
-import org.slizaa.scanner.jtype.model.bytecode.JTypeByteCodeParserFactory;
+import org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.spi.parser.IParserFactory;

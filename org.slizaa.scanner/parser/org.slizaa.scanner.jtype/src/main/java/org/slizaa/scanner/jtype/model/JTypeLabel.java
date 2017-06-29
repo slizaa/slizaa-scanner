@@ -12,6 +12,6 @@ package org.slizaa.scanner.jtype.model;
 
 import org.slizaa.scanner.api.model.Label;
 
-public enum JTypeModelElementType implements Label {
-  VOID, PRIMITIVE_DATA_TYPE, TYPE, METHOD, FIELD, TYPE_REFERENCE, METHOD_REFERENCE, FIELD_REFERENCE;
+public enum JTypeLabel implements Label {
+  VOID, PRIMITIVE_DATA_TYPE, TYPE, METHOD, FIELD, TYPE_REFERENCE, METHOD_REFERENCE, FIELD_REFERENCE, ANNOTATION, CLASS, ENUM, INTERFACE;
 }

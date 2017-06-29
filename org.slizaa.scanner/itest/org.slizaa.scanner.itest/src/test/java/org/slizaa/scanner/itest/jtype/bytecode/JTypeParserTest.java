@@ -27,9 +27,8 @@ import org.slizaa.scanner.itest.jtype.bytecode.example.ExampleEnum;
 import org.slizaa.scanner.itest.jtype.bytecode.example.ExampleInterface;
 import org.slizaa.scanner.itest.jtype.bytecode.example.SuperClass;
 import org.slizaa.scanner.itest.jtype.bytecode.example.SuperInterface;
-import org.slizaa.scanner.jtype.model.JTypeModelElementType;
+import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
-import org.slizaa.scanner.jtype.model.TypeType;
 
 public class JTypeParserTest extends AbstractJTypeParserTest {
 
@@ -49,20 +48,20 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
   public void testTypeType() {
 
     Node node = getTypeNode(ExampleClass.class.getName());
-    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
-    assertThat(node.hasLabel(convert(TypeType.CLASS)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.CLASS)), is(true));
 
     node = getTypeNode(ExampleInterface.class.getName());
-    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
-    assertThat(node.hasLabel(convert(TypeType.INTERFACE)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.INTERFACE)), is(true));
 
     node = getTypeNode(ExampleEnum.class.getName());
-    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
-    assertThat(node.hasLabel(convert(TypeType.ENUM)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.ENUM)), is(true));
 
     node = getTypeNode(ExampleAnnotation.class.getName());
-    assertThat(node.hasLabel(convert(JTypeModelElementType.TYPE)), is(true));
-    assertThat(node.hasLabel(convert(TypeType.ANNOTATION)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.TYPE)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.ANNOTATION)), is(true));
   }
 
   /**
