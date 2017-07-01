@@ -14,10 +14,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		
+		<module>org.slizaa.scanner.cmdline</module>
 		<module>org.slizaa.scanner.systemdefinition</module>
-		
-		
+		<module>org.slizaa.scanner.tool.assembly</module>
 	</modules>
 
 </project>

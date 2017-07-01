@@ -39,7 +39,7 @@ public class BoltServer {
         .setConfig(bolt.type, ConnectorType.BOLT.name()).setConfig(bolt.enabled, "true")
         .setConfig(bolt.listen_address, "localhost:7687").setConfig(bolt.encryption_level, "DISABLED")
         .newGraphDatabase();
-    
+
 
     System.out.println("Press ENTER to quit.");
     System.in.read();

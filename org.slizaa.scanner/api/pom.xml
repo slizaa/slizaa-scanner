@@ -18,6 +18,7 @@
 		<module>org.slizaa.scanner.api.importer</module>
 		<module>org.slizaa.scanner.spi.content</module>
 		<module>org.slizaa.scanner.spi.parser</module>
+		
 	</modules>
 
 </project>

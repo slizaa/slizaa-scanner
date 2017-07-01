@@ -94,7 +94,7 @@ public class BoltClient {
   }
 
   public static void main(String... args) {
-//    BoltClient example = new BoltClient("bolt://localhost:7687");
+//   BoltClient example = new BoltClient("bolt://localhost:7687");
     BoltClient example = new BoltClient("bolt://localhost:5001");
     example.printModules();
     example.close();
