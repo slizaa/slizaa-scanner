@@ -21,10 +21,16 @@
 			<includes>
 				<include>*:jar</include>
 			</includes>
-			<excludes>
+			<!-- <excludes>
 				<exclude>org.slizaa.scanner:org.slizaa.scanner.jtype</exclude>
-			</excludes>
+			</excludes> -->
 		</dependencySet>
+		<!-- <dependencySet>
+			<outputDirectory>plugins</outputDirectory>
+			<includes>
+				<include>org.slizaa.scanner:org.slizaa.scanner.jtype:jar</include>
+			</includes>
+		</dependencySet> -->
 	</dependencySets>
 
 	<!-- <fileSets> <fileSet> <directory>${basedir}</directory> <outputDirectory></outputDirectory> 

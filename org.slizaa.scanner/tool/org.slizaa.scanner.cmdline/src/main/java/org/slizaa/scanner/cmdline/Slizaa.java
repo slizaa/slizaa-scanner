@@ -23,12 +23,14 @@ public class Slizaa {
    */
   public static void main(String... argv) throws IOException {
 
+    // new String[] { "SERVER", "-d",
+    // "D:\\50-Development\\environments\\slizaa-master\\eclipse\\workspace\\HONK\\.slizaa", "-p", "5001" }
+
     //
     SlizaaScannerArgs args = new SlizaaScannerArgs();
 
     //
-    JCommander.newBuilder().addObject(args).build().parse(new String[] { "SERVER", "-d",
-        "D:\\50-Development\\environments\\slizaa-master\\eclipse\\workspace\\HONK\\.slizaa", "-p", "5001" });
+    JCommander.newBuilder().addObject(args).build().parse(argv);
 
     //
     BoltConnector bolt = new BoltConnector("0");
