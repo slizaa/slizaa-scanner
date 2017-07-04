@@ -11,6 +11,10 @@
 	<artifactId>org.slizaa.scanner.tool.assembly</artifactId>
 	<packaging>pom</packaging>
 
+	<properties>
+		<version>${project.version}</version>
+	</properties>
+
 	<!-- -->
 	<build>
 		<plugins>

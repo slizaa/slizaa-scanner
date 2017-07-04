@@ -36,6 +36,7 @@
 		<fileSet>
 			<directory>src/main/resources/bin</directory>
 			<outputDirectory>bin</outputDirectory>
+			<filtered>true</filtered>
 			<includes>
 				<include>*</include>
 			</includes>
