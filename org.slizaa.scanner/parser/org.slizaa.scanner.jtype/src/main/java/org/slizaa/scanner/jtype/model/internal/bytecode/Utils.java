@@ -37,7 +37,8 @@ public class Utils {
         | type.getSort() == Type.LONG | type.getSort() == Type.SHORT;
   }
 
-  public static INode getPrimitiveDatatypeNode(Type type, IPrimitiveDatatypeNodeProvider primitiveDatatypeNodeProvider) {
+  public static INode getPrimitiveDatatypeNode(Type type,
+      IPrimitiveDatatypeNodeProvider primitiveDatatypeNodeProvider) {
 
     type = resolveArrayType(type);
 
@@ -157,11 +158,6 @@ public class Utils {
    * @return The field signature.
    */
   public static String getFieldSignature(String name, String rawSignature) {
-    StringBuffer signature = new StringBuffer();
-    String returnType = org.objectweb.asm.Type.getReturnType(rawSignature).getClassName();
-    signature.append(returnType);
-    signature.append(' ');
-    signature.append(name);
-    return signature.toString();
+    return String.format("%s %s", org.objectweb.asm.Type.getType(rawSignature).getClassName(), name);
   }
 }

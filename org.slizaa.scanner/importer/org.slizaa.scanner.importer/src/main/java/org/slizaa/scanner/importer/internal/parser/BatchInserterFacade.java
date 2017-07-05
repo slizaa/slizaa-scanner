@@ -125,8 +125,8 @@ public class BatchInserterFacade implements AutoCloseable {
    * @param resource
    * @return
    */
-  public IModifiableNode getOrCreateResourceNode(final IModifiableNode parentModuleNode, final IResource resource,
-      final ResourceType resourceType) {
+  public IModifiableNode getOrCreateResourceNode(final IModifiableNode parentModuleNode,
+      final INode parentDirectoryNode, final IResource resource, final ResourceType resourceType) {
 
     //
     return getOrCreateResourceNode(resource, () -> {
@@ -142,7 +142,11 @@ public class BatchInserterFacade implements AutoCloseable {
       resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, false);
       resourceNode.putProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES, true);
       parentModuleNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
-//      parentDirectoryNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
+
+      synchronized (parentDirectoryNode) {
+        ((IModifiableNode) parentDirectoryNode).addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
+      }
+
       return resourceNode;
     });
   }
@@ -165,6 +169,16 @@ public class BatchInserterFacade implements AutoCloseable {
    */
   public Map<String, INode> getModulesMap() {
     return Collections.unmodifiableMap(_modulesMap);
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  public Map<String, INode> getDirectoriesMap() {
+    return Collections.unmodifiableMap(_directoriesMap);
   }
 
   /**

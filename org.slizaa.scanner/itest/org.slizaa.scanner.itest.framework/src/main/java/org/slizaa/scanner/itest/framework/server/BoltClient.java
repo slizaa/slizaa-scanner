@@ -41,7 +41,7 @@ public class BoltClient {
       TypeSystem typeSystem = session.typeSystem();
 
       // Auto-commit transactions are a quick and easy way to wrap a read.
-      StatementResult result = session.run("MATCH (n) RETURN id(n)");
+      StatementResult result = session.run("MATCH (n:FIELD) RETURN n");
 
       int count = 0;
 

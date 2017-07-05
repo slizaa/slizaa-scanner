@@ -15,6 +15,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -30,6 +31,7 @@ import org.slizaa.scanner.itest.jtype.bytecode.example.SuperInterface;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
+@Ignore
 public class JTypeParserTest extends AbstractJTypeParserTest {
 
   @Test

@@ -256,7 +256,7 @@ public class JTypeClassVisitor extends ClassVisitor {
     _typeBean.addRelationship(fieldBean, CoreModelRelationshipType.CONTAINS);
 
     // TODO!!
-    // fieldBean.putProperty(IMethodNode.FQN, Utils.getFieldSignature(name, desc));
+    fieldBean.putProperty(IMethodNode.FQN, Utils.getFieldSignature(name, desc));
 
     // get the type
     addReference(fieldBean, Type.getType(desc), JTypeModelRelationshipType.IS_OF_TYPE);

@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.api.model.INode;
 import org.slizaa.scanner.api.model.resource.IResourceNode;
 import org.slizaa.scanner.api.model.resource.ResourceType;
 import org.slizaa.scanner.spi.content.IContentDefinition;
@@ -114,8 +115,8 @@ public class ParseJob implements Callable<List<IProblem>> {
 
         //
         if (!directory.getSourceResources().isEmpty()) {
-          problems
-              .addAll(parse(_content, directory.getSourceResources(), ResourceType.SOURCE, _parser, _progressMonitor));
+          problems.addAll(parse(_content, _batchInserter.getDirectoriesMap().get(directory.getPath()),
+              directory.getSourceResources(), ResourceType.SOURCE, _parser, _progressMonitor));
         }
       }
 
@@ -132,8 +133,8 @@ public class ParseJob implements Callable<List<IProblem>> {
 
         //
         if (!directory.getBinaryResources().isEmpty()) {
-          problems
-              .addAll(parse(_content, directory.getBinaryResources(), ResourceType.BINARY, _parser, _progressMonitor));
+          problems.addAll(parse(_content, _batchInserter.getOrCreateDirectoyNode(directory, _moduleNode),
+              directory.getBinaryResources(), ResourceType.BINARY, _parser, _progressMonitor));
         }
       }
     } catch (Exception e) {
@@ -153,8 +154,8 @@ public class ParseJob implements Callable<List<IProblem>> {
    * @param monitor
    * @return
    */
-  private List<IProblem> parse(IContentDefinition content, Collection<IResource> resources, ResourceType resourceType,
-      IParser[] parsers, IProgressMonitor monitor) {
+  private List<IProblem> parse(IContentDefinition content, INode directoryParentNode,
+      Collection<IResource> resources, ResourceType resourceType, IParser[] parsers, IProgressMonitor monitor) {
 
     //
     List<IProblem> result = new LinkedList<IProblem>();
@@ -163,7 +164,7 @@ public class ParseJob implements Callable<List<IProblem>> {
     for (final IResource resource : resources) {
 
       // create a resource node for the resource
-      IModifiableNode resourceNode = _batchInserter.getOrCreateResourceNode(_moduleNode, resource, resourceType);
+      IModifiableNode resourceNode = _batchInserter.getOrCreateResourceNode(_moduleNode, directoryParentNode, resource, resourceType);
 
       for (IParser parser : parsers) {
         if (matches(parser, resourceType)) {
