@@ -108,6 +108,7 @@ public class BatchInserterFacade implements AutoCloseable {
       IModifiableNode moduleNode = NodeFactory.createNode();
       moduleNode.addLabel(CoreModelElementType.MODULE);
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_NAME, contentDefinition.getName());
+      moduleNode.putProperty(INode.FQN, contentDefinition.getName());
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_VERSION, contentDefinition.getVersion());
       moduleNode.putProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID, contentDefinitionId);
       _modulesMap.put(contentDefinitionId, moduleNode);
@@ -132,12 +133,16 @@ public class BatchInserterFacade implements AutoCloseable {
       IModifiableNode resourceNode = NodeFactory.createNode();
       resourceNode.addLabel(CoreModelElementType.RESOURCE);
       resourceNode.addLabel(resourceType);
+      resourceNode.putProperty(INode.NAME, resource.getName());
+      resourceNode.putProperty(INode.FQN, resource.getPath());
+      resourceNode.putProperty(IResourceNode.PROPERTY_PATH, resource.getPath());
       resourceNode.putProperty(IResourceNode.PROPERTY_ROOT, resource.getRoot());
       resourceNode.putProperty(IResourceNode.PROPERTY_PATH, resource.getPath());
       resourceNode.putProperty(IResourceNode.PROPERTY_TIMESTAMP, resource.getTimestamp());
       resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, false);
       resourceNode.putProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES, true);
       parentModuleNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
+//      parentDirectoryNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
       return resourceNode;
     });
   }
@@ -256,6 +261,9 @@ public class BatchInserterFacade implements AutoCloseable {
       //
       IModifiableNode directoryNode = NodeFactory.createNode();
       directoryNode.addLabel(CoreModelElementType.DIRECTORY);
+      directoryNode.putProperty(INode.FQN, path);
+      String name = path.lastIndexOf('/') != -1 ? path.substring(path.lastIndexOf('/') + 1) : path;
+      directoryNode.putProperty(INode.NAME, name);
       directoryNode.putProperty(IDirectoryNode.PROPERTY_PATH, path);
       directoryNode.putProperty(IDirectoryNode.PROPERTY_IS_EMPTY, true);
 
