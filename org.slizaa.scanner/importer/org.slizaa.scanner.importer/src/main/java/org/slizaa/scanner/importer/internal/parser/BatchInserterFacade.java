@@ -34,7 +34,7 @@ import org.slizaa.scanner.api.model.resource.IDirectoryNode;
 import org.slizaa.scanner.api.model.resource.IModuleNode;
 import org.slizaa.scanner.api.model.resource.IResourceNode;
 import org.slizaa.scanner.api.model.resource.ResourceType;
-import org.slizaa.scanner.importer.internal.LRCache;
+import org.slizaa.scanner.importer.internal.LabelAndRelationshipCache;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.content.IResource;
@@ -200,7 +200,7 @@ public class BatchInserterFacade implements AutoCloseable {
 
       //
       id = _batchInserter.createNode(nodeBean.getProperties(),
-          LRCache.convert(nodeBean.getLabels().toArray(new Label[0])));
+          LabelAndRelationshipCache.convert(nodeBean.getLabels().toArray(new Label[0])));
       ((IModifiableNode) nodeBean).setNodeId(id);
     } else {
       id = nodeBean.getId();
@@ -210,7 +210,7 @@ public class BatchInserterFacade implements AutoCloseable {
     for (Map.Entry<RelationshipType, List<IRelationship>> entry : nodeBean.getRelationships().entrySet()) {
       for (IRelationship relationship : entry.getValue()) {
         long newId = create(relationship.getTargetBean());
-        _batchInserter.createRelationship(id, newId, LRCache.convert(entry.getKey()),
+        _batchInserter.createRelationship(id, newId, LabelAndRelationshipCache.convert(entry.getKey()),
             relationship.getRelationshipProperties());
       }
     }

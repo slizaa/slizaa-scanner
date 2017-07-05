@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.neo4j.graphdb.Node;
 import org.slizaa.scanner.api.model.resource.IResourceNode;
 import org.slizaa.scanner.api.model.resource.ResourceType;
-import org.slizaa.scanner.importer.internal.LRCache;
+import org.slizaa.scanner.importer.internal.LabelAndRelationshipCache;
 import org.slizaa.scanner.spi.content.IPathIdentifier;
 
 public class StoredResourceNode implements IPathIdentifier {
@@ -75,9 +75,9 @@ public class StoredResourceNode implements IPathIdentifier {
     _isAnalyzeReferences = (boolean) node.getProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES);
 
     //
-    if (node.hasLabel(LRCache.convert(ResourceType.SOURCE))) {
+    if (node.hasLabel(LabelAndRelationshipCache.convert(ResourceType.SOURCE))) {
       _resourceType = ResourceType.SOURCE;
-    } else if (node.hasLabel(LRCache.convert(ResourceType.BINARY))) {
+    } else if (node.hasLabel(LabelAndRelationshipCache.convert(ResourceType.BINARY))) {
       _resourceType = ResourceType.BINARY;
     }
 

@@ -36,7 +36,7 @@ import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.api.model.resource.CoreModelElementType;
 import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.api.model.resource.IModuleNode;
-import org.slizaa.scanner.importer.internal.LRCache;
+import org.slizaa.scanner.importer.internal.LabelAndRelationshipCache;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.content.IPathIdentifier;
 import org.slizaa.scanner.spi.parser.IParserFactory;
@@ -200,10 +200,10 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
       }
 
       //
-      _graphDb.findNodes(LRCache.convert(CoreModelElementType.RESOURCE)).forEachRemaining(storeResource -> {
+      _graphDb.findNodes(LabelAndRelationshipCache.convert(CoreModelElementType.RESOURCE)).forEachRemaining(storeResource -> {
 
         //
-        Relationship relationship = storeResource.getSingleRelationship(LRCache.convert(CoreModelRelationshipType.CONTAINS),
+        Relationship relationship = storeResource.getSingleRelationship(LabelAndRelationshipCache.convert(CoreModelRelationshipType.CONTAINS),
             Direction.INCOMING);
 
         if (relationship == null) {
@@ -268,7 +268,7 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
       }
 
       //
-      _graphDb.findNodes(LRCache.convert(CoreModelElementType.MODULE)).stream().forEach(storedModule -> {
+      _graphDb.findNodes(LabelAndRelationshipCache.convert(CoreModelElementType.MODULE)).stream().forEach(storedModule -> {
 
         //
         IModifiableNode moduleNodeBean = NodeFactory.createNode(storedModule.getId());

@@ -9,10 +9,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
-public class LRCache {
+public class LabelAndRelationshipCache {
 
   /** the instance */
-  private static LRCache                         _instance              = new LRCache();
+  private static LabelAndRelationshipCache                         _instance              = new LabelAndRelationshipCache();
 
   /** - */
   private LoadingCache<String, Label>            _labelCache            = CacheBuilder.newBuilder()
@@ -30,7 +30,7 @@ public class LRCache {
                                                                               }
                                                                             });
 
-  public static LRCache instance() {
+  public static LabelAndRelationshipCache instance() {
     return _instance;
   }
 
