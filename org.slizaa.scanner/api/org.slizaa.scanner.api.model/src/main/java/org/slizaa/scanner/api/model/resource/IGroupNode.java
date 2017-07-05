@@ -23,14 +23,4 @@ public interface IGroupNode extends INode  {
   
   /** the property 'path' */
   public static final String PROPERTY_PATH               = "path";
-
-//  /**
-//   * <p>
-//   * Returns the full path of the group, e.g. <code>core/mygroup'</code>. Note that group paths are
-//   * always slash-delimited ('/').
-//   * </p>
-//   * 
-//   * @return the full path of the group.
-//   */
-//  public String getPath();
 }

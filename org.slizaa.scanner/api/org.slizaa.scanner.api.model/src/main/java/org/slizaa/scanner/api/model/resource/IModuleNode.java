@@ -23,17 +23,10 @@ public interface IModuleNode extends INode {
 
   /**
    * <p>
-   * Returns the module name.
-   * </p>
-   */
-  public static final String PROPERTY_MODULE_NAME      = "moduleName";
-
-  /**
-   * <p>
    * Returns the module version.
    * </p>
    */
-  public static final  String PROPERTY_MODULE_VERSION   = "moduleVersion";
+  public static final  String PROPERTY_MODULE_VERSION   = "version";
 
   /**
    * <p>
