@@ -220,22 +220,20 @@ public class BatchInserterFacade implements AutoCloseable {
       //
       id = _batchInserter.createNode(nodeBean.getProperties(),
           LabelAndRelationshipCache.convert(nodeBean.getLabels().toArray(new Label[0])));
+      
       ((IModifiableNode) nodeBean).setNodeId(id);
-    } else {
-      id = nodeBean.getId();
-    }
-
-    //
-    for (Map.Entry<RelationshipType, List<IRelationship>> entry : nodeBean.getRelationships().entrySet()) {
-      for (IRelationship relationship : entry.getValue()) {
-        long newId = create(relationship.getTargetBean());
-        _batchInserter.createRelationship(id, newId, LabelAndRelationshipCache.convert(entry.getKey()),
-            relationship.getRelationshipProperties());
+      
+      //
+      for (Map.Entry<RelationshipType, List<IRelationship>> entry : nodeBean.getRelationships().entrySet()) {
+        for (IRelationship relationship : entry.getValue()) {
+          long newId = create(relationship.getTargetBean());
+          _batchInserter.createRelationship(id, newId, LabelAndRelationshipCache.convert(entry.getKey()),
+              relationship.getRelationshipProperties());
+        }
       }
-    }
-
-    //
-    return id;
+    } 
+    
+    return nodeBean.getId();
   }
 
   public IModifiableNode getOrCreateDirectoyNode(Directory directoryPath, IModifiableNode moduleNode) {
