@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.slizaa.slizaa.distribution</groupId>
+		<artifactId>org.slizaa.slizaa.distribution.parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>org.slizaa.slizaa.distribution</artifactId>
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-slizaa-distribution</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}</outputDirectory>
+							<stripVersion>true</stripVersion>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.slizaa.scanner</groupId>
+									<artifactId>org.slizaa.scanner.distribution</artifactId>
+									<version>${project.version}</version>
+									<overWrite>true</overWrite>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>Deleting all unnecessary files</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludeDefaultDirectories>true</excludeDefaultDirectories>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/</directory>
+							<followSymlinks>false</followSymlinks>
+							<excludes>
+								<exclude>META-INF/*</exclude>
+								<exclude>.project</exclude>
+								<exclude>.launch/*</exclude>
+								<exclude>pom.xml</exclude>
+								<exclude>build.properties</exclude>
+								<exclude>.gitignore</exclude>
+								<exclude>LICENSE</exclude>
+							</excludes>
+						</fileset>
+					</filesets>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

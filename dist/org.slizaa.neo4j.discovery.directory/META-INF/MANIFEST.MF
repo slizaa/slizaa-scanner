@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Discovery Directory
+Bundle-SymbolicName: org.slizaa.neo4j.discovery.directory;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: 
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.equinox.p2.discovery.compatibility

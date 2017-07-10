@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.mylyn.discovery.core.connectorDiscovery">
+         
+      <connectorCategory
+            description="slizaa scanner"
+            id="org.slizaa.scanner.distribution.category"
+            name="slizaa scanner"
+            relevance="100">
+         <icon
+               image32="images/slizaascannercategory.png">
+         </icon>
+      </connectorCategory>
+      
+      <connectorDescriptor
+            categoryId="org.slizaa.scanner.distribution.category"
+            description="Install slizaa scanner"
+            id="org.slizaa.scanner.distribution"
+            license="GPL 3.0"
+            name="slizaa scanner distribution"
+            provider="slizaa.org" >
+         <icon
+               image32="images/slizaa.png"></icon>
+         <iu
+               id="org.slizaa.scanner.distribution.feature">
+         </iu>
+      </connectorDescriptor>
+      
+	</extension>
+</plugin>
