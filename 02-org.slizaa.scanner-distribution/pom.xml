@@ -28,7 +28,6 @@
 	</properties>
 
 	<modules>
-		<!-- <module>org.slizaa.scanner.distribution.target</module> -->
 		<module>org.slizaa.scanner.distribution</module>
 		<!-- <module>org.slizaa.scanner.distribution.feature</module> <module>org.slizaa.scanner.distribution.p2</module> -->
 	</modules>
@@ -93,9 +92,6 @@
 				<version>${tycho-version}</version>
 				<configuration>
 					<pomDependencies>consider</pomDependencies>
-					<!-- <target> <artifact> <groupId>org.slizaa.scanner.distribution</groupId> 
-						<artifactId>org.slizaa.scanner.distribution.target</artifactId> <version>${project.version}</version> 
-						</artifact> </target> -->
 				</configuration>
 			</plugin>
 		</plugins>
