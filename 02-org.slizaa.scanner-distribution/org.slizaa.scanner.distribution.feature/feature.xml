@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.slizaa.org.jqassistant.distribution.feature"
-      label="jQAssistant Distribution Feature"
-      version="1.2.0">
+      id="org.slizaa.scanner.distribution.feature"
+      label="org.slizaa.scanner.distribution.feature"
+      version="1.0.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -222,7 +222,7 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <plugin
-         id="org.slizaa.org.jqassistant.distribution"
+         id="org.slizaa.scanner.distribution"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

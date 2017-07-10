@@ -11,7 +11,7 @@
 	<artifactId>org.slizaa.scanner.distribution.p2</artifactId>
 	<packaging>eclipse-repository</packaging>
 
-	<build>
+<!-- 	<build>
 
 		<plugins>
 			<plugin>
@@ -36,6 +36,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-	</build>
+	</build> -->
 
 </project>

@@ -29,7 +29,8 @@
 
 	<modules>
 		<module>org.slizaa.scanner.distribution</module>
-		<!-- <module>org.slizaa.scanner.distribution.feature</module> <module>org.slizaa.scanner.distribution.p2</module> -->
+		<module>org.slizaa.scanner.distribution.feature</module>
+		<module>org.slizaa.scanner.distribution.p2</module>
 	</modules>
 
 	<dependencies>
@@ -96,7 +97,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 
 </project>
