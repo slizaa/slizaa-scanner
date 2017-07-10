@@ -121,4 +121,16 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
 </project>

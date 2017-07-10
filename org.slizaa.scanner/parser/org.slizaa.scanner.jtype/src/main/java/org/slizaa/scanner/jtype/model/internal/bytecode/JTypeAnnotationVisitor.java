@@ -22,25 +22,25 @@ public class JTypeAnnotationVisitor extends AnnotationVisitor {
 
   @Override
   public void visit(String name, Object value) {
-    System.out.println("visit " + name + " : " + value);
+    // System.out.println("visit " + name + " : " + value);
     super.visit(name, value);
   }
 
   @Override
   public void visitEnum(String name, String desc, String value) {
-    System.out.println("visitEnum " + name + " : " + value);
+    // System.out.println("visitEnum " + name + " : " + value);
     super.visitEnum(name, desc, value);
   }
 
   @Override
   public AnnotationVisitor visitAnnotation(String name, String desc) {
-    System.out.println("visitAnnotation " + name + " : " + desc);
+    // System.out.println("visitAnnotation " + name + " : " + desc);
     return super.visitAnnotation(name, desc);
   }
 
   @Override
   public AnnotationVisitor visitArray(String name) {
-    System.out.println("visitArray " + name);
+    // System.out.println("visitArray " + name);
     return super.visitArray(name);
   }
 
