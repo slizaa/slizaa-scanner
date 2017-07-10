@@ -1,3 +1,0 @@
-Export-Package: \
-	org.slizaa.scanner.api.model,\
-	org.slizaa.scanner.api.model.resource
