@@ -20,8 +20,8 @@ import org.slizaa.scanner.api.model.RelationshipType;
  */
 public enum JTypeModelRelationshipType implements RelationshipType {
 
-  EXTENDS, IMPLEMENTS, BOUND_TO, HAS_PARAMETER, RETURNS, THROWS, IS_OF_TYPE, READ, WRITE,
+  EXTENDS, IMPLEMENTS, BOUND_TO, HAS_PARAMETER, RETURNS, THROWS, IS_OF_TYPE, READ, WRITE, ANNOTATED_BY,
 
   @Deprecated
-  REFERENCES
+  REFERENCES,
 }

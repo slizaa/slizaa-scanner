@@ -236,7 +236,7 @@ public final class NodeBean implements IModifiableNode {
   @Override
   public String toString() {
     return "NodeBean [_nodeId=" + _nodeId + ", _properties=" + _properties + ", _labels=" + _labels
-        + ", _relationships=" + _relationships.asMap() + "]";
+        + ", _relationships=" + (_relationships != null ? _relationships.asMap().toString() : "{}") + "]";
   }
 
   /**

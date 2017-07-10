@@ -56,7 +56,7 @@ public class JTypeClassVisitor extends ClassVisitor {
    * @param batchInserter
    */
   public JTypeClassVisitor(IPrimitiveDatatypeNodeProvider datatypeNodeProvider) {
-    super(Opcodes.ASM5);
+    super(Opcodes.ASM6);
 
     //
     _primitiveDatatypeNodes = datatypeNodeProvider;
@@ -170,17 +170,19 @@ public class JTypeClassVisitor extends ClassVisitor {
   @Override
   public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 
-    //
-    if (!_analyzeReferences) {
-      return null;
-    }
+    // create and add new method bean
+    IModifiableNode annotationInstanceBean = NodeFactory.createNode();
+    _typeBean.addRelationship(annotationInstanceBean, JTypeModelRelationshipType.ANNOTATED_BY);
+
+    // set labels
+    annotationInstanceBean.addLabel(JTypeLabel.ANNOTATION_INSTANCE);
 
     // class annotation
-    _classLocalTypeReferenceCache.addTypeReference(_typeBean, Type.getType(desc),
-        JTypeModelRelationshipType.REFERENCES);
+    _classLocalTypeReferenceCache.addTypeReference(annotationInstanceBean, Type.getType(desc),
+        JTypeModelRelationshipType.IS_OF_TYPE);
 
     //
-    return null;
+    return new JTypeAnnotationVisitor();
   }
 
   /**
