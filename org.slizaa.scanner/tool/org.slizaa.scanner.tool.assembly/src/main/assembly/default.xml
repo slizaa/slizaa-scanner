@@ -12,8 +12,7 @@
 		<format>zip</format>
 	</formats>
 
-	<includeBaseDirectory>true</includeBaseDirectory>
-	<baseDirectory>slizaa-cmd-${project.version}</baseDirectory>
+	<includeBaseDirectory>false</includeBaseDirectory>
 
 	<dependencySets>
 		<dependencySet>

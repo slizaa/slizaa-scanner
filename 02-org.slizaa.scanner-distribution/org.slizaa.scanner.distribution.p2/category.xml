@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.slizaa.scanner.distribution.feature" version="0.0.0">
+      <category name="slizaa_scanner_1_0_0"/>
+   </feature>
+   <category-def name="slizaa_scanner_1_0_0" label="slizaa scanner 1.0.0">
+      <description>
+         slizaa scanner 1.0.0
+      </description>
+   </category-def>
+</site>
