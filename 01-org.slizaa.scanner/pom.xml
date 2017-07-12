@@ -19,7 +19,7 @@
 	</properties>
 
 	<modules>
-		<module>api</module>
+		<module>org.slizaa.scanner.api</module>
 		<module>importer</module>
 		<module>parser</module>
 		<module>tool</module>
