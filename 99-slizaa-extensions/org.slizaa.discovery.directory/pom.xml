@@ -30,7 +30,7 @@
 
 	<build>
 
-		<finalName>${artifactId}.${unqualifiedVersion}.${buildQualifier}</finalName>
+		<finalName>${artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
 
 		<plugins>
 

@@ -21,7 +21,8 @@
             id="org.slizaa.scanner.distribution"
             license="GPL 3.0"
             name="slizaa scanner distribution"
-            provider="slizaa.org" >
+            provider="slizaa.org" 
+            siteUrl="http://www.slizaa.org/p2/org.slizaa.extensions/">>
          <icon
                image32="images/slizaa.png"></icon>
          <iu
