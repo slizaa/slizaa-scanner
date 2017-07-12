@@ -21,7 +21,7 @@
 	<modules>
 		<module>org.slizaa.scanner.api</module>
 		<module>org.slizaa.scanner.importer</module>
-		<module>parser</module>
+		<module>org.slizaa.scanner.jtype</module>
 		<module>tool</module>
 		<module>itest</module>
 	</modules>
