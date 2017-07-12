@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.equinox.common;bundle-version="3.6.0",
  org.eclipse.osgi;bundle-version="3.11.2"
 Bundle-Activator: org.slizaa.scanner.distribution.internal.Activator
 Bundle-ActivationPolicy: lazy
-Slizaa-Backend: true
+Slizaa-GraphDBProvider: true
 Bundle-ClassPath:  .,
  libs/bcpkix-jdk15on-1.53.jar,
  libs/bcprov-jdk15on-1.53.jar,
