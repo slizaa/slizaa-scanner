@@ -20,7 +20,7 @@
 
 	<modules>
 		<module>org.slizaa.scanner.api</module>
-		<module>importer</module>
+		<module>org.slizaa.scanner.importer</module>
 		<module>parser</module>
 		<module>tool</module>
 		<module>itest</module>
