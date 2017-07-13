@@ -195,12 +195,16 @@ public class JTypeClassVisitor extends ClassVisitor {
     IModifiableNode methodBean = NodeFactory.createNode();
     _typeBean.addRelationship(methodBean, CoreModelRelationshipType.CONTAINS);
 
-    // set labels and 'nodetype' property
-    methodBean.addLabel(JTypeLabel.METHOD);
-
     // add method name
+    String methodSignature = Utils.getMethodSignature(name, desc);
     methodBean.putProperty(IMethodNode.NAME, name);
-    methodBean.putProperty(IMethodNode.FQN, Utils.getMethodSignature(name, desc));
+    methodBean.putProperty(IMethodNode.FQN, methodSignature);
+    
+    // set labels
+    methodBean.addLabel(JTypeLabel.METHOD);
+    if (methodSignature.startsWith("void <init>")) {
+      methodBean.addLabel(JTypeLabel.CONSTRUCTOR);
+    }
 
     // signature
     if (signature != null) {
