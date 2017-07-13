@@ -24,8 +24,6 @@ public class FieldTest extends AbstractBytecodeTest {
     //
     INode fieldNode = node.getRelationships(CoreModelRelationshipType.CONTAINS).get(0).getTargetBean();
 
-    System.out.println(fieldNode);
-
     assertThat(fieldNode).hasOnlyLabels(JTypeLabel.FIELD);
     assertThat(fieldNode.getProperty("name")).isEqualTo("hurz");
   }
