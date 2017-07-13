@@ -10,16 +10,16 @@
  ******************************************************************************/
 package org.slizaa.scanner.itest.jtype.bytecode;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.slizaa.scanner.itest.jtype.bytecode.example.ExampleClass;
+import org.slizaa.scanner.jtype.model.IMethodNode;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 
 public class JTypeParserTest extends AbstractJTypeParserTest {
@@ -40,10 +40,10 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
 
     Node node = getSingleNode(executeStatement("Match (t:TYPE {fqn: $name}) return t",
         Collections.singletonMap("name", ExampleClass.class.getName())));
-    assertThat(node.hasLabel(convert(JTypeLabel.TYPE)), is(true));
-    assertThat(node.hasLabel(convert(JTypeLabel.CLASS)), is(true));
+    assertThat(node.hasLabel(convert(JTypeLabel.TYPE))).isTrue();
+    assertThat(node.hasLabel(convert(JTypeLabel.CLASS))).isTrue();
+    assertThat(node.getProperty(IMethodNode.VISIBILITY)).isEqualTo("public");
 
-    //
     // node = getTypeNode(ExampleInterface.class.getName());
     // assertThat(node.hasLabel(convert(JTypeLabel.TYPE)), is(true));
     // assertThat(node.hasLabel(convert(JTypeLabel.INTERFACE)), is(true));

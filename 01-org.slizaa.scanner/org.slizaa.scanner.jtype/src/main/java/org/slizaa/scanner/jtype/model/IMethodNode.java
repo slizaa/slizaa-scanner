@@ -22,7 +22,7 @@ public interface IMethodNode {
 
   public static final String STATIC          = "static";
 
-  public static final String ACCESS_LEVEL    = "accessLevel";
+  public static final String VISIBILITY      = "visibility";
 
   public static final String ABSTRACT        = "abstract";
 

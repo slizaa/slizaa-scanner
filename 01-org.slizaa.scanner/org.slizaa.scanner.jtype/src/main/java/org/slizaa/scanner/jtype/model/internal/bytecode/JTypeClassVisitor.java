@@ -23,10 +23,10 @@ import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.IRelationship;
 import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
-import org.slizaa.scanner.jtype.model.AccessLevel;
 import org.slizaa.scanner.jtype.model.IFieldNode;
 import org.slizaa.scanner.jtype.model.IMethodNode;
 import org.slizaa.scanner.jtype.model.ITypeNode;
+import org.slizaa.scanner.jtype.model.IVisibility;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import org.slizaa.scanner.jtype.model.JavaTypeUtils;
@@ -116,19 +116,19 @@ public class JTypeClassVisitor extends ClassVisitor {
 
     //
     if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PUBLIC.name());
+      _typeBean.putProperty(ITypeNode.VISIBILITY, IVisibility.PUBLIC);
     }
     //
     else if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
-      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PRIVATE.name());
+      _typeBean.putProperty(ITypeNode.VISIBILITY, IVisibility.PRIVATE);
     }
     //
     else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
-      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PROTECTED.name());
+      _typeBean.putProperty(ITypeNode.VISIBILITY, IVisibility.PROTECTED);
     }
     //
     else {
-      _typeBean.putProperty(ITypeNode.VISIBILITY, AccessLevel.PACKAGE_PRIVATE.name());
+      _typeBean.putProperty(ITypeNode.VISIBILITY, IVisibility.DEFAULT);
     }
 
     // TODO!!
@@ -208,21 +208,32 @@ public class JTypeClassVisitor extends ClassVisitor {
     }
 
     //
-    methodBean.putProperty(IMethodNode.NATIVE, (access & Opcodes.ACC_NATIVE) == Opcodes.ACC_NATIVE);
-    methodBean.putProperty(IMethodNode.ABSTRACT, (access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT);
-    methodBean.putProperty(IMethodNode.SYNTHETIC, (access & Opcodes.ACC_SYNTHETIC) == Opcodes.ACC_SYNTHETIC);
-    methodBean.putProperty(IMethodNode.STATIC, (access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC);
-    methodBean.putProperty(IMethodNode.FINAL, (access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL);
+    if ((access & Opcodes.ACC_NATIVE) == Opcodes.ACC_NATIVE) {
+      methodBean.putProperty(IMethodNode.NATIVE, true);
+    }
+
+    if ((access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT) {
+      methodBean.putProperty(IMethodNode.ABSTRACT, true);
+    }
+    if ((access & Opcodes.ACC_SYNTHETIC) == Opcodes.ACC_SYNTHETIC) {
+      methodBean.putProperty(IMethodNode.SYNTHETIC, true);
+    }
+    if ((access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
+      methodBean.putProperty(IMethodNode.STATIC, true);
+    }
+    if ((access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL) {
+      methodBean.putProperty(IMethodNode.FINAL, true);
+    }
 
     // Access modifiers: public, protected, and private
     if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-      methodBean.putProperty(IMethodNode.ACCESS_LEVEL, AccessLevel.PUBLIC.name());
+      methodBean.putProperty(IMethodNode.VISIBILITY, IVisibility.PUBLIC);
     } else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
-      methodBean.putProperty(IMethodNode.ACCESS_LEVEL, AccessLevel.PROTECTED.name());
+      methodBean.putProperty(IMethodNode.VISIBILITY, IVisibility.PROTECTED);
     } else if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
-      methodBean.putProperty(IMethodNode.ACCESS_LEVEL, AccessLevel.PRIVATE.name());
+      methodBean.putProperty(IMethodNode.VISIBILITY, IVisibility.PRIVATE);
     } else {
-      methodBean.putProperty(IMethodNode.ACCESS_LEVEL, AccessLevel.PACKAGE_PRIVATE.name());
+      methodBean.putProperty(IMethodNode.VISIBILITY, IVisibility.DEFAULT);
     }
 
     // arguments
@@ -271,13 +282,13 @@ public class JTypeClassVisitor extends ClassVisitor {
 
     // Access modifiers: public, protected, and private
     if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, AccessLevel.PUBLIC.name());
+      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.PUBLIC);
     } else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, AccessLevel.PROTECTED.name());
+      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.PROTECTED);
     } else if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, AccessLevel.PRIVATE.name());
+      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.PRIVATE);
     } else {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, AccessLevel.PACKAGE_PRIVATE.name());
+      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.DEFAULT);
     }
 
     // Field-specific modifiers governing runtime behavior: transient and volatile
@@ -353,19 +364,19 @@ public class JTypeClassVisitor extends ClassVisitor {
 
         //
         if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, AccessLevel.PUBLIC.name());
+          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, IVisibility.PUBLIC);
         }
         //
         else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
-          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, AccessLevel.PROTECTED.name());
+          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, IVisibility.PROTECTED);
         }
         //
         else if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
-          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, AccessLevel.PRIVATE.name());
+          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, IVisibility.PRIVATE);
         }
         //
         else {
-          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, AccessLevel.PACKAGE_PRIVATE.name());
+          _typeBean.putProperty(ITypeNode.INNER_CLASS_ACCESS_LEVEL, IVisibility.DEFAULT);
         }
       }
     }

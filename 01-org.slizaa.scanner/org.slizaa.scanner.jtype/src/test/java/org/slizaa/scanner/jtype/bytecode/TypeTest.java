@@ -20,7 +20,7 @@ public class TypeTest extends AbstractBytecodeTest {
     assertThat(node.getProperty("name")).isEqualTo("Type");
     assertThat(node.getProperty("fqn")).isEqualTo("example.Type");
     assertThat(node.getProperty("classVersion")).isEqualTo("52");
-    assertThat(node.getProperty("visibility")).isEqualTo("PUBLIC");
+    assertThat(node.getProperty("visibility")).isEqualTo("public");
 
     assertThat(node.getLabels()).containsExactly(JTypeLabel.TYPE, JTypeLabel.CLASS);
   }
@@ -35,7 +35,7 @@ public class TypeTest extends AbstractBytecodeTest {
     assertThat(node.getProperty("name")).isEqualTo("Type");
     assertThat(node.getProperty("fqn")).isEqualTo("example.Type");
     assertThat(node.getProperty("classVersion")).isEqualTo("52");
-    assertThat(node.getProperty("visibility")).isEqualTo("PUBLIC");
+    assertThat(node.getProperty("visibility")).isEqualTo("public");
 
     assertThat(node.getLabels()).containsExactly(JTypeLabel.TYPE, JTypeLabel.INTERFACE);
   }
@@ -50,7 +50,7 @@ public class TypeTest extends AbstractBytecodeTest {
     assertThat(node.getProperty("name")).isEqualTo("Type");
     assertThat(node.getProperty("fqn")).isEqualTo("example.Type");
     assertThat(node.getProperty("classVersion")).isEqualTo("52");
-    assertThat(node.getProperty("visibility")).isEqualTo("PUBLIC");
+    assertThat(node.getProperty("visibility")).isEqualTo("public");
     assertThat(node.getProperty("signature")).isEqualTo("Ljava/lang/Enum<Lexample/Type;>;");
 
     assertThat(node.getLabels()).containsExactly(JTypeLabel.TYPE, JTypeLabel.ENUM);
@@ -66,7 +66,7 @@ public class TypeTest extends AbstractBytecodeTest {
     assertThat(node.getProperty("name")).isEqualTo("Type");
     assertThat(node.getProperty("fqn")).isEqualTo("example.Type");
     assertThat(node.getProperty("classVersion")).isEqualTo("52");
-    assertThat(node.getProperty("visibility")).isEqualTo("PUBLIC");
+    assertThat(node.getProperty("visibility")).isEqualTo("public");
 
     assertThat(node.getLabels()).containsExactly(JTypeLabel.TYPE, JTypeLabel.ANNOTATION);
   }
@@ -80,7 +80,7 @@ public class TypeTest extends AbstractBytecodeTest {
     assertThat(node.getProperty("name")).isEqualTo("Type");
     assertThat(node.getProperty("fqn")).isEqualTo("example.Type");
     assertThat(node.getProperty("classVersion")).isEqualTo("52");
-    assertThat(node.getProperty("visibility")).isEqualTo("PACKAGE_PRIVATE");
+    assertThat(node.getProperty("visibility")).isEqualTo("default");
 
     assertThat(node.getLabels()).containsExactly(JTypeLabel.TYPE, JTypeLabel.CLASS);
   }

@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model;
 
-import java.util.List;
-
 import org.slizaa.scanner.api.model.INode;
 
 public interface ITypeNode extends INode {
@@ -41,34 +39,4 @@ public interface ITypeNode extends INode {
   public static final String OUTER_CLASSNAME          = "outerClassName";
 
   public static final String SOURCE_FILE_NAME         = "sourceFileName";
-
-  String getFullyQualifiedName();
-
-  String getName();
-
-  String getClassVersion();
-
-  String getAccessFlags();
-
-  String getSignature();
-
-  boolean isAbstract();
-
-  boolean isDeprecated();
-
-  boolean isFinal();
-
-  AccessLevel getAccessLevel();
-
-  boolean isInnerClass();
-
-  AccessLevel getInnerClassAccessLevel();
-
-  String getInnerClassAccessFlags();
-
-  String getOuterClassName();
-
-  List<IFieldNode> getFields();
-
-  List<IMethodNode> getMethods();
 }
