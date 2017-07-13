@@ -50,13 +50,23 @@ public abstract class AbstractBytecodeTest {
     IParser codeParser = parserFactory.createParser(definitions);
 
     IModifiableNode resourceBean = new NodeBean();
-
+    IModifiableNode directoryBean = new NodeBean();
+    IModifiableNode moduleBean = new NodeBean();
+    
     codeParser.parseResource(definitions.getContentDefinitions().get(0),
         definitions.getContentDefinitions().get(0).getBinaryResources().iterator().next(), resourceBean,
         new IParserContext() {
           @Override
           public boolean parseReferences() {
             return true;
+          }
+          @Override
+          public IModifiableNode getParentDirectoryNode() {
+            return directoryBean;
+          }
+          @Override
+          public IModifiableNode getParentModuleNode() {
+            return moduleBean;
           }
         });
 

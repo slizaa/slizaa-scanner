@@ -172,7 +172,7 @@ public class ParseJob implements Callable<List<IProblem>> {
           //
           if (parser.canParse(resource)) {
 
-            List<IProblem> problems = parser.parseResource(content, resource, resourceNode, new ParserContext(true));
+            List<IProblem> problems = parser.parseResource(content, resource, resourceNode, new ParserContext(_moduleNode, (IModifiableNode) directoryParentNode, true));
             resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, problems != null && !problems.isEmpty());
           }
         }

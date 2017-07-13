@@ -78,6 +78,10 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
 
     // we have to create relationships between type references and types
     // new Linker().link(graphDatabase, subMonitor);
+
+    System.out.println("batchParseStop...");
+    ((GraphDatabaseService) graphDatabase).execute("MATCH (n:DIRECTORY)-[:CONTAINS*]->(t:PACKAGE) set n :PACKAGE ");
+    System.out.println("done...");
   }
 
   /**

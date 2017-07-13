@@ -15,6 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.objectweb.asm.ClassReader;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
+import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JavaUtils;
 import org.slizaa.scanner.jtype.model.internal.bytecode.JTypeClassVisitor;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
@@ -82,6 +83,12 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
   @Override
   protected void doParseResource(IContentDefinition content, IResource resource, IModifiableNode resourceBean,
       IParserContext context) {
+    
+    //
+    if (!context.getParentDirectoryNode().getLabels().contains(JTypeLabel.PACKAGE)) {
+      context.getParentDirectoryNode().addLabel(JTypeLabel.PACKAGE);
+    }
+    
 
     // create the visitor...
     JTypeClassVisitor visitor = new JTypeClassVisitor(_primitiveDatatypeNodeProvider);
