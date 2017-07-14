@@ -286,13 +286,13 @@ public class JTypeClassVisitor extends ClassVisitor {
 
     // Access modifiers: public, protected, and private
     if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.PUBLIC);
+      fieldBean.putProperty(IFieldNode.VISIBILITY, IVisibility.PUBLIC);
     } else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.PROTECTED);
+      fieldBean.putProperty(IFieldNode.VISIBILITY, IVisibility.PROTECTED);
     } else if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.PRIVATE);
+      fieldBean.putProperty(IFieldNode.VISIBILITY, IVisibility.PRIVATE);
     } else {
-      fieldBean.putProperty(IFieldNode.ACCESS_LEVEL, IVisibility.DEFAULT);
+      fieldBean.putProperty(IFieldNode.VISIBILITY, IVisibility.DEFAULT);
     }
 
     // Field-specific modifiers governing runtime behavior: transient and volatile

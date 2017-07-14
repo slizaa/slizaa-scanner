@@ -16,7 +16,7 @@ public interface IFieldNode {
 
   public static final String NAME         = "name";
 
-  public static final String ACCESS_LEVEL = "accessLevel";
+  public static final String VISIBILITY   = "visibility";
 
   public static final String DEPRECATED   = "deprecated";
 
