@@ -83,12 +83,14 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
   @Override
   protected void doParseResource(IContentDefinition content, IResource resource, IModifiableNode resourceBean,
       IParserContext context) {
-    
-    //
+
+    // tag parent directory as package
     if (!context.getParentDirectoryNode().getLabels().contains(JTypeLabel.PACKAGE)) {
       context.getParentDirectoryNode().addLabel(JTypeLabel.PACKAGE);
     }
-    
+
+    // add CLASSFILE label
+    resourceBean.addLabel(JTypeLabel.CLASSFILE);
 
     // create the visitor...
     JTypeClassVisitor visitor = new JTypeClassVisitor(_primitiveDatatypeNodeProvider);
