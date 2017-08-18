@@ -10,7 +10,7 @@ import org.slizaa.scanner.jtype.model.JTypeLabel;
 
 import net.bytebuddy.ByteBuddy;
 
-public class ConstructorTest extends AbstractBytecodeTest {
+public class ConstructorTest extends AbstractByteBuddyBytecodeTest {
 
   @Test
   public void constructorTest() {

@@ -19,6 +19,7 @@ import org.neo4j.graphdb.Node;
 import org.slizaa.scanner.jtype.model.internal.bytecode.PostProcessor;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.PrimitiveDatatypeNodeProvider;
+import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.parser.IParser;
 import org.slizaa.scanner.spi.parser.IParserFactory;
@@ -58,16 +59,28 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStart(IContentDefinitions contentDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+  public void batchParseStart(IContentDefinitions contentDefinitions, Object graphDatabase, IProgressMonitor subMonitor)
       throws Exception {
 
     //
     synchronized (_datatypeNodeProviderMap) {
-      if (!_datatypeNodeProviderMap.containsKey(contentDefinition)) {
-        _datatypeNodeProviderMap.put(contentDefinition,
+      if (!_datatypeNodeProviderMap.containsKey(contentDefinitions)) {
+        _datatypeNodeProviderMap.put(contentDefinitions,
             new PrimitiveDatatypeNodeProvider((GraphDatabaseService) graphDatabase));
       }
     }
+  }
+  
+  @Override
+  public void batchParseStartContentDefinition(IContentDefinition contentDefinition) throws Exception {
+    // TODO Auto-generated method stub
+    super.batchParseStartContentDefinition(contentDefinition);
+  }
+
+  @Override
+  public void batchParseStopContentDefinition(IContentDefinition contentDefinition) throws Exception {
+    // TODO Auto-generated method stub
+    super.batchParseStopContentDefinition(contentDefinition);
   }
 
   /**
@@ -76,12 +89,8 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
   @Override
   public void batchParseStop(IContentDefinitions contentDefinition, Object graphDatabase, IProgressMonitor subMonitor) {
 
-    // we have to create relationships between type references and types
-    // new Linker().link(graphDatabase, subMonitor);
-
-    System.out.println("batchParseStop...");
+    //
     ((GraphDatabaseService) graphDatabase).execute("MATCH (n:DIRECTORY)-[:CONTAINS*]->(t:PACKAGE) set n :PACKAGE ");
-    System.out.println("done...");
   }
 
   /**

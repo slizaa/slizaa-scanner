@@ -11,7 +11,7 @@ import org.slizaa.scanner.jtype.model.JTypeLabel;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.modifier.Visibility;
 
-public class FieldTest extends AbstractBytecodeTest {
+public class FieldTest extends AbstractByteBuddyBytecodeTest {
 
   @Test
   public void field_1() {

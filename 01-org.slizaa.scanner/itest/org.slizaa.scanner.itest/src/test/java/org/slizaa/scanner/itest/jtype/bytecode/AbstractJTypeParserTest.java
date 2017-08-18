@@ -44,24 +44,15 @@ public abstract class AbstractJTypeParserTest {
   private static GraphDatabaseService _graphDb;
 
   /** - */
-  private static Transaction          _transaction;
-
-  /**
-   * <p>
-   * </p>
-   */
-  @BeforeClass
-  public static void beforeClass() {
-
-    //
-    String tempDir = parse();
-
-    //
-    _graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(new File(tempDir)).newGraphDatabase();
-  }
+  private Transaction                 _transaction;
 
   @Before
   public void before() {
+
+    //
+    if (_graphDb == null) {
+      _graphDb = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(new File(parse())).newGraphDatabase();
+    }
 
     //
     if (_transaction != null) {
@@ -115,7 +106,7 @@ public abstract class AbstractJTypeParserTest {
   protected Node singleNode(String statement) {
     return getSingleNode(executeStatement(statement));
   }
-  
+
   protected List<Node> nodes(String statement, Map<String, Object> parameters) {
     return getNodes(executeStatement(statement, parameters));
   }
@@ -217,7 +208,7 @@ public abstract class AbstractJTypeParserTest {
    * 
    * @return
    */
-  private static String parse() {
+  protected String parse() {
 
     File databaseDirectory = TestFrameworkUtils.createTempDirectory(AbstractJTypeParserTest.class.getSimpleName());
 
@@ -241,7 +232,7 @@ public abstract class AbstractJTypeParserTest {
    * 
    * @return
    */
-  private static ISystemDefinition getSystemDefinition() {
+  protected ISystemDefinition getSystemDefinition() {
 
     //
     ISystemDefinition systemDefinition = new SystemDefinitionFactory().createNewSystemDefinition();

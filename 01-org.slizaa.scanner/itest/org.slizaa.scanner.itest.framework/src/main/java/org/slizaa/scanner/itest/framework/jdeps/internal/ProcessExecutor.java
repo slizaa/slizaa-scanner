@@ -1,4 +1,4 @@
-package org.slizaa.scanner.itest.framework.jdeps;
+package org.slizaa.scanner.itest.framework.jdeps.internal;
 
 import java.io.BufferedReader;
 import java.io.IOException;

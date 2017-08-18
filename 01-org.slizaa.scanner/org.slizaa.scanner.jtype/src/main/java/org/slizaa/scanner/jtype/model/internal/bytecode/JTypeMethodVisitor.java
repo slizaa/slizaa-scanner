@@ -31,19 +31,26 @@ public class JTypeMethodVisitor extends MethodVisitor {
   private TypeLocalReferenceCache _typeLocalReferenceCache;
 
   /** - */
+  private IModifiableNode         _typeBean;
+
+  /** - */
   private IModifiableNode         _methodNodeBean;
 
   /**
    * <p>
    * </p>
    * 
+   * @param methodBean
+   * 
    * @param recorder
    * @param type
    */
-  public JTypeMethodVisitor(IModifiableNode methodNodeBean, TypeLocalReferenceCache typeReferenceHolder) {
+  public JTypeMethodVisitor(IModifiableNode typeBean, IModifiableNode methodNodeBean,
+      TypeLocalReferenceCache typeReferenceHolder) {
     super(Opcodes.ASM5);
 
     //
+    this._typeBean = typeBean;
     this._methodNodeBean = methodNodeBean;
     this._typeLocalReferenceCache = typeReferenceHolder;
   }
@@ -114,8 +121,10 @@ public class JTypeMethodVisitor extends MethodVisitor {
   @Override
   public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
 
-    _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getType(desc),
-        JTypeModelRelationshipType.REFERENCES);
+    Type type = Type.getType(desc);
+    if (!_typeBean.getFullyQualifiedName().equals(type.getClassName())) {
+      _typeLocalReferenceCache.addTypeReference(_methodNodeBean, type, JTypeModelRelationshipType.USES);
+    }
   }
 
   /**
@@ -126,18 +135,24 @@ public class JTypeMethodVisitor extends MethodVisitor {
     // System.out.println("owner" + owner);
     // System.out.println("name" + name);
     // System.out.println("desc" + desc);
-
-    Type t = Type.getObjectType(owner);
-    _typeLocalReferenceCache.addTypeReference(_methodNodeBean, t, JTypeModelRelationshipType.REFERENCES);
-    _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getReturnType(desc),
-        JTypeModelRelationshipType.REFERENCES);
-    _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getArgumentTypes(desc),
-        JTypeModelRelationshipType.REFERENCES);
+    // System.out.println("visitMethodInsn(" + opcode + ", " + owner + ", " + name + ", " + desc + ")");
+    //
+    // Type t = Type.getObjectType(owner);
+    // System.out.println(t.getClassName());
+    // _typeLocalReferenceCache.addTypeReference(_methodNodeBean, t, JTypeModelRelationshipType.REFERENCES);
+    // _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getReturnType(desc),
+    // JTypeModelRelationshipType.REFERENCES);
+    // _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getArgumentTypes(desc),
+    // JTypeModelRelationshipType.REFERENCES);
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
+    Type t = Type.getObjectType(owner);
 
+    // TODO!!!!!
+    _typeLocalReferenceCache.addTypeReference(_methodNodeBean, t, JTypeModelRelationshipType.REFERENCES);
     // if (owner.equals("java/lang/System")) {
     // System.out.println("----------------------");
     // System.out.println(owner);

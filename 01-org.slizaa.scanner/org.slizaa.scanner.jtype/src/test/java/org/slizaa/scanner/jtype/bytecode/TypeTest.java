@@ -9,7 +9,7 @@ import org.slizaa.scanner.jtype.model.JTypeLabel;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.modifier.Visibility;
 
-public class TypeTest extends AbstractBytecodeTest {
+public class TypeTest extends AbstractByteBuddyBytecodeTest {
 
   @Test
   public void publicClass() {

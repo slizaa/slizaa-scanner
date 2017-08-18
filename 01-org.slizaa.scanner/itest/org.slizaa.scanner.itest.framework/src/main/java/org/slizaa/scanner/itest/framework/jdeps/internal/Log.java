@@ -1,4 +1,4 @@
-package org.slizaa.scanner.itest.framework.jdeps;
+package org.slizaa.scanner.itest.framework.jdeps.internal;
 
 public interface Log {
 

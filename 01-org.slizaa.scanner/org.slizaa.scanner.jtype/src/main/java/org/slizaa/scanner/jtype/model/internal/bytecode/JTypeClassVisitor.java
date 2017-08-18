@@ -77,9 +77,12 @@ public class JTypeClassVisitor extends ClassVisitor {
   public void visit(final int version, final int access, final String name, final String signature,
       final String superName, final String[] interfaces) {
 
-    // TODO: get the NodeBean from the cache
+    //
     _typeBean = NodeFactory.createNode();
     _typeBean.addLabel(JTypeLabel.TYPE);
+
+    // add type bean to type local cache
+    _classLocalTypeReferenceCache.setTypeBean(_typeBean);
 
     // add the type of the type
     _typeBean.addLabel(getJTypeLabel(access));
@@ -199,7 +202,7 @@ public class JTypeClassVisitor extends ClassVisitor {
     String methodSignature = Utils.getMethodSignature(name, desc);
     methodBean.putProperty(IMethodNode.NAME, name);
     methodBean.putProperty(IMethodNode.FQN, methodSignature);
-    
+
     // set labels
     methodBean.addLabel(JTypeLabel.METHOD);
     if (methodSignature.startsWith("void <init>")) {
@@ -258,7 +261,7 @@ public class JTypeClassVisitor extends ClassVisitor {
     }
 
     //
-    return new JTypeMethodVisitor(methodBean, _classLocalTypeReferenceCache);
+    return new JTypeMethodVisitor(_typeBean, methodBean, _classLocalTypeReferenceCache);
   }
 
   /**
@@ -349,8 +352,13 @@ public class JTypeClassVisitor extends ClassVisitor {
 
   @Override
   public void visitInnerClass(String name, String outerName, String innerName, int access) {
+    
     // http://stackoverflow.com/questions/24622658/access-flag-for-private-inner-classes-in-java-spec-inconsistent-with-reflectio
+    if (outerName != null && outerName.replace('/', '.').equals(_typeBean.getFullyQualifiedName())) {
 
+      // TODO
+    }
+    
     //
     if (name.replace('/', '.').equals(_typeBean.getFullyQualifiedName())) {
 

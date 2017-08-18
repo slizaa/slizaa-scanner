@@ -1,0 +1,3 @@
+"c:\Program Files\Java\jdk1.8.0_77\bin\jdeps.exe" -verbose:class -filter:none -cp D:\50-Development\environments\slizaa-master\git\slizaa-private\03-org.slizaa.neo4j\\org.slizaa.neo4j.dbadapter\bin org.slizaa.neo4j.dbadapter.DbAdapterFactory
+
+"c:\Program Files\Java\jdk1.8.0_77\bin\javap.exe" -v -cp D:\50-Development\environments\slizaa-master\ws\TestReferenceProject\bin test.InnerOuterTest

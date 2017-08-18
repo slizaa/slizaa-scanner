@@ -48,4 +48,6 @@ public interface IModifiableNode extends INode {
   void addLabel(Label label);
   
   void setNodeId(long id);
+
+  boolean containsRelationship(RelationshipType type, INode node);
 }

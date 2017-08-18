@@ -197,6 +197,11 @@ public final class NodeBean implements IModifiableNode {
     }
   }
 
+  @Override
+  public boolean containsRelationship(RelationshipType type, INode node) {
+    return _relationships == null ? false : _relationships.asMap().containsKey(type) && _relationships.asMap().get(type).contains(node);
+  }
+  
   /**
    * <p>
    * </p>

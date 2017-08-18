@@ -13,7 +13,7 @@ import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.annotation.AnnotationDescription;
 
-public class AnnotatedTypeTest extends AbstractBytecodeTest {
+public class AnnotatedTypeTest extends AbstractByteBuddyBytecodeTest {
 
   @Test
   public void annotatedTypeTest() {

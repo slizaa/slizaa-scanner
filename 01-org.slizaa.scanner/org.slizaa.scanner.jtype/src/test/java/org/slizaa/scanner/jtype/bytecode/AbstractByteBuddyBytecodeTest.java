@@ -16,7 +16,7 @@ import org.slizaa.scanner.spi.parser.IParserContext;
 
 import net.bytebuddy.dynamic.DynamicType.Builder;
 
-public abstract class AbstractBytecodeTest {
+public abstract class AbstractByteBuddyBytecodeTest {
 
   /**
    * <p>
