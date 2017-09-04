@@ -1,11 +1,14 @@
 package org.slizaa.scanner.jtype.bytecode.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.content.IResource;
 import org.slizaa.scanner.spi.content.ResourceType;
 
@@ -14,13 +17,22 @@ public class ContentDefinition implements IContentDefinition {
   /** - */
   private Collection<IResource> _binaryResources;
 
+  /** - */
+  private IContentDefinitions   _contentDefinitions;
+
   /**
    * <p>
    * Creates a new instance of type {@link ContentDefinition}.
    * </p>
    */
-  public ContentDefinition() {
+  public ContentDefinition(IContentDefinitions contentDefinitions) {
+    _contentDefinitions = checkNotNull(contentDefinitions);
     _binaryResources = new ArrayList<>();
+  }
+
+  @Override
+  public IContentDefinitions getContentDefinitions() {
+    return _contentDefinitions;
   }
 
   @Override

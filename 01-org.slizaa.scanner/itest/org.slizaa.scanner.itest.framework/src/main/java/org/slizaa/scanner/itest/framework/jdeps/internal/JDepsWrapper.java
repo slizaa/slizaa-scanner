@@ -19,9 +19,6 @@ public class JDepsWrapper implements IJDepsWrapper {
 
     CollectionLog log = new CollectionLog();
 
-    // String javaHome = System.getProperty("java.home");
-    // String jdepsBin = javaHome + File.separator + "bin" + File.separator + "jdeps.exe";
-
     File jdepsFile = new File(System.getProperty("java.home"), "../bin/jdeps.exe");
     List<String> command = new ArrayList<>();
     command.add(jdepsFile.getAbsolutePath());

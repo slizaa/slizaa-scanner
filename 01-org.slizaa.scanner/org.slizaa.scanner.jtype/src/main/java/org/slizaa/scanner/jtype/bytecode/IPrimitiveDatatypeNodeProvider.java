@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model.internal.primitvedatatypes;
+package org.slizaa.scanner.jtype.bytecode;
 
 import org.slizaa.scanner.api.model.INode;
 

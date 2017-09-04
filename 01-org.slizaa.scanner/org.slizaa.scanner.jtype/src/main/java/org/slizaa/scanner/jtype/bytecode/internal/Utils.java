@@ -1,10 +1,10 @@
-package org.slizaa.scanner.jtype.model.internal.bytecode;
+package org.slizaa.scanner.jtype.bytecode.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.objectweb.asm.Type;
 import org.slizaa.scanner.api.model.INode;
-import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
+import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 
 public class Utils {
 
@@ -21,6 +21,11 @@ public class Utils {
     }
   }
 
+  public static boolean isVoidOrPrimitive(Type type) {
+   return isVoid(type) || isPrimitive(type);
+  }
+
+  
   public static boolean isVoid(Type type) {
 
     type = resolveArrayType(type);
@@ -129,7 +134,7 @@ public class Utils {
    * @return The method signature.
    */
   public static String getMethodSignature(String name, String rawSignature) {
-    StringBuffer signature = new StringBuffer();
+    StringBuilder signature = new StringBuilder();
     String returnType = org.objectweb.asm.Type.getReturnType(rawSignature).getClassName();
     if (returnType != null) {
       signature.append(returnType);

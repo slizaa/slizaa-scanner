@@ -37,142 +37,100 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.slizaa.scanner.jtype.model.internal.bytecode;
+package org.slizaa.scanner.jtype.bytecode.internal;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureVisitor;
+import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
 /**
- * A {@link SignatureVisitor} that prints a disassembled view of the signature it visits.
- * 
- * @author Eugene Kuleshov
- * @author Eric Bruneton
+ * <p>
+ * </p>
  */
-public final class JTypeSignatureVisitor extends SignatureVisitor {
+public final class JTypeTypeSignatureVisitor extends SignatureVisitor {
 
-  public JTypeSignatureVisitor(final int access) {
-    super(Opcodes.ASM5);
+  /** - */
+  private IModifiableNode         _typeBean;
+
+  /** - */
+  private TypeLocalReferenceCache _classLocalTypeReferenceCache;
+
+  /**
+   * <p>
+   * Creates a new instance of type {@link JTypeTypeSignatureVisitor}.
+   * </p>
+   */
+  public JTypeTypeSignatureVisitor(IModifiableNode typeBean, TypeLocalReferenceCache classLocalTypeReferenceCache) {
+    super(Opcodes.ASM6);
+
+    //
+    _typeBean = checkNotNull(typeBean);
+    _classLocalTypeReferenceCache = checkNotNull(classLocalTypeReferenceCache);
   }
 
-  private JTypeSignatureVisitor(final StringBuffer buf) {
-    super(Opcodes.ASM5);
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void visitClassType(final String name) {
+    _classLocalTypeReferenceCache.addTypeReference(_typeBean, name, JTypeModelRelationshipType.USES);
   }
 
   @Override
-  public void visitFormalTypeParameter(final String name) {
-    // System.out.println("visitFormalTypeParameter " + name);
+  public void visitInnerClassType(String name) {
+    System.out.println("visitInnerClassType " + name);
+  }
+
+  @Override
+  public void visitFormalTypeParameter(String name) {
+    //
   }
 
   @Override
   public SignatureVisitor visitClassBound() {
-    // System.out.println("visitClassBound");
     return this;
   }
 
   @Override
   public SignatureVisitor visitInterfaceBound() {
-    // System.out.println("visitInterfaceBound");
     return this;
   }
 
   @Override
   public SignatureVisitor visitSuperclass() {
-    // System.out.println("visitSuperclass");
     return this;
   }
 
   @Override
   public SignatureVisitor visitInterface() {
-    // System.out.println("visitInterface");
     return this;
   }
 
   @Override
   public SignatureVisitor visitParameterType() {
-    // System.out.println("visitParameterType");
     return this;
   }
 
   @Override
   public SignatureVisitor visitReturnType() {
-    // System.out.println("visitReturnType");
     return this;
   }
 
   @Override
   public SignatureVisitor visitExceptionType() {
-    // System.out.println("visitExceptionType");
     return this;
-  }
-
-  @Override
-  public void visitBaseType(final char descriptor) {
-    // switch (descriptor) {
-    // case 'V':
-    // System.out.println("void");
-    // break;
-    // case 'B':
-    // System.out.println("byte");
-    // break;
-    // case 'J':
-    // System.out.println("long");
-    // break;
-    // case 'Z':
-    // System.out.println("boolean");
-    // break;
-    // case 'I':
-    // System.out.println("int");
-    // break;
-    // case 'S':
-    // System.out.println("short");
-    // break;
-    // case 'C':
-    // System.out.println("char");
-    // break;
-    // case 'F':
-    // System.out.println("float");
-    // break;
-    // // case 'D':
-    // default:
-    // System.out.println("double");
-    // break;
-    // }
-  }
-
-  @Override
-  public void visitTypeVariable(final String name) {
-    // System.out.println("visitTypeVariable " + name);
   }
 
   @Override
   public SignatureVisitor visitArrayType() {
-    // System.out.println("visitArrayType");
     return this;
   }
 
   @Override
-  public void visitClassType(final String name) {
-    // System.out.println("visitClassType " + name);
-  }
-
-  @Override
-  public void visitInnerClassType(final String name) {
-    // System.out.println("visitInnerClassType " + name);
-  }
-
-  @Override
-  public void visitTypeArgument() {
-    // System.out.println("visitTypeArgument");
-  }
-
-  @Override
-  public SignatureVisitor visitTypeArgument(final char tag) {
-    // System.out.println("visitTypeArgument " + tag);
+  public SignatureVisitor visitTypeArgument(char wildcard) {
     return this;
-  }
-
-  @Override
-  public void visitEnd() {
-    // System.out.println("visitEnd");
   }
 }

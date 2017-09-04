@@ -209,6 +209,16 @@ public class ModelImporter implements IModelImporter {
       for (IContentDefinition contentDefinition : _systemDefinition.getContentDefinitions()) {
 
         //
+        for (IParserFactory parserFactory : _parserFactories) {
+          try {
+            parserFactory.batchParseStartContentDefinition(contentDefinition);
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+
+        //
         batchInserter.clearResourceAndDirectoriesMap();
 
         //
@@ -233,6 +243,16 @@ public class ModelImporter implements IModelImporter {
 
         //
         moduleNode.clearRelationships();
+
+        //
+        for (IParserFactory parserFactory : _parserFactories) {
+          try {
+            parserFactory.batchParseStopContentDefinition(contentDefinition);
+          } catch (Exception e) {
+            // 
+            e.printStackTrace();
+          }
+        }
       }
 
     } finally {
@@ -309,12 +329,11 @@ public class ModelImporter implements IModelImporter {
       for (IResource resource : sourceResources) {
         directories.getUnchecked(resource.getDirectory()).addSourceResource(resource);
       }
-      
+
       // create directory nodes (still single-threaded!)
       for (final Directory directory : directories.asMap().values()) {
         batchInserter.getOrCreateDirectoyNode(directory, moduleBean);
       }
-      
 
       // compute the part size
       float partSizeAsFloat = directories.size() / (float) THREAD_COUNT;

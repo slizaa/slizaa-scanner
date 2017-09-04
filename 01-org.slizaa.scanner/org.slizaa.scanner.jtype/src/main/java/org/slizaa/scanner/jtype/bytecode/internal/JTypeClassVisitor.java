@@ -8,7 +8,9 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model.internal.bytecode;
+package org.slizaa.scanner.jtype.bytecode.internal;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -23,6 +25,7 @@ import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.IRelationship;
 import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
+import org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory;
 import org.slizaa.scanner.jtype.model.IFieldNode;
 import org.slizaa.scanner.jtype.model.IMethodNode;
 import org.slizaa.scanner.jtype.model.ITypeNode;
@@ -30,23 +33,23 @@ import org.slizaa.scanner.jtype.model.IVisibility;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import org.slizaa.scanner.jtype.model.JavaTypeUtils;
-import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
+import org.slizaa.scanner.spi.content.IContentDefinition;
 
 /**
  */
 public class JTypeClassVisitor extends ClassVisitor {
 
-  // TODO
-  private boolean                        _analyzeReferences = true;
+  /** - */
+  private IModifiableNode            _typeBean;
 
   /** - */
-  private IModifiableNode                _typeBean;
+  private TypeLocalReferenceCache    _classLocalTypeReferenceCache;
 
   /** - */
-  private TypeLocalReferenceCache        _classLocalTypeReferenceCache;
+  private JTypeByteCodeParserFactory _parserFactory;
 
   /** - */
-  private IPrimitiveDatatypeNodeProvider _primitiveDatatypeNodes;
+  private IContentDefinition         _contentDefinition;
 
   /**
    * <p>
@@ -55,12 +58,26 @@ public class JTypeClassVisitor extends ClassVisitor {
    * 
    * @param batchInserter
    */
-  public JTypeClassVisitor(IPrimitiveDatatypeNodeProvider datatypeNodeProvider) {
+  public JTypeClassVisitor(JTypeByteCodeParserFactory parserFactory, IContentDefinition contentDefinition) {
     super(Opcodes.ASM6);
 
     //
-    _primitiveDatatypeNodes = datatypeNodeProvider;
-    _classLocalTypeReferenceCache = new TypeLocalReferenceCache(_primitiveDatatypeNodes);
+    _parserFactory = checkNotNull(parserFactory);
+    _contentDefinition = checkNotNull(contentDefinition);
+
+    //
+    _classLocalTypeReferenceCache = new TypeLocalReferenceCache(
+        _parserFactory.getDatatypeNodeProviderMap(contentDefinition));
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  public TypeLocalReferenceCache getTypeLocalReferenceCache() {
+    return _classLocalTypeReferenceCache;
   }
 
   /**
@@ -73,18 +90,21 @@ public class JTypeClassVisitor extends ClassVisitor {
     return _typeBean;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void visit(final int version, final int access, final String name, final String signature,
       final String superName, final String[] interfaces) {
 
     //
     _typeBean = NodeFactory.createNode();
-    _typeBean.addLabel(JTypeLabel.TYPE);
 
     // add type bean to type local cache
     _classLocalTypeReferenceCache.setTypeBean(_typeBean);
 
     // add the type of the type
+    _typeBean.addLabel(JTypeLabel.TYPE);
     _typeBean.addLabel(getJTypeLabel(access));
 
     // class name
@@ -140,12 +160,8 @@ public class JTypeClassVisitor extends ClassVisitor {
       // set signature
       _typeBean.putProperty(ITypeNode.SIGNATURE, signature);
 
-      JTypeSignatureVisitor sv = new JTypeSignatureVisitor(access);
-      SignatureReader r = new SignatureReader(signature);
-      r.accept(sv);
-
-      // String declaration = name + sv.getDeclaration();
-      // System.out.println("declaration " + declaration);
+      JTypeTypeSignatureVisitor sv = new JTypeTypeSignatureVisitor(_typeBean, _classLocalTypeReferenceCache);
+      new SignatureReader(signature).accept(sv);
     }
 
     // add 'extends' references
@@ -159,6 +175,9 @@ public class JTypeClassVisitor extends ClassVisitor {
         _classLocalTypeReferenceCache.addTypeReference(_typeBean, ifaceName, JTypeModelRelationshipType.IMPLEMENTS);
         break;
       case INTERFACE:
+        _classLocalTypeReferenceCache.addTypeReference(_typeBean, ifaceName, JTypeModelRelationshipType.EXTENDS);
+        break;
+      case ANNOTATION:
         _classLocalTypeReferenceCache.addTypeReference(_typeBean, ifaceName, JTypeModelRelationshipType.EXTENDS);
         break;
       default:
@@ -212,6 +231,7 @@ public class JTypeClassVisitor extends ClassVisitor {
     // signature
     if (signature != null) {
       methodBean.putProperty("signature", signature);
+      new SignatureReader(signature).accept(new JTypeMethodSignatureVisitor(methodBean, _classLocalTypeReferenceCache));
     }
 
     //
@@ -318,9 +338,9 @@ public class JTypeClassVisitor extends ClassVisitor {
       fieldBean.putProperty(IFieldNode.SIGNATURE, signature);
 
       // TODO
-      JTypeSignatureVisitor sv = new JTypeSignatureVisitor(0);
-      SignatureReader r = new SignatureReader(signature);
-      r.acceptType(sv);
+//      JTypeTypeSignatureVisitor sv = new JTypeTypeSignatureVisitor(0);
+//      SignatureReader r = new SignatureReader(signature);
+//      r.acceptType(sv);
     }
 
     // TODO
@@ -332,10 +352,38 @@ public class JTypeClassVisitor extends ClassVisitor {
     _typeBean.putProperty(ITypeNode.SOURCE_FILE_NAME, source);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public void visitOuterClass(String owner, String name, String desc) {
-    // TODO Auto-generated method stub
-    super.visitOuterClass(owner, name, desc);
+  public void visitOuterClass(String owner, String name, String rawSignature) {
+    // System.out.println("visitOuterClass: " + owner + " : " + name + " : " + rawSignature);
+
+    // owner
+    _classLocalTypeReferenceCache.addTypeReference(_typeBean, Type.getObjectType(owner),
+        JTypeModelRelationshipType.REFERENCES);
+
+    // TODO: EnclosingMethod!
+    if (name != null && rawSignature != null) {
+
+      // return type
+      Type returnType = org.objectweb.asm.Type.getReturnType(rawSignature);
+      if (!Utils.isVoidOrPrimitive(returnType)) {
+        _classLocalTypeReferenceCache.addTypeReference(_typeBean, Utils.resolveArrayType(returnType).getClassName(),
+            JTypeModelRelationshipType.REFERENCES);
+      }
+
+      // arg types type
+      org.objectweb.asm.Type[] types = org.objectweb.asm.Type.getArgumentTypes(rawSignature);
+      for (int i = 0; i < types.length; i++) {
+        if (!Utils.isVoidOrPrimitive(types[i])) {
+
+          // TODO: array types!
+          _classLocalTypeReferenceCache.addTypeReference(_typeBean, Utils.resolveArrayType(types[i]).getClassName(),
+              JTypeModelRelationshipType.REFERENCES);
+        }
+      }
+    }
   }
 
   @Override
@@ -352,15 +400,17 @@ public class JTypeClassVisitor extends ClassVisitor {
 
   @Override
   public void visitInnerClass(String name, String outerName, String innerName, int access) {
-    
-    // http://stackoverflow.com/questions/24622658/access-flag-for-private-inner-classes-in-java-spec-inconsistent-with-reflectio
-    if (outerName != null && outerName.replace('/', '.').equals(_typeBean.getFullyQualifiedName())) {
 
-      // TODO
-    }
-    
+    // System.out.println(_typeBean.getFullyQualifiedName() + " - visitInnerClass(" + name + ", " + outerName + ", "
+    // + innerName + ", " + access + ")");
+
     //
     if (name.replace('/', '.').equals(_typeBean.getFullyQualifiedName())) {
+
+      if (outerName != null) {
+        _classLocalTypeReferenceCache.addTypeReference(_typeBean, outerName.replace('/', '.'),
+            JTypeModelRelationshipType.IS_INNER_CLASS_DEFINED_BY);
+      }
 
       _typeBean.putProperty(ITypeNode.INNER_CLASS, true);
 
@@ -393,6 +443,22 @@ public class JTypeClassVisitor extends ClassVisitor {
       }
     }
 
+    // http://stackoverflow.com/questions/24622658/access-flag-for-private-inner-classes-in-java-spec-inconsistent-with-reflectio
+    // TODO
+    else if (outerName != null) {
+
+      //
+      if (outerName.replace('/', '.').equals(_typeBean.getFullyQualifiedName())) {
+        _classLocalTypeReferenceCache.addTypeReference(_typeBean, name.replace('/', '.'),
+            JTypeModelRelationshipType.DEFINES_INNER_CLASS);
+      }
+      //
+      else {
+        _classLocalTypeReferenceCache.addTypeReference(_typeBean, outerName.replace('/', '.'),
+            JTypeModelRelationshipType.REFERENCES);
+      }
+    }
+
     super.visitInnerClass(name, outerName, innerName, access);
   }
 
@@ -419,7 +485,9 @@ public class JTypeClassVisitor extends ClassVisitor {
     if (Utils.isVoid(type)) {
       return null;
     } else if (Utils.isPrimitive(t)) {
-      return fieldBean.addRelationship(Utils.getPrimitiveDatatypeNode(t, _primitiveDatatypeNodes), relationshipType);
+      return fieldBean.addRelationship(
+          Utils.getPrimitiveDatatypeNode(t, _parserFactory.getDatatypeNodeProviderMap(_contentDefinition)),
+          relationshipType);
     } else {
       return _classLocalTypeReferenceCache.addTypeReference(fieldBean, t.getClassName(), relationshipType);
     }

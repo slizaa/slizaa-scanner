@@ -184,7 +184,7 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
   public boolean hasSystemDefinition() {
     return _systemDefinition != null;
   }
-  
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -234,7 +234,7 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     checkNotNull(binaryPaths);
     checkNotNull(analyzeMode);
 
-    ContentDefinition result = new ContentDefinition(this);
+    ContentDefinition result = new ContentDefinition(this, _systemDefinition);
 
     result.setAnalyzeMode(analyzeMode);
 
@@ -271,7 +271,8 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
    * @param path
    * @param type
    */
-  protected void handleResourceAdded(IContentDefinition contentDefinition, String root, String path, ResourceType type) {
+  protected void handleResourceAdded(IContentDefinition contentDefinition, String root, String path,
+      ResourceType type) {
 
     checkNotNull(root);
     checkNotNull(path);
@@ -288,8 +289,8 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     if (hasSystemDefinition()) {
 
       //
-      ((SystemDefinition) getSystemDefinition()).fireContentChangedEvent(new ResourceChangedEvent(
-          getSystemDefinition(), contentDefinition, resource, ResourceChangedEvent.Type.ADDED));
+      ((SystemDefinition) getSystemDefinition()).fireContentChangedEvent(new ResourceChangedEvent(getSystemDefinition(),
+          contentDefinition, resource, ResourceChangedEvent.Type.ADDED));
     }
   }
 
@@ -317,8 +318,8 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     if (hasSystemDefinition()) {
 
       //
-      ((SystemDefinition) getSystemDefinition()).fireContentChangedEvent(new ResourceChangedEvent(
-          getSystemDefinition(), contentDefinition, resource, ResourceChangedEvent.Type.REMOVED));
+      ((SystemDefinition) getSystemDefinition()).fireContentChangedEvent(new ResourceChangedEvent(getSystemDefinition(),
+          contentDefinition, resource, ResourceChangedEvent.Type.REMOVED));
     }
   }
 

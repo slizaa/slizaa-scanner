@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model.internal.primitvedatatypes;
+package org.slizaa.scanner.jtype.bytecode.internal;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
@@ -17,6 +17,7 @@ import org.neo4j.graphdb.ResourceIterator;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.INode;
 import org.slizaa.scanner.api.model.NodeFactory;
+import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 
 public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProvider {

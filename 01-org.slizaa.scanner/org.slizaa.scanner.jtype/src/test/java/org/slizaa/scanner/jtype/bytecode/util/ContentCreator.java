@@ -9,7 +9,7 @@ public class ContentCreator {
 
     //
     ContentDefinitions definitions = new ContentDefinitions();
-    ContentDefinition definition = new ContentDefinition();
+    ContentDefinition definition = new ContentDefinition(definitions);
     definitions.getContentDefinitions().add(definition);
 
     //

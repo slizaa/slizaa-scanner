@@ -27,6 +27,7 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.runtime.CoreException;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
+import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.content.IResource;
 import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.IContentDefinitionProvider;
@@ -38,15 +39,22 @@ import org.slizaa.scanner.systemdefinition.VariablePath;
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
+/**
+ * <p>
+ * </p>
+ *
+ * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
+ *
+ */
 public final class ContentDefinition implements IContentDefinition {
 
   /** the empty resource standin set */
   private static final List<IResource>    EMPTY_RESOURCE_SET = Collections
-                                                                 .unmodifiableList(new LinkedList<IResource>());
+      .unmodifiableList(new LinkedList<IResource>());
 
   /** - */
   private static final List<VariablePath> EMPTY_ROOTPATH_SET = Collections
-                                                                 .unmodifiableList(new LinkedList<VariablePath>());
+      .unmodifiableList(new LinkedList<VariablePath>());
 
   /** the internal identifier of this content entry */
   private String                          _id;
@@ -75,6 +83,9 @@ public final class ContentDefinition implements IContentDefinition {
   /** the set of source resource standins */
   private Map<String, IResource>          _sourceResources;
 
+  /** - */
+  private IContentDefinitions             _contentDefinitions;
+
   /** the bundle maker project content provider */
   private IContentDefinitionProvider      _provider;
 
@@ -83,16 +94,24 @@ public final class ContentDefinition implements IContentDefinition {
    * Creates a new instance of type {@link ContentDefinition}.
    * </p>
    */
-  public ContentDefinition(IContentDefinitionProvider provider) {
+  public ContentDefinition(IContentDefinitionProvider provider, IContentDefinitions contentDefinitions) {
 
     // set the provider
     _provider = provider;
+    _contentDefinitions = checkNotNull(contentDefinitions);
 
     //
     setAnalyzeMode(AnalyzeMode.BINARIES_ONLY);
 
     //
     _binaryPaths = new LinkedList<VariablePath>();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public IContentDefinitions getContentDefinitions() {
+    return _contentDefinitions;
   }
 
   /**

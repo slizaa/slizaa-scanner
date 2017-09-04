@@ -8,9 +8,11 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model.internal.bytecode;
+package org.slizaa.scanner.jtype.bytecode.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.objectweb.asm.Type;
 
 /**
  * <p>
@@ -93,6 +95,18 @@ public class FieldDescriptor {
    */
   public boolean isStatic() {
     return _isStatic;
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  public boolean isPrimitive() {
+    return _fieldType.equals("boolean") | _fieldType.equals("byte") | _fieldType.equals("char")
+        | _fieldType.equals("double") | _fieldType.equals("float") | _fieldType.equals("int")
+        | _fieldType.equals("long") | _fieldType.equals("short");
   }
 
   /**

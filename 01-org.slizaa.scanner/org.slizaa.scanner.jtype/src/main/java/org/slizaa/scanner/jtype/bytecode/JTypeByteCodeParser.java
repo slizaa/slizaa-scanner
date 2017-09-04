@@ -10,15 +10,18 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.bytecode;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassReader;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
+import org.slizaa.scanner.jtype.bytecode.internal.JTypeClassVisitor;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
+import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import org.slizaa.scanner.jtype.model.JavaUtils;
-import org.slizaa.scanner.jtype.model.internal.bytecode.JTypeClassVisitor;
-import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IResource;
 import org.slizaa.scanner.spi.parser.AbstractParser;
@@ -35,9 +38,6 @@ import org.slizaa.scanner.spi.parser.IParserFactory;
  */
 public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFactory> {
 
-  /** the primitive datatype provider */
-  private IPrimitiveDatatypeNodeProvider _primitiveDatatypeNodeProvider;
-
   /**
    * <p>
    * Creates a new instance of type {@link JTypeByteCodeParser}.
@@ -45,13 +45,9 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
    * 
    * @param parserFactory
    *          the {@link IParserFactory} that created this {@link IParser}.
-   * @param datatypeNodeProvider
-   *          the {@link IPrimitiveDatatypeNodeProvider} for this parser
    */
-  JTypeByteCodeParser(JTypeByteCodeParserFactory parserFactory, IPrimitiveDatatypeNodeProvider datatypeNodeProvider) {
+  JTypeByteCodeParser(JTypeByteCodeParserFactory parserFactory) {
     super(parserFactory);
-
-    _primitiveDatatypeNodeProvider = checkNotNull(datatypeNodeProvider);
   }
 
   /**
@@ -93,13 +89,55 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
     resourceBean.addLabel(JTypeLabel.CLASSFILE);
 
     // create the visitor...
-    JTypeClassVisitor visitor = new JTypeClassVisitor(_primitiveDatatypeNodeProvider);
+    JTypeClassVisitor visitor = new JTypeClassVisitor(this.getParserFactory(), content);
 
     // ...parse the class
     ClassReader reader = new ClassReader(resource.getContent());
-    reader.accept(visitor, 0);
+    reader.accept(visitor, ClassReader.EXPAND_FRAMES);
+
+    // the constant pool may references classes that are not referenced from within the code, e.g. see
+    // https://bugs.openjdk.java.net/browse/JDK-7153958
+    Set<String> allReferencedTypes = visitor.getTypeLocalReferenceCache().getAllReferencedTypes();
+    for (String constantPoolClass : getConstantPoolClasses(reader)) {
+      if (!allReferencedTypes.contains(constantPoolClass.replace('/', '.'))) {
+        visitor.getTypeLocalReferenceCache().addTypeReference(visitor.getTypeBean(),
+            constantPoolClass.replace('/', '.'), JTypeModelRelationshipType.USES);
+      }
+    }
 
     // add the contained type
     resourceBean.addRelationship(visitor.getTypeBean(), CoreModelRelationshipType.CONTAINS);
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param reader
+   * @return
+   */
+  public static Set<String> getConstantPoolClasses(ClassReader reader) {
+    Set<String> strings = new HashSet<>();
+
+    int itemCount = reader.getItemCount();
+    char[] buffer = new char[reader.getMaxStringLength()];
+
+    for (int n = 1; n < itemCount; n++) {
+      int pos = reader.getItem(n);
+      if (pos == 0 || reader.b[pos - 1] != 7)
+        continue;
+
+      Arrays.fill(buffer, (char) 0);
+      String string = reader.readUTF8(pos, buffer);
+
+      if (string.startsWith("["))
+        continue;
+      if (string.length() < 1)
+        continue;
+
+      strings.add(string);
+    }
+
+    return strings;
   }
 }

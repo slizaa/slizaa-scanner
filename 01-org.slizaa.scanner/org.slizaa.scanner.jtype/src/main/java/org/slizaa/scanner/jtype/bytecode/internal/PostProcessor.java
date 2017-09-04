@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model.internal.bytecode;
+package org.slizaa.scanner.jtype.bytecode.internal;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -41,7 +41,7 @@ import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
 public abstract class AbstractJTypeParserTest {
 
   /** - */
-  private static GraphDatabaseService _graphDb;
+  protected static GraphDatabaseService _graphDb;
 
   /** - */
   private Transaction                 _transaction;

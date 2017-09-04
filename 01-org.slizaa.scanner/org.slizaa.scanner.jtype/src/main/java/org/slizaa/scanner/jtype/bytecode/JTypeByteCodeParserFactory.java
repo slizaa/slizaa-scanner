@@ -10,15 +10,16 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.bytecode;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.slizaa.scanner.jtype.model.internal.bytecode.PostProcessor;
-import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
-import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.PrimitiveDatatypeNodeProvider;
+import org.slizaa.scanner.jtype.bytecode.internal.PostProcessor;
+import org.slizaa.scanner.jtype.bytecode.internal.PrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.parser.IParser;
@@ -48,11 +49,21 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
   }
 
   /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  public IPrimitiveDatatypeNodeProvider getDatatypeNodeProviderMap(IContentDefinition contentDefinition) {
+    return _datatypeNodeProviderMap.get(checkNotNull(contentDefinition).getContentDefinitions());
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override
   public IParser createParser(IContentDefinitions contentDefinition) {
-    return new JTypeByteCodeParser(this, _datatypeNodeProviderMap.get(contentDefinition));
+    return new JTypeByteCodeParser(this);
   }
 
   /**
@@ -69,18 +80,6 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
             new PrimitiveDatatypeNodeProvider((GraphDatabaseService) graphDatabase));
       }
     }
-  }
-  
-  @Override
-  public void batchParseStartContentDefinition(IContentDefinition contentDefinition) throws Exception {
-    // TODO Auto-generated method stub
-    super.batchParseStartContentDefinition(contentDefinition);
-  }
-
-  @Override
-  public void batchParseStopContentDefinition(IContentDefinition contentDefinition) throws Exception {
-    // TODO Auto-generated method stub
-    super.batchParseStopContentDefinition(contentDefinition);
   }
 
   /**

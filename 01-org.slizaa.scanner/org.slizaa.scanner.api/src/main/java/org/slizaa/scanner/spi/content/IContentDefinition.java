@@ -23,6 +23,14 @@ import java.util.Set;
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface IContentDefinition {
+  
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  IContentDefinitions getContentDefinitions();
 
   /**
    * <p>

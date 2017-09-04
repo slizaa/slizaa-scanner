@@ -8,21 +8,21 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model.internal.bytecode;
+package org.slizaa.scanner.jtype.bytecode.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.objectweb.asm.Type;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.INode;
 import org.slizaa.scanner.api.model.IRelationship;
 import org.slizaa.scanner.api.model.RelationshipType;
-import org.slizaa.scanner.jtype.model.ITypeNode;
+import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
-import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -84,6 +84,16 @@ public class TypeLocalReferenceCache {
    *
    * @return
    */
+  public Set<String> getAllReferencedTypes() {
+    return _typeReferenceNodeCache.asMap().keySet();
+  }
+  
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
   public IModifiableNode getTypeBean() {
     return _typeBean;
   }
@@ -111,8 +121,16 @@ public class TypeLocalReferenceCache {
       final RelationshipType relationshipType) {
 
     //
-    INode targetBean = _typeReferenceNodeCache.getUnchecked(fieldDescriptor.getFieldType().replace('/', '.'));
-    addDependsOnRelationship(targetBean);
+    INode fieldTypeBean = _typeReferenceNodeCache.getUnchecked(fieldDescriptor.getFieldType().replace('/', '.'));
+
+    //
+    if (!fieldDescriptor.isPrimitive()) {
+      addDependsOnRelationship(fieldTypeBean);
+    }
+
+    //
+    INode fieldOwnerBean = _typeReferenceNodeCache.getUnchecked(fieldDescriptor.getOwnerTypeName().replace('/', '.'));
+    addDependsOnRelationship(fieldOwnerBean);
 
     // field access
     return startNode.addRelationship(_fieldReferenceNodeCache.getUnchecked(fieldDescriptor), relationshipType);
@@ -133,12 +151,38 @@ public class TypeLocalReferenceCache {
       return null;
     }
 
+    // TODO
+    if (referencedTypeName.equals("boolean")) {
+      throw new RuntimeException();
+    }
+    // TODO
+    if (referencedTypeName.equals("int")) {
+      throw new RuntimeException();
+    }
+
+    // TODO
+    if (referencedTypeName.endsWith("[]")) {
+      throw new RuntimeException();
+    }
+
     referencedTypeName = referencedTypeName.replace('/', '.');
 
     //
     INode targetBean = _typeReferenceNodeCache.getUnchecked(referencedTypeName);
     addDependsOnRelationship(targetBean);
     return startNode.addRelationship(targetBean, relationshipType);
+  }
+
+  public IRelationship addInnerClass(final IModifiableNode outerClass, IModifiableNode innerClass,
+      final RelationshipType relationshipType) {
+
+    checkNotNull(outerClass);
+    checkNotNull(innerClass);
+    checkNotNull(relationshipType);
+
+    //
+    addDependsOnRelationship(innerClass);
+    return outerClass.addRelationship(innerClass, relationshipType);
   }
 
   /**
@@ -153,6 +197,12 @@ public class TypeLocalReferenceCache {
 
     //
     if (referencedType == null) {
+      throw new RuntimeException();
+      // return null;
+    }
+    
+    //
+    if (Utils.isVoidOrPrimitive(referencedType)) {
       throw new RuntimeException();
       // return null;
     }
@@ -200,6 +250,7 @@ public class TypeLocalReferenceCache {
   private void addDependsOnRelationship(INode targetBean) {
     if (!targetBean.getFullyQualifiedName().equals(_typeBean.getFullyQualifiedName())
         && !_dependsOnRelationshipTargets.contains(targetBean)) {
+
       _dependsOnRelationshipTargets.add(targetBean);
       _typeBean.addRelationship(targetBean, JTypeModelRelationshipType.DEPENDS_ON);
     }

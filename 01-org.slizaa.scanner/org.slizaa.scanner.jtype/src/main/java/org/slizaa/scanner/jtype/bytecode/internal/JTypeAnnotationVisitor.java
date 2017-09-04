@@ -1,4 +1,4 @@
-package org.slizaa.scanner.jtype.model.internal.bytecode;
+package org.slizaa.scanner.jtype.bytecode.internal;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Opcodes;
@@ -22,13 +22,13 @@ public class JTypeAnnotationVisitor extends AnnotationVisitor {
 
   @Override
   public void visit(String name, Object value) {
-    // System.out.println("visit " + name + " : " + value);
+    // System.out.println("JTypeAnnotationVisitor.visit " + name + " : " + value);
     super.visit(name, value);
   }
 
   @Override
   public void visitEnum(String name, String desc, String value) {
-    // System.out.println("visitEnum " + name + " : " + value);
+    // System.out.println("JTypeAnnotationVisitor.visitEnum " + name + " : " + value);
     super.visitEnum(name, desc, value);
   }
 

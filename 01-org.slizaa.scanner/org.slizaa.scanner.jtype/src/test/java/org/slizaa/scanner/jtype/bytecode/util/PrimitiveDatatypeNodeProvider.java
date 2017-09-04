@@ -2,7 +2,7 @@ package org.slizaa.scanner.jtype.bytecode.util;
 
 import org.slizaa.scanner.api.model.INode;
 import org.slizaa.scanner.api.model.internal.NodeBean;
-import org.slizaa.scanner.jtype.model.internal.primitvedatatypes.IPrimitiveDatatypeNodeProvider;
+import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 
 public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProvider {
 

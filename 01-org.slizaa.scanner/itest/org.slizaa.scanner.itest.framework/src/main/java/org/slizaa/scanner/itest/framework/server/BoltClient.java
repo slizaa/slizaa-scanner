@@ -41,7 +41,15 @@ public class BoltClient {
       TypeSystem typeSystem = session.typeSystem();
 
       // Auto-commit transactions are a quick and easy way to wrap a read.
-      StatementResult result = session.run("MATCH (n:FIELD) RETURN n");
+      // StatementResult result = session.run("MATCH (t:TYPE) WITH t, t.fqn as tfqn MATCH (tref:TYPE_REFERENCE) WHERE
+      // tref.fqn = tfqn CREATE (tref)-[:BOUND_TO]->(t) ");
+      // StatementResult result = session.run("MATCH (t:TYPE) MATCH (tref:TYPE_REFERENCE) WHERE t.fqn = tref.fqn return
+      // t, tref");
+
+      // IMPORTANT!!!
+      // StatementResult result = session.run("create index on :TYPE(fqn)");
+      // StatementResult result = session.run("create index on :TYPE_REFERENCE(fqn)");
+      StatementResult result = session.run("MATCH p=(tref:TYPE_REFERENCE)-[:BOUND_TO]->(t:TYPE) RETURN count(p)");
 
       int count = 0;
 
@@ -55,12 +63,12 @@ public class BoltClient {
 
         for (Pair<String, Value> pair : record.fields()) {
 
-//          System.out.println(pair.value().type().name());
+          // System.out.println(pair.value().type().name());
 
           switch (pair.value().type().name()) {
           case "NODE": {
             System.out.println("-------------------------------");
-            System.out.println( pair.key());
+            System.out.println(pair.key());
             Node node = pair.value().asNode();
             System.out.println("ID: " + node.id());
             for (String label : node.labels()) {
@@ -73,7 +81,7 @@ public class BoltClient {
             break;
           }
           case "STRING": {
-            System.out.println("STRING: " + pair.value().asString());
+            System.out.println("STRING: '" + pair.value().asString() + "'");
             break;
           }
           case "INTEGER": {
@@ -81,6 +89,7 @@ public class BoltClient {
             break;
           }
           default:
+            System.out.println("UNKNWON: " + pair.value().type());
             break;
           }
         }
@@ -94,8 +103,8 @@ public class BoltClient {
   }
 
   public static void main(String... args) {
-//   BoltClient example = new BoltClient("bolt://localhost:7687");
-    BoltClient example = new BoltClient("bolt://localhost:5001");
+    BoltClient example = new BoltClient("bolt://localhost:7687");
+    // BoltClient example = new BoltClient("bolt://localhost:5001");
     example.printModules();
     example.close();
   }
