@@ -11,8 +11,10 @@
 package org.slizaa.scanner.jtype.bytecode;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 import org.slizaa.scanner.jtype.bytecode.internal.PostProcessor;
 import org.slizaa.scanner.jtype.bytecode.internal.PrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
@@ -56,8 +58,17 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
   public void batchParseStart(IContentDefinitions contentDefinitions, Object graphDatabase, IProgressMonitor subMonitor)
       throws Exception {
 
+    GraphDatabaseService graphDatabaseService = (GraphDatabaseService) graphDatabase;
+
+    try (Transaction transaction = graphDatabaseService.beginTx()) {
+      _datatypeNodeProvider = new PrimitiveDatatypeNodeProvider((GraphDatabaseService) graphDatabase);
+    }
+
     //
-    _datatypeNodeProvider = new PrimitiveDatatypeNodeProvider((GraphDatabaseService) graphDatabase);
+    try (Transaction transaction = graphDatabaseService.beginTx()) {
+      ((GraphDatabaseService) graphDatabase).execute("create index on :TYPE(fqn)");
+      ((GraphDatabaseService) graphDatabase).execute("create index on :TYPE_REFERENCE(fqn)");
+    }
   }
 
   /**
@@ -70,7 +81,17 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
     _datatypeNodeProvider = null;
 
     //
-    ((GraphDatabaseService) graphDatabase).execute("MATCH (n:DIRECTORY)-[:CONTAINS*]->(t:PACKAGE) set n :PACKAGE ");
+    GraphDatabaseService graphDatabaseService = (GraphDatabaseService) graphDatabase;
+
+    //
+    final SubMonitor progressMonitor = SubMonitor.convert(subMonitor, 2);
+
+    progressMonitor.newChild(1);
+    graphDatabaseService.execute("MATCH (n:DIRECTORY)-[:CONTAINS*]->(t:PACKAGE) set n :PACKAGE");
+
+    progressMonitor.newChild(1);
+    graphDatabaseService.execute(
+        "MATCH (t:TYPE) WITH t, t.fqn as tfqn MATCH (tref:TYPE_REFERENCE) WHERE tref.fqn = tfqn CREATE (tref)-[:BOUND_TO]->(t)");
   }
 
   /**

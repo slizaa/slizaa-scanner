@@ -123,13 +123,10 @@ public class GraphDatabaseServiceFacade implements AutoCloseable {
     for (IParserFactory parserFactory : _parserFactories) {
 
       //
-      try (Transaction transaction = _graphDb.beginTx()) {
+      try  {
 
         //
         parserFactory.batchParseStart(systemDefinition, _graphDb, null);
-
-        //
-        transaction.success();
 
       } catch (Exception e) {
         e.printStackTrace();
