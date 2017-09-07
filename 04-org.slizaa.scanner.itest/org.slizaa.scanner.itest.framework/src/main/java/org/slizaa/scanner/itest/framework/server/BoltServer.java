@@ -5,11 +5,8 @@ import java.io.IOException;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.graphdb.factory.GraphDatabaseSettings;
 import org.neo4j.kernel.configuration.BoltConnector;
 import org.neo4j.kernel.configuration.Connector.ConnectorType;
-import org.neo4j.kernel.impl.proc.Procedures;
-import org.neo4j.kernel.internal.GraphDatabaseAPI;
 
 /**
  * <p>
@@ -40,7 +37,10 @@ public class BoltServer {
         .setConfig(bolt.listen_address, "localhost:7687").setConfig(bolt.encryption_level, "DISABLED")
         .newGraphDatabase();
 
-
+    // @Description("Location of the database plugin directory. Compiled Java JAR files that contain database " +
+    // "procedures will be loaded if they are placed in this directory.")
+    // public static final Setting<File> plugin_dir = pathSetting( "dbms.directories.plugins", "plugins" );
+    
     System.out.println("Press ENTER to quit.");
     System.in.read();
 
