@@ -86,6 +86,10 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
     //
     final SubMonitor progressMonitor = SubMonitor.convert(subMonitor, 2);
 
+    // TODO
+    // MATCH (p:PACKAGE)-[:CONTAINS]->(r:RESOURCE)-[:CONTAINS]->(t:TYPE) RETURN t
+    // MATCH (m:MODULE)-[:CONTAINS]->(p:PACKAGE)-[:CONTAINS]->(r:RESOURCE)-[:CONTAINS]->(t:TYPE) RETURN t
+    
     progressMonitor.newChild(1);
     graphDatabaseService.execute("MATCH (n:DIRECTORY)-[:CONTAINS*]->(t:PACKAGE) set n :PACKAGE");
 
