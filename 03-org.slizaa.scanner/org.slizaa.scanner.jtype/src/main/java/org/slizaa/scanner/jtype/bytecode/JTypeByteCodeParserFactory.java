@@ -11,11 +11,8 @@
 package org.slizaa.scanner.jtype.bytecode;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.slizaa.scanner.jtype.bytecode.internal.PostProcessor;
 import org.slizaa.scanner.jtype.bytecode.internal.PrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.parser.IParser;
@@ -79,32 +76,5 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
 
     //
     _datatypeNodeProvider = null;
-
-    //
-    GraphDatabaseService graphDatabaseService = (GraphDatabaseService) graphDatabase;
-
-    //
-    final SubMonitor progressMonitor = SubMonitor.convert(subMonitor, 2);
-
-    // TODO
-    // MATCH (p:PACKAGE)-[:CONTAINS]->(r:RESOURCE)-[:CONTAINS]->(t:TYPE) RETURN t
-    // MATCH (m:MODULE)-[:CONTAINS]->(p:PACKAGE)-[:CONTAINS]->(r:RESOURCE)-[:CONTAINS]->(t:TYPE) RETURN t
-    
-    progressMonitor.newChild(1);
-    graphDatabaseService.execute("MATCH (n:DIRECTORY)-[:CONTAINS*]->(t:PACKAGE) set n :PACKAGE");
-
-    progressMonitor.newChild(1);
-    graphDatabaseService.execute(
-        "MATCH (t:TYPE) WITH t, t.fqn as tfqn MATCH (tref:TYPE_REFERENCE) WHERE tref.fqn = tfqn CREATE (tref)-[:BOUND_TO]->(t)");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void beforeDeleteResourceNode(final Object node) {
-
-    //
-    PostProcessor.deleteAllJTypeRelatedNodesForResourceNode((Node) node);
   }
 }
