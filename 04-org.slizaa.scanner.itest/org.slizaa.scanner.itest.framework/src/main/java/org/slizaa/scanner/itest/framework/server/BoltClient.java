@@ -9,7 +9,6 @@ import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.types.Node;
-import org.neo4j.driver.v1.types.Type;
 import org.neo4j.driver.v1.types.TypeSystem;
 import org.neo4j.driver.v1.util.Pair;
 
@@ -49,7 +48,17 @@ public class BoltClient {
       // IMPORTANT!!!
       // StatementResult result = session.run("create index on :TYPE(fqn)");
       // StatementResult result = session.run("create index on :TYPE_REFERENCE(fqn)");
-      StatementResult result = session.run("MATCH p=(tref:TYPE_REFERENCE)-[:BOUND_TO]->(t:TYPE) RETURN count(p)");
+      // StatementResult result = session.run("CALL apoc.export.csv.all('c:/temp/krasserExport.csv',{})");
+      StatementResult result = session.run("CALL slizaa.dump('c:/temp/krasserExport.csv')");
+
+      // StatementResult result = session.run("LOAD CSV WITH HEADERS FROM 'file:///c:/temp/krasserExport.csv' AS row
+      // RETURN count(row);");
+
+      // https://stackoverflow.com/questions/28246416/neo4j-export-import-data
+
+      // StatementResult result = session.run("CALL apoc.export.cypher.all('c:/temp/krasserExport.cypher',{})");
+
+      // https://stackoverflow.com/questions/37299077/neo4j-importing-local-csv-file
 
       int count = 0;
 
@@ -85,7 +94,7 @@ public class BoltClient {
             break;
           }
           case "INTEGER": {
-            System.out.println("INTEGER: " + pair.value().asInt());
+            System.out.println("INTEGER: " + pair.value().asLong());
             break;
           }
           default:
