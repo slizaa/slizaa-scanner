@@ -34,9 +34,7 @@ import org.slizaa.scanner.api.model.resource.IDirectoryNode;
 import org.slizaa.scanner.api.model.resource.IModuleNode;
 import org.slizaa.scanner.api.model.resource.IResourceNode;
 import org.slizaa.scanner.api.model.resource.ResourceType;
-import org.slizaa.scanner.importer.internal.LabelAndRelationshipCache;
 import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
 import org.slizaa.scanner.spi.content.IResource;
 
 /**
@@ -138,7 +136,6 @@ public class BatchInserterFacade implements AutoCloseable {
       resourceNode.putProperty(IResourceNode.PROPERTY_PATH, resource.getPath());
       resourceNode.putProperty(IResourceNode.PROPERTY_ROOT, resource.getRoot());
       resourceNode.putProperty(IResourceNode.PROPERTY_PATH, resource.getPath());
-      resourceNode.putProperty(IResourceNode.PROPERTY_TIMESTAMP, resource.getTimestamp());
       resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, false);
       resourceNode.putProperty(IResourceNode.PROPERTY_ANALYSE_REFERENCES, true);
       parentModuleNode.addRelationship(resourceNode, CoreModelRelationshipType.CONTAINS);
@@ -181,22 +178,22 @@ public class BatchInserterFacade implements AutoCloseable {
     return Collections.unmodifiableMap(_directoriesMap);
   }
 
-  /**
-   * <p>
-   * </p>
-   * 
-   * @param systemDefinition
-   * @param storedModulesMap
-   */
-  public void setupModuleNodes(IContentDefinitions systemDefinition, Map<String, IModifiableNode> storedModulesMap) {
-
-    //
-    for (IContentDefinition contentDefinition : systemDefinition.getContentDefinitions()) {
-      if (storedModulesMap.containsKey(contentDefinition.getId())) {
-        _modulesMap.put(contentDefinition.getId(), storedModulesMap.remove(contentDefinition.getId()));
-      }
-    }
-  }
+//  /**
+//   * <p>
+//   * </p>
+//   * 
+//   * @param systemDefinition
+//   * @param storedModulesMap
+//   */
+//  public void setupModuleNodes(IContentDefinitions systemDefinition, Map<String, IModifiableNode> storedModulesMap) {
+//
+//    //
+//    for (IContentDefinition contentDefinition : systemDefinition.getContentDefinitions()) {
+//      if (storedModulesMap.containsKey(contentDefinition.getId())) {
+//        _modulesMap.put(contentDefinition.getId(), storedModulesMap.remove(contentDefinition.getId()));
+//      }
+//    }
+//  }
 
   public void clearResourceAndDirectoriesMap() {
     _resourcesMap.clear();

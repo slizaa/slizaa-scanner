@@ -55,6 +55,11 @@
 				<version>1.7.25</version>
 			</dependency>
 			<dependency>
+				<groupId>com.beust</groupId>
+				<artifactId>jcommander</artifactId>
+				<version>1.72</version>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>common</artifactId>
 				<version>3.6.200-v20130402-1505</version>

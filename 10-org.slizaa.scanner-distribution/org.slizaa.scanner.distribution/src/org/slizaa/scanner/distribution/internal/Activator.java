@@ -4,6 +4,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.api.importer.IModelImporterFactory;
+import org.slizaa.scanner.cmdline.server.GraphDbFactory;
 import org.slizaa.scanner.importer.ModelImporterFactory;
 import org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory;
 import org.slizaa.scanner.spi.parser.IParserFactory;

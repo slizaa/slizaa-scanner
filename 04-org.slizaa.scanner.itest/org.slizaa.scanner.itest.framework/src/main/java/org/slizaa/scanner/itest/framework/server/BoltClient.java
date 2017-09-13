@@ -42,14 +42,13 @@ public class BoltClient {
       // Auto-commit transactions are a quick and easy way to wrap a read.
       // StatementResult result = session.run("MATCH (t:TYPE) WITH t, t.fqn as tfqn MATCH (tref:TYPE_REFERENCE) WHERE
       // tref.fqn = tfqn CREATE (tref)-[:BOUND_TO]->(t) ");
-      // StatementResult result = session.run("MATCH (t:TYPE) MATCH (tref:TYPE_REFERENCE) WHERE t.fqn = tref.fqn return
-      // t, tref");
+      StatementResult result = session.run("MATCH (t:TYPE) return t.fqn");
 
       // IMPORTANT!!!
       // StatementResult result = session.run("create index on :TYPE(fqn)");
       // StatementResult result = session.run("create index on :TYPE_REFERENCE(fqn)");
       // StatementResult result = session.run("CALL apoc.export.csv.all('c:/temp/krasserExport.csv',{})");
-      StatementResult result = session.run("CALL slizaa.dump('c:/temp/krasserExport.csv')");
+      // StatementResult result = session.run("CALL slizaa.dump('c:/temp/krasserExport.csv')");
 
       // StatementResult result = session.run("LOAD CSV WITH HEADERS FROM 'file:///c:/temp/krasserExport.csv' AS row
       // RETURN count(row);");

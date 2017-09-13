@@ -49,8 +49,8 @@ public class Resource implements IResource, IPathIdentifier {
    * @param path
    */
   public Resource(String root, String path) {
-   checkNotNull(root);
-   checkNotNull(path);
+    checkNotNull(root);
+    checkNotNull(path);
 
     _root = normalize(root);
     _path = path;
@@ -97,8 +97,8 @@ public class Resource implements IResource, IPathIdentifier {
     // jar file?
     if (getRoot().endsWith(".jar") || getRoot().endsWith(".zip")) {
 
-      try {
-        ZipFile zipFile = new ZipFile(new File(getRoot()));
+      try (ZipFile zipFile = new ZipFile(new File(getRoot())); ) {
+        
         ZipEntry zipEntry = zipFile.getEntry(getPath());
 
         InputStream is = zipFile.getInputStream(zipEntry);
@@ -113,7 +113,6 @@ public class Resource implements IResource, IPathIdentifier {
         byte[] result = buffer.toByteArray();
 
         is.close();
-        zipFile.close();
 
         // return the result
         return result;
@@ -151,35 +150,13 @@ public class Resource implements IResource, IPathIdentifier {
         //
         return result;
 
-      } catch (Exception e) {
-        throw new RuntimeException("FEHLER");
+      } catch (Exception ex) {
+        throw new RuntimeException("Error while parsing '" + getRoot() + "' with path '" + getPath() + "': " + ex, ex);
       }
 
     } else {
-      throw new RuntimeException("FEHLER");
+      throw new RuntimeException("Error while parsing '" + getRoot() + "' with path '" + getPath() + "'.");
     }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public long getTimestamp() {
-
-    // jar file?
-    if (getRoot().endsWith(".jar") || getRoot().endsWith(".zip")) {
-      try (ZipFile zipFile =  new ZipFile(getRoot())) {
-        ZipEntry zipEntry = zipFile.getEntry(getPath());
-        return zipEntry.getTime();
-      } catch (Exception e) {
-      }
-    } else {
-      //
-      return new File(getRoot(), getPath()).lastModified();
-    }
-
-    //
-    return -1;
   }
 
   /**

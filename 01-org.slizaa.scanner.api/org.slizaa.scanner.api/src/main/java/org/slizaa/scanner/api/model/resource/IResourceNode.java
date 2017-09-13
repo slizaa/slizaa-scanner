@@ -54,14 +54,6 @@ public interface IResourceNode extends INode {
 
   /**
    * <p>
-   * Returns the timestamp of the underlying resource.
-   * </p>
-   */
-  public static final String PROPERTY_TIMESTAMP          = "timestamp";
-
-
-  /**
-   * <p>
    * Returns the type of the resource (either {@link ResourceType#SOURCE} or {@link ResourceType#BINARY}.
    * </p>
    * 

@@ -45,15 +45,6 @@ public interface IResource extends IPathIdentifier {
 
   /**
    * <p>
-   * The 'last-changed' timestamp of the underlying resource.
-   * </p>
-   * 
-   * @return the 'last-changed' timestamp of the underlying resource.
-   */
-  long getTimestamp();
-
-  /**
-   * <p>
    * Returns the content of this resource.
    * </p>
    * 

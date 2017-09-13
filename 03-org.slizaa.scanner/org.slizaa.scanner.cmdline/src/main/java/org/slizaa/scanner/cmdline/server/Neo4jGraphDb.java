@@ -1,4 +1,4 @@
-package org.slizaa.scanner.distribution.internal;
+package org.slizaa.scanner.cmdline.server;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,26 +26,36 @@ public class Neo4jGraphDb implements IGraphDb {
    * <p>
    * Creates a new instance of type {@link Neo4jGraphDb}.
    * </p>
-   *
-   * @param slizaaProject
+   * 
    * @param databaseService
    * @param port
+   * @param slizaaProject
    */
-  public Neo4jGraphDb(Object userObject, GraphDatabaseService databaseService, int port) {
-    _userObject = checkNotNull(userObject);
+  public Neo4jGraphDb(GraphDatabaseService databaseService, int port, Object userObject) {
     _databaseService = checkNotNull(databaseService);
     _port = port;
+    _userObject = userObject;
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getUserObject(Class<T> type) {
 
-    if (checkNotNull(type).isAssignableFrom(_userObject.getClass())) {
+    //
+    if (_userObject != null && checkNotNull(type).isAssignableFrom(_userObject.getClass())) {
       return (T) _userObject;
     }
 
+    //
     return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public <T> boolean hasUserObject(Class<T> userObject) {
+    return getUserObject(userObject) != null;
   }
 
   /**

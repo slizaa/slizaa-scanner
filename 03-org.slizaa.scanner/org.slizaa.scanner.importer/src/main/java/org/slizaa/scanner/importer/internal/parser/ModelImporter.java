@@ -16,11 +16,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -29,15 +26,15 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.api.importer.IModelImporter;
 import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.importer.internal.ZipFileCache;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IContentDefinitions;
-import org.slizaa.scanner.spi.content.IPathIdentifier;
 import org.slizaa.scanner.spi.content.IResource;
 import org.slizaa.scanner.spi.parser.IParser;
 import org.slizaa.scanner.spi.parser.IParserFactory;
@@ -57,27 +54,25 @@ import com.google.common.cache.LoadingCache;
 public class ModelImporter implements IModelImporter {
 
   /** THREAD_COUNT */
-  static final int                                 THREAD_COUNT = Runtime.getRuntime().availableProcessors();
+  static final int            THREAD_COUNT = Runtime.getRuntime().availableProcessors();
 
   /** - */
-  private final Logger                             logger       = LoggerFactory.getLogger(ModelImporter.class);
+  private final Logger        logger       = LoggerFactory.getLogger(ModelImporter.class);
 
   /** - */
-  private IContentDefinitions                      _systemDefinition;
+  private IContentDefinitions _contentDefinitions;
 
   /** - */
-  private File                                     _directory;
+  private File                _directory;
 
   /** - */
-  private IParserFactory[]                         _parserFactories;
+  private IParserFactory[]    _parserFactories;
 
-  private Map<IPathIdentifier, StoredResourceNode> _storedResourcesMap;
+  /** - */
+  private List<IProblem>      _result;
 
-  private Map<String, IModifiableNode>             _storedModulesMap;
-
-  private List<IProblem>                           _result;
-
-  private ExecutorService                          _executorService;
+  /** - */
+  private ExecutorService     _executorService;
 
   /**
    * <p>
@@ -91,7 +86,7 @@ public class ModelImporter implements IModelImporter {
     checkNotNull(parserFactories);
 
     // set the project
-    _systemDefinition = systemDefinition;
+    _contentDefinitions = systemDefinition;
     _directory = directory;
     _parserFactories = parserFactories;
   }
@@ -100,7 +95,7 @@ public class ModelImporter implements IModelImporter {
    * {@inheritDoc}
    */
   public final IContentDefinitions getSystemDefinition() {
-    return _systemDefinition;
+    return _contentDefinitions;
   }
 
   /**
@@ -135,11 +130,11 @@ public class ModelImporter implements IModelImporter {
     try {
 
       //
-      // Step 1: Read from underlying database
+      // Step 1: Pre-Processing
       //
-      monitor.subTask("Reading from database...");
-      readFromDatabase(progressMonitor.newChild(33));
-      logger.debug("Finished reading from database: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+      monitor.subTask("Pre-Processing...");
+      startBatchParse(progressMonitor.newChild(33));
+      logger.debug("Finished pre-processing: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
       //
       // Step 2: Parse elements
@@ -152,7 +147,7 @@ public class ModelImporter implements IModelImporter {
       // Step 3: Post-Processing
       //
       monitor.subTask("Post-Processing...");
-      postProcess(progressMonitor.newChild(33));
+      stopBatchParse(progressMonitor.newChild(33));
       logger.debug("Finished post-processing: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
     } finally {
@@ -163,51 +158,19 @@ public class ModelImporter implements IModelImporter {
     return _result;
   }
 
-  private void postProcess(final SubMonitor progressMonitor) {
-    try (GraphDatabaseServiceFacade databaseServiceFacade = new GraphDatabaseServiceFacade(_directory.getAbsolutePath(),
-        _parserFactories)) {
-
-      // delete old resources
-      progressMonitor.subTask("Deleting old resources...");
-
-      IProgressMonitor subMonitor = progressMonitor.newChild(10);
-      subMonitor.beginTask("Deleting old resources...", _storedResourcesMap.size());
-      databaseServiceFacade.deleteResourceNodes(_storedResourcesMap.values(), subMonitor);
-
-      // delete old modules
-      subMonitor = progressMonitor.newChild(3);
-      subMonitor.beginTask("Deleting old modules...", _storedModulesMap.size());
-      databaseServiceFacade.deleteModulesNodes(_storedModulesMap.values(), subMonitor);
-
-      //
-      progressMonitor.subTask("Post-processing model...");
-
-      subMonitor = progressMonitor.newChild(20);
-      subMonitor.beginTask("Post-processing model...", _storedModulesMap.size());
-      databaseServiceFacade.batchParseStop(_systemDefinition, subMonitor);
-    }
-  }
-
   private void internalParse(final SubMonitor submonitor) {
 
     // create the sub-monitor
     try (BatchInserterFacade batchInserter = new BatchInserterFacade(getDatabaseDirectory().getAbsolutePath())) {
-
-      //
-      batchInserter.setupModuleNodes(_systemDefinition, _storedModulesMap);
-
-      // activate the zip cache. We need this here to keep the
-      // zip files open while parsing the content
-      ZipFileCache.instance().activateCache();
 
       // iterate over all the content entries
       _executorService = Executors.newFixedThreadPool(THREAD_COUNT);
 
       //
       final SubMonitor progressMonitor = SubMonitor.convert(submonitor,
-          _systemDefinition.getContentDefinitions().size());
+          _contentDefinitions.getContentDefinitions().size());
 
-      for (IContentDefinition contentDefinition : _systemDefinition.getContentDefinitions()) {
+      for (IContentDefinition contentDefinition : _contentDefinitions.getContentDefinitions()) {
 
         //
         for (IParserFactory parserFactory : _parserFactories) {
@@ -223,24 +186,14 @@ public class ModelImporter implements IModelImporter {
         batchInserter.clearResourceAndDirectoriesMap();
 
         //
-        Set<IResource> newAndModifiedBinaryResources = ModelImporterHelper
-            .computeNewAndModifiedResources(contentDefinition.getBinaryResources(), _storedResourcesMap);
-
-        //
-        Set<IResource> newAndModifiedSourceResources = Collections.emptySet();
-
-        //
-        if (AnalyzeMode.BINARIES_AND_SOURCES.equals(contentDefinition.getAnalyzeMode())) {
-          newAndModifiedSourceResources = ModelImporterHelper
-              .computeNewAndModifiedResources(contentDefinition.getSourceResources(), _storedResourcesMap);
-        }
-
-        //
         IModifiableNode moduleNode = batchInserter.getOrCreateModuleNode(contentDefinition);
 
         //
-        _result = multiThreadedParse(contentDefinition, moduleNode, newAndModifiedBinaryResources,
-            newAndModifiedSourceResources, progressMonitor.newChild(1), batchInserter);
+        _result = multiThreadedParse(contentDefinition, moduleNode, contentDefinition.getBinaryResources(),
+            AnalyzeMode.BINARIES_AND_SOURCES.equals(contentDefinition.getAnalyzeMode())
+                ? contentDefinition.getSourceResources()
+                : Collections.emptySet(),
+            progressMonitor.newChild(1), batchInserter);
 
         //
         moduleNode.clearRelationships();
@@ -256,9 +209,11 @@ public class ModelImporter implements IModelImporter {
         }
       }
 
-    } finally {
-      // deactivate the zip cache.
-      ZipFileCache.instance().deactivateCache();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    finally {
 
       //
       logger.debug("Save to disk...");
@@ -278,19 +233,58 @@ public class ModelImporter implements IModelImporter {
    * 
    * @param progressMonitor
    */
-  private void readFromDatabase(final SubMonitor progressMonitor) {
+  private void startBatchParse(final SubMonitor progressMonitor) {
 
     //
-    try (GraphDatabaseServiceFacade databaseServiceFacade = new GraphDatabaseServiceFacade(_directory.getAbsolutePath(),
-        _parserFactories)) {
+    GraphDatabaseService graphDatabaseService = new GraphDatabaseFactory()
+        .newEmbeddedDatabaseBuilder(getDatabaseDirectory()).newGraphDatabase();
 
-      progressMonitor.subTask("Preparing model...");
-      databaseServiceFacade.batchParseStart(_systemDefinition, progressMonitor.newChild(10));
+    // create the sub-monitor
+    final SubMonitor subMonitor = SubMonitor.convert(progressMonitor, _parserFactories.length);
 
-      progressMonitor.subTask("Reading from datastore...");
-      _storedResourcesMap = databaseServiceFacade.readStoredResourceNodes(progressMonitor.newChild(20));
-      _storedModulesMap = databaseServiceFacade.readStoredModulesNodes(progressMonitor.newChild(3));
+    //
+    for (IParserFactory parserFactory : _parserFactories) {
+
+      //
+      try {
+        parserFactory.batchParseStart(_contentDefinitions, graphDatabaseService, subMonitor);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
+
+    //
+    graphDatabaseService.shutdown();
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param progressMonitor
+   */
+  private void stopBatchParse(SubMonitor progressMonitor) {
+
+    //
+    GraphDatabaseService graphDatabaseService = new GraphDatabaseFactory()
+        .newEmbeddedDatabaseBuilder(getDatabaseDirectory()).newGraphDatabase();
+
+    // create the sub-monitor
+    final SubMonitor subMonitor = SubMonitor.convert(progressMonitor, _parserFactories.length);
+
+    //
+    for (IParserFactory parserFactory : _parserFactories) {
+
+      //
+      try {
+        parserFactory.batchParseStop(_contentDefinitions, graphDatabaseService, subMonitor);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+
+    //
+    graphDatabaseService.shutdown();
   }
 
   /**
@@ -359,7 +353,7 @@ public class ModelImporter implements IModelImporter {
 
         IParser[] parsers = new IParser[_parserFactories.length];
         for (int j = 0; j < _parserFactories.length; j++) {
-          parsers[j] = _parserFactories[j].createParser(_systemDefinition);
+          parsers[j] = _parserFactories[j].createParser(_contentDefinitions);
         }
 
         jobs[i] = new ParseJob(contentEntry, moduleBean, packageFragmentsParts[i], parsers, batchInserter,

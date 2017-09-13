@@ -53,11 +53,6 @@ public class Resource implements IResource {
   }
 
   @Override
-  public long getTimestamp() {
-    return 0;
-  }
-
-  @Override
   public byte[] getContent() {
     return _supplier.get();
   }
