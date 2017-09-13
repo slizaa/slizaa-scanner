@@ -1,1 +1,0 @@
-Export-Package: org.slizaa.scanner.spi.*, org.slizaa.scanner.api.importer, org.slizaa.scanner.api.graphdb, org.slizaa.scanner.api.model, org.slizaa.scanner.api.model.resource
