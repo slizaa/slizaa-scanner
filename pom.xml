@@ -12,7 +12,7 @@
 	<modules>
 		<module>slizaa-scanner-core</module>
 		<module>slizaa-scanner-jtype/org.slizaa.scanner.jtype</module>
-		<module>slizaa-scanner-assembly</module>
+        <module>slizaa-scanner-assembly</module>
 	</modules>
 
 </project>

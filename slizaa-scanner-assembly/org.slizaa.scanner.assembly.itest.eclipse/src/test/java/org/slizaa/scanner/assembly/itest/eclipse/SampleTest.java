@@ -9,6 +9,8 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,6 +24,7 @@ import org.ops4j.pax.exam.spi.reactors.PerMethod;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.wiring.BundleWiring;
+import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.assembly.itest.eclipse.aether.ResolveArtifact;
 import org.slizaa.scanner.spi.parser.IParserFactory;
@@ -31,6 +34,11 @@ import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
 public class SampleTest {
+
+  {
+    System.setProperty("org.ops4j.pax.url.mvn.localRepository",
+        System.getProperty("user.home") + File.separator + ".m2" + File.separator + "repository");
+  }
 
   @Inject
   private BundleContext   bundleContext;
@@ -43,7 +51,7 @@ public class SampleTest {
 
     //
     File jtypeFile = ResolveArtifact.resolve("org.slizaa.scanner.jtype", "org.slizaa.scanner.jtype", "1.0.0-SNAPSHOT");
-    
+
     //
     return options(mavenBundle("org.assertj", "assertj-core", "3.8.0"), junitBundles(),
 
@@ -59,8 +67,8 @@ public class SampleTest {
         wrappedBundle(mavenBundle("org.neo4j.driver", "neo4j-java-driver", "1.4.3")),
 
         //
-        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.eclipse", "1.0.0-SNAPSHOT"),
         mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.api", "1.0.0-SNAPSHOT"),
+        mavenBundle("org.slizaa.scanner.assembly", "org.slizaa.scanner.core.eclipse", "1.0.0-SNAPSHOT"),
 
         //
         bundle("reference:" + jtypeFile.toURI().toString()),
@@ -79,23 +87,12 @@ public class SampleTest {
     assertThat(jtypeBundle).isNotNull();
     ClassLoader classLoader = jtypeBundle.adapt(BundleWiring.class).getClassLoader();
 
-    new FastClasspathScanner().verbose()
 
-        //
-        .overrideClassLoaders(classLoader).matchClassesImplementing(IParserFactory.class, matchingClass -> {
-          System.out.println("********************************");
-          System.out.println("Subclass of Widget: " + matchingClass);
-          System.out.println("********************************");
-        })
 
-        // Actually perform the scan (nothing will happen without this call)
-        .scan();
-
-    System.out.println("BUMM");
-    // //
-    // IGraphDb graphDb = graphDbFactory.createGraphDb(5001, new File("D:\\_schnurz"), null);
-    // assertThat(graphDb).isNotNull();
-    //
+    // TODO: TEMP DIR
+    IGraphDb graphDb = graphDbFactory.createGraphDb(5001, new File("C:\\_schnurz"), null);
+    assertThat(graphDb).isNotNull();
+    
     // //
     // Config config = Config.build().withEncryptionLevel(EncryptionLevel.NONE).toConfig();
     // Driver driver = GraphDatabase.driver("bolt://localhost:5001", config);

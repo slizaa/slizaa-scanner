@@ -2,24 +2,23 @@ package org.slizaa.scanner.core.impl.plugins;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slizaa.scanner.spi.parser.IParserFactory;
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
-import io.github.lukehutch.fastclasspathscanner.matchprocessor.ImplementingClassMatchProcessor;
 
 public class SlizaaPluginRegistry {
 
   /** - */
-  private List<String>      _serverExtensions;
+  private List<String>                          _serverExtensions;
 
   /** - */
-  private List<String>      _parserFactories;
+  private List<Class<? extends IParserFactory>> _parserFactories;
 
   /** - */
-  private List<ClassLoader> _classLoaders;
+  private List<ClassLoader>                     _classLoaders;
 
   /**
    * <p>
@@ -31,6 +30,7 @@ public class SlizaaPluginRegistry {
 
     //
     _classLoaders = checkNotNull(classLoaders);
+    _parserFactories = new LinkedList<>();
   }
 
   /**
@@ -39,22 +39,25 @@ public class SlizaaPluginRegistry {
    */
   public void initialize() {
 
+    //
     new FastClasspathScanner("-org.slizaa.scanner.spi.parser")
+
+        // set verbose
         // .verbose()
-        .matchClassesImplementing(IParserFactory.class, new ImplementingClassMatchProcessor<IParserFactory>() {
-          @Override
-          public void processMatch(Class<? extends IParserFactory> matchingClass) {
-            System.out.println("********************************");
-            System.out.println("Subclass of Widget: " + matchingClass);
-            System.out.println("********************************");
-          }
-        })
-        //
+
+        // set the classloader to scan
         .overrideClassLoaders(_classLoaders.toArray(new ClassLoader[0]))
+
         //
-        // .registerClassLoaderHandler(EquinoxClassLoaderHandler.class)
+        .matchClassesImplementing(IParserFactory.class, matchingClass -> {
+          _parserFactories.add(matchingClass);
+        })
+
         // Actually perform the scan (nothing will happen without this call)
         .scan();
+
+    //
+    System.out.println(_parserFactories);
 
     //
     // try {

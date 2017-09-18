@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.slizaa.scanner</groupId>
-		<artifactId>org.slizaa.scanner.parent</artifactId>
+		<groupId>org.slizaa.scanner.assembly</groupId>
+		<artifactId>org.slizaa.scanner.assembly.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
@@ -44,23 +44,23 @@
 	<!-- -->
 	<dependencies>
 		<dependency>
-			<groupId>org.slizaa.scanner</groupId>
-			<artifactId>org.slizaa.scanner.api</artifactId>
+			<groupId>org.slizaa.scanner.core</groupId>
+			<artifactId>org.slizaa.scanner.core.api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner</groupId>
-			<artifactId>org.slizaa.scanner.importer</artifactId>
+			<groupId>org.slizaa.scanner.core</groupId>
+			<artifactId>org.slizaa.scanner.core.impl.importer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner</groupId>
+			<groupId>org.slizaa.scanner.jtype</groupId>
 			<artifactId>org.slizaa.scanner.jtype</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner</groupId>
-			<artifactId>org.slizaa.scanner.cmdline</artifactId>
+			<groupId>org.slizaa.scanner.core</groupId>
+			<artifactId>org.slizaa.scanner.core.impl.cmdline</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
