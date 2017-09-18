@@ -6,7 +6,6 @@
 	<artifactId>org.slizaa.scanner.jtype</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -60,97 +59,34 @@
 	<build>
 		<plugins>
 
+			<!-- configure the maven bundle plugin -->
 			<plugin>
-				<groupId>org.assertj</groupId>
-				<artifactId>assertj-assertions-generator-maven-plugin</artifactId>
-				<version>2.0.0</version>
-
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
-						<phase>generate-test-sources</phase>
 						<goals>
-							<goal>generate-assertions</goal>
+							<goal>bnd-process</goal>
 						</goals>
 					</execution>
 				</executions>
-
 				<configuration>
-
-					<classes>
-						<param>org.slizaa.scanner.api.model.INode</param>
-						<param>org.slizaa.scanner.api.model.IRelationship</param>
-					</classes>
-
-					<hierarchical>true</hierarchical>
-
-					<entryPointClassPackage>org.assertj</entryPointClassPackage>
-
-					<targetDir>${project.build.directory}/generated-assertions</targetDir>
-
-					<generateAssertions>true</generateAssertions>
-					<generateBddAssertions>true</generateBddAssertions>
-					<generateSoftAssertions>true</generateSoftAssertions>
-					<generateJUnitSoftAssertions>true</generateJUnitSoftAssertions>
-
+					<bnd><![CDATA[
+        				Bundle-SymbolicName: ${artifactId}
+        				Slizaa-Scanner-Extension: true
+        				]]></bnd>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<useDefaultManifestFile>true</useDefaultManifestFile>
 				</configuration>
 			</plugin>
 
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<excludeScope>provided</excludeScope>
-							<outputDirectory>${project.build.directory}/libs</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.assertj</groupId>
-										<artifactId>
-											assertj-assertions-generator-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.0.0,)
-										</versionRange>
-										<goals>
-											<goal>
-												generate-assertions
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 </project>

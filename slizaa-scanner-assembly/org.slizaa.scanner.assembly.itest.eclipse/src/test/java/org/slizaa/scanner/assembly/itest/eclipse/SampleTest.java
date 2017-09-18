@@ -2,6 +2,7 @@ package org.slizaa.scanner.assembly.itest.eclipse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.ops4j.pax.exam.CoreOptions.bootDelegationPackages;
+import static org.ops4j.pax.exam.CoreOptions.bundle;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -13,18 +14,19 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.neo4j.driver.v1.Config;
-import org.neo4j.driver.v1.Config.EncryptionLevel;
-import org.neo4j.driver.v1.Driver;
-import org.neo4j.driver.v1.GraphDatabase;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.slizaa.scanner.api.graphdb.IGraphDb;
+import org.osgi.framework.wiring.BundleWiring;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
+import org.slizaa.scanner.assembly.itest.eclipse.aether.ResolveArtifact;
+import org.slizaa.scanner.spi.parser.IParserFactory;
+
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -39,6 +41,10 @@ public class SampleTest {
   @Configuration
   public Option[] config() {
 
+    //
+    File jtypeFile = ResolveArtifact.resolve("org.slizaa.scanner.jtype", "org.slizaa.scanner.jtype", "1.0.0-SNAPSHOT");
+    
+    //
     return options(mavenBundle("org.assertj", "assertj-core", "3.8.0"), junitBundles(),
 
         //
@@ -54,19 +60,58 @@ public class SampleTest {
 
         //
         mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.eclipse", "1.0.0-SNAPSHOT"),
-        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.api", "1.0.0-SNAPSHOT"));
+        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.api", "1.0.0-SNAPSHOT"),
+
+        //
+        bundle("reference:" + jtypeFile.toURI().toString()),
+
+        //
+        mavenBundle("io.github.lukehutch", "fast-classpath-scanner", "2.4.7")
+
+    );
   }
 
   @Test
   public void testDatabaseAndDriver() {
 
     //
-    IGraphDb graphDb = graphDbFactory.createGraphDb(5001, new File("D:\\_schnurz"));
-    assertThat(graphDb).isNotNull();
+    Bundle jtypeBundle = getBundle("org.slizaa.scanner.jtype");
+    assertThat(jtypeBundle).isNotNull();
+    ClassLoader classLoader = jtypeBundle.adapt(BundleWiring.class).getClassLoader();
 
+    new FastClasspathScanner().verbose()
+
+        //
+        .overrideClassLoaders(classLoader).matchClassesImplementing(IParserFactory.class, matchingClass -> {
+          System.out.println("********************************");
+          System.out.println("Subclass of Widget: " + matchingClass);
+          System.out.println("********************************");
+        })
+
+        // Actually perform the scan (nothing will happen without this call)
+        .scan();
+
+    System.out.println("BUMM");
+    // //
+    // IGraphDb graphDb = graphDbFactory.createGraphDb(5001, new File("D:\\_schnurz"), null);
+    // assertThat(graphDb).isNotNull();
     //
-    Config config = Config.build().withEncryptionLevel(EncryptionLevel.NONE).toConfig();
-    Driver driver = GraphDatabase.driver("bolt://localhost:5001", config);
-    assertThat(driver).isNotNull();
+    // //
+    // Config config = Config.build().withEncryptionLevel(EncryptionLevel.NONE).toConfig();
+    // Driver driver = GraphDatabase.driver("bolt://localhost:5001", config);
+    // assertThat(driver).isNotNull();
+  }
+
+  /**
+   * @param symbolicName
+   * @return
+   */
+  protected Bundle getBundle(String symbolicName) {
+    for (Bundle bundle : bundleContext.getBundles()) {
+      if (bundle.getSymbolicName().equals(symbolicName)) {
+        return bundle;
+      }
+    }
+    return null;
   }
 }

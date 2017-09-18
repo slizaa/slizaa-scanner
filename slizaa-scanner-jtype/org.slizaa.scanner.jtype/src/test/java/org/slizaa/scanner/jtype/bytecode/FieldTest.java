@@ -1,6 +1,5 @@
 package org.slizaa.scanner.jtype.bytecode;
 
-import static org.assertj.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
@@ -24,7 +23,7 @@ public class FieldTest extends AbstractByteBuddyBytecodeTest {
     //
     INode fieldNode = node.getRelationships(CoreModelRelationshipType.CONTAINS).get(0).getTargetBean();
 
-    assertThat(fieldNode).hasOnlyLabels(JTypeLabel.FIELD);
+    assertThat(fieldNode.getLabels()).containsOnly(JTypeLabel.FIELD);
     assertThat(fieldNode.getProperty("name")).isEqualTo("hurz");
   }
 }

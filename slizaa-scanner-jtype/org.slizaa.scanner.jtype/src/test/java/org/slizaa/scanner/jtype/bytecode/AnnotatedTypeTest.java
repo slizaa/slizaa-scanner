@@ -1,6 +1,5 @@
 package org.slizaa.scanner.jtype.bytecode;
 
-import static org.assertj.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
@@ -33,7 +32,7 @@ public class AnnotatedTypeTest extends AbstractByteBuddyBytecodeTest {
 
     System.out.println(annotationNode);
 
-    assertThat(annotationNode).hasLabels(JTypeLabel.ANNOTATION_INSTANCE);
+    assertThat(annotationNode.getLabels()).containsOnly(JTypeLabel.ANNOTATION_INSTANCE);
     // assertThat(fieldNode.getProperty("name")).isEqualTo("hurz");
   }
 }

@@ -1,6 +1,5 @@
 package org.slizaa.scanner.jtype.bytecode;
 
-import static org.assertj.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class ConstructorTest extends AbstractByteBuddyBytecodeTest {
     //
     INode fieldNode = node.getRelationships(CoreModelRelationshipType.CONTAINS).get(0).getTargetBean();
 
-    assertThat(fieldNode).hasOnlyLabels(JTypeLabel.METHOD, JTypeLabel.CONSTRUCTOR);
+    assertThat(fieldNode.getLabels()).containsOnly(JTypeLabel.METHOD, JTypeLabel.CONSTRUCTOR);
     assertThat(fieldNode.getProperty("name")).isEqualTo("<init>");
   }
 }

@@ -1,5 +1,0 @@
-{
-	"id": "org.slizaa.scanner.jtype",
-	"serverExtensions": ["org.slizaa.scanner.jtype.procedures.JTypeProcedures"],
-	"parserFactories": ["org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory"]
-}
