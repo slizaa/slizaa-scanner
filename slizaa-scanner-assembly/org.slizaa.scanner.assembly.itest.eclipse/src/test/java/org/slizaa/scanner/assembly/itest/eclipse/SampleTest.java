@@ -27,10 +27,9 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.wiring.BundleWiring;
 import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
-import org.slizaa.scanner.assembly.itest.eclipse.aether.ResolveArtifact;
+import org.slizaa.scanner.core.itestfwk.aether.AetherUtils;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -51,7 +50,8 @@ public class SampleTest {
   public Option[] config() {
 
     //
-    File jtypeFile = ResolveArtifact.resolve("org.slizaa.scanner.jtype", "org.slizaa.scanner.jtype", "1.0.0-SNAPSHOT");
+    File jtypeFile = AetherUtils.resolve("org.slizaa.scanner.jtype", "org.slizaa.scanner.jtype", "1.0.0-SNAPSHOT", null,
+        "jar");
 
     //
     return options(mavenBundle("org.assertj", "assertj-core", "3.8.0"), junitBundles(),

@@ -16,7 +16,6 @@
 
 	<modules>
 		<module>org.slizaa.scanner.jtype</module>
-		<module>org.slizaa.scanner.jtype.itestfwk</module>
 		<module>org.slizaa.scanner.jtype.itest</module>
 	</modules>
 

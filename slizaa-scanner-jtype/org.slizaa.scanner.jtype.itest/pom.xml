@@ -7,7 +7,7 @@
 		<artifactId>org.slizaa.scanner.jtype.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>org.slizaa.scanner.jtype.itest</artifactId>
 
 	<dependencies>
@@ -22,14 +22,35 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.slizaa.scanner.core</groupId>
+			<artifactId>org.slizaa.scanner.core.impl.importer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.slizaa.scanner.jtype</groupId>
 			<artifactId>org.slizaa.scanner.jtype</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner.jtype</groupId>
-			<artifactId>org.slizaa.scanner.jtype.itestfwk</artifactId>
+			<groupId>org.slizaa.scanner.core</groupId>
+			<artifactId>org.slizaa.scanner.core.itestfwk</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-bolt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j.driver</groupId>
+			<artifactId>neo4j-java-driver</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
