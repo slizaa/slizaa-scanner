@@ -1,11 +1,10 @@
 package org.slizaa.scanner.core.impl.plugins;
 
-import java.net.URL;
-import java.net.URLClassLoader;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.slizaa.scanner.spi.parser.IParserFactory;
 
 public class PluginRegistryTest {
 
@@ -17,14 +16,17 @@ public class PluginRegistryTest {
   public void testPluginRegistry() {
 
     //
-    URL apiURL = IParserFactory.class.getProtectionDomain().getCodeSource().getLocation();
-    URL testClassesURL = this.getClass().getProtectionDomain().getCodeSource().getLocation();
-
-    System.out.println(testClassesURL);
+    SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry(
+        Arrays.asList(this.getClass().getClassLoader(), null));
+    pluginRegistry.initialize();
 
     //
-    SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry(
-        Arrays.asList(new URLClassLoader(new URL[] { apiURL, testClassesURL }, null)));
-    pluginRegistry.initialize();
+    assertThat(pluginRegistry.getGraphDbUserFunctions()).containsExactlyInAnyOrder(DummyFunctionsClass.class);
+
+    //
+    assertThat(pluginRegistry.getGraphDbProcedures()).containsExactlyInAnyOrder(DummyProceduresClass.class);
+
+    //
+    assertThat(pluginRegistry.getParserFactories()).containsExactlyInAnyOrder(DummyParserFactory.class);
   }
 }

@@ -9,13 +9,17 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.neo4j.driver.v1.Config;
+import org.neo4j.driver.v1.Config.EncryptionLevel;
+import org.neo4j.driver.v1.Driver;
+import org.neo4j.driver.v1.GraphDatabase;
+import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.v1.StatementResult;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
@@ -27,9 +31,6 @@ import org.osgi.framework.wiring.BundleWiring;
 import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.assembly.itest.eclipse.aether.ResolveArtifact;
-import org.slizaa.scanner.spi.parser.IParserFactory;
-
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -67,6 +68,7 @@ public class SampleTest {
         wrappedBundle(mavenBundle("org.neo4j.driver", "neo4j-java-driver", "1.4.3")),
 
         //
+        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.impl.systemdefinition", "1.0.0-SNAPSHOT"),
         mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.api", "1.0.0-SNAPSHOT"),
         mavenBundle("org.slizaa.scanner.assembly", "org.slizaa.scanner.core.eclipse", "1.0.0-SNAPSHOT"),
 
@@ -82,21 +84,20 @@ public class SampleTest {
   @Test
   public void testDatabaseAndDriver() {
 
-    //
-    Bundle jtypeBundle = getBundle("org.slizaa.scanner.jtype");
-    assertThat(jtypeBundle).isNotNull();
-    ClassLoader classLoader = jtypeBundle.adapt(BundleWiring.class).getClassLoader();
-
-
-
     // TODO: TEMP DIR
     IGraphDb graphDb = graphDbFactory.createGraphDb(5001, new File("C:\\_schnurz"), null);
     assertThat(graphDb).isNotNull();
-    
-    // //
-    // Config config = Config.build().withEncryptionLevel(EncryptionLevel.NONE).toConfig();
-    // Driver driver = GraphDatabase.driver("bolt://localhost:5001", config);
-    // assertThat(driver).isNotNull();
+
+    //
+    Config config = Config.build().withEncryptionLevel(EncryptionLevel.NONE).toConfig();
+    Driver driver = GraphDatabase.driver("bolt://localhost:5001", config);
+    assertThat(driver).isNotNull();
+
+    //
+    try (Session session = driver.session()) {
+      StatementResult result = session.run("return slizaa.currentTimestamp()");
+      assertThat(result.next().get("slizaa.currentTimestamp()")).isNotNull();
+    }
   }
 
   /**

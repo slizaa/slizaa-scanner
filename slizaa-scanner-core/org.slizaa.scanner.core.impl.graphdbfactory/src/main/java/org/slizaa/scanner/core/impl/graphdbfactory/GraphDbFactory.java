@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.kernel.api.exceptions.KernelException;
 import org.neo4j.kernel.configuration.BoltConnector;
 import org.neo4j.kernel.configuration.Connector.ConnectorType;
 import org.neo4j.kernel.impl.proc.Procedures;
@@ -66,20 +67,45 @@ public class GraphDbFactory implements IGraphDbFactory {
 
     //
     if (extensionLoaders != null) {
-      
+
       //
       SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry(extensionLoaders);
+
+      // initialize
       pluginRegistry.initialize();
 
-      // //
-      // PluginRegistry pluginRegistry = new PluginRegistry();
-      // pluginRegistry.initialize();
       //
       Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
           .resolveDependency(Procedures.class);
 
-      // proceduresService.registerFunction(TestFunction.class);
-      // proceduresService.registerProcedure(TestFunction.class);
+      //
+      for (Class<?> functionClass : pluginRegistry.getGraphDbUserFunctions()) {
+        try {
+          System.out.println("***************************************");
+          System.out.println(" - " + functionClass.getName());
+          System.out.println("***************************************");
+          proceduresService.registerFunction(functionClass);
+        } catch (KernelException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+
+      //
+      for (Class<?> procedureClass : pluginRegistry.getGraphDbProcedures()) {
+        try {
+          System.out.println("***************************************");
+          System.out.println(" - " + procedureClass.getName());
+          System.out.println("***************************************");
+          proceduresService.registerProcedure(procedureClass);
+        } catch (KernelException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+
+      //
+      proceduresService.getAllProcedures().forEach(prodSig -> System.out.println(prodSig.name()));
     }
 
     //
