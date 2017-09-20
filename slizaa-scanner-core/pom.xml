@@ -17,13 +17,11 @@
 	<modules>
 		<module>org.slizaa.scanner.core.api</module>
 		<module>org.slizaa.scanner.core.bom</module>
-		
 		<module>org.slizaa.scanner.core.impl.importer</module>
 		<module>org.slizaa.scanner.core.impl.systemdefinition</module>
 		<module>org.slizaa.scanner.core.impl.graphdbfactory</module>
 		<module>org.slizaa.scanner.core.impl.cmdline</module>
 		<module>org.slizaa.scanner.core.impl.plugins</module>
-		<module>org.slizaa.scanner.core.itestfwk</module>
 	</modules>
 
 	<dependencyManagement>

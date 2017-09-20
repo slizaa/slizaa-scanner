@@ -9,6 +9,7 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -25,11 +26,11 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
+import org.ops4j.pax.url.mvn.MavenResolvers;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
-import org.slizaa.scanner.core.itestfwk.aether.AetherUtils;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -40,18 +41,30 @@ public class SampleTest {
         System.getProperty("user.home") + File.separator + ".m2" + File.separator + "repository");
   }
 
+  /** - */
   @Inject
   private BundleContext   bundleContext;
 
+  /** - */
   @Inject
   private IGraphDbFactory graphDbFactory;
 
+  /** - */
+  private File            _jtypeFile;
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   * @throws IOException
+   */
   @Configuration
-  public Option[] config() {
+  public Option[] config() throws IOException {
 
     //
-    File jtypeFile = AetherUtils.resolve("org.slizaa.scanner.jtype", "org.slizaa.scanner.jtype", "1.0.0-SNAPSHOT", null,
-        "jar");
+    File jtypeFile = MavenResolvers.createMavenResolver(null, null).resolve("org.slizaa.scanner.jtype",
+        "org.slizaa.scanner.jtype", null, null, "1.0.0-SNAPSHOT");
 
     //
     return options(mavenBundle("org.assertj", "assertj-core", "3.8.0"), junitBundles(),
@@ -81,6 +94,10 @@ public class SampleTest {
     );
   }
 
+  /**
+   * <p>
+   * </p>
+   */
   @Test
   public void testDatabaseAndDriver() {
 
@@ -101,6 +118,9 @@ public class SampleTest {
   }
 
   /**
+   * <p>
+   * </p>
+   *
    * @param symbolicName
    * @return
    */
