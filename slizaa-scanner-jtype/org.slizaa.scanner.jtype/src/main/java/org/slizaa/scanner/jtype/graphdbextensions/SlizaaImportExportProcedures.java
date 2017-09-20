@@ -5,12 +5,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.logging.Log;
 import org.neo4j.procedure.Context;
 import org.neo4j.procedure.Mode;
@@ -43,24 +46,41 @@ public class SlizaaImportExportProcedures {
 
       //
       List<String> nodes = _databaseService.getAllNodes().stream()
-          .map(node -> node.getId() + " : " + node.getLabels() + " : " + node.getAllProperties())
+          .map(node -> node.getId() + ":" + mapLabels(node.getLabels()) + ":" + node.getAllProperties())
           .collect(Collectors.toList());
 
       //
       List<String> relationShips = _databaseService.getAllRelationships().stream()
-          .map(relationShip -> relationShip.getId() + " : " + relationShip.getStartNodeId() + " : "
-              + relationShip.getEndNodeId() + " : " + relationShip.getAllProperties())
+          .map(relationShip -> relationShip.getId() + ":" + relationShip.getStartNodeId() + ":"
+              + relationShip.getEndNodeId() + ":" + mapType(relationShip.getType()) + ":"
+              + (relationShip.getAllProperties().isEmpty() ? "" : relationShip.getAllProperties()))
           .collect(Collectors.toList());
 
       //
-      Files.write(targetPath, Stream.concat(nodes.stream(), relationShips.stream())
-          .collect(Collectors.toList()));
+      Files.write(targetPath, Stream.concat(nodes.stream(), relationShips.stream()).collect(Collectors.toList()));
 
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
       throw new RuntimeException(e);
     }
+  }
+
+  private String mapType(RelationshipType type) {
+    return "12";
+  }
+
+  private String mapLabels(Iterable<Label> labels) {
+    StringBuilder builder = new StringBuilder();
+    Iterator<Label> iterator = labels.iterator();
+    while (iterator.hasNext()) {
+      Label label = (Label) iterator.next();
+      builder.append("12");
+      if (iterator.hasNext()) {
+        builder.append(",");
+      }
+    }
+    return builder.toString();
   }
 
   public class Output {

@@ -13,15 +13,25 @@ package org.slizaa.scanner.itest.jtype.complex;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.slizaa.scanner.itest.jtype.AbstractJTypeParserTest;
+import org.neo4j.driver.v1.StatementResult;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.ISystemDefinition;
 import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
 
-public class SimpleDirectoryBasedTest extends AbstractJTypeParserTest {
+public class SimpleDirectoryBasedTest {
+
+  @ClassRule
+  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(getSystemDefinition());
+
+  @Rule
+  public SlizaaClientRule            _client = new SlizaaClientRule();
 
   /**
    * <p>
@@ -30,11 +40,18 @@ public class SimpleDirectoryBasedTest extends AbstractJTypeParserTest {
   @Test
   public void test() {
 
-    // TODO...
+    //
+    StatementResult statementResult = _client.getSession().run("Match (t:TYPE) return count(t)");
+    System.out.println(statementResult.single().get(0).asInt());
   }
 
-  @Override
-  protected ISystemDefinition getSystemDefinition() {
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  private static ISystemDefinition getSystemDefinition() {
 
     //
     ISystemDefinition systemDefinition = new SystemDefinitionFactory().createNewSystemDefinition();

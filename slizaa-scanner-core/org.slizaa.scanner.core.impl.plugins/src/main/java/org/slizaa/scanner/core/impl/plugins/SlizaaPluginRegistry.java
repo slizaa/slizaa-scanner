@@ -11,13 +11,10 @@ import org.slizaa.scanner.spi.parser.IParserFactory;
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
-public class SlizaaPluginRegistry {
+public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
 
   /** - */
-  private List<Class<?>>                        _graphDbFunctions;
-
-  /** - */
-  private List<Class<?>>                        _graphDbProcedures;
+  private List<Class<?>>                        _neo4jExtensions;
 
   /** - */
   private List<Class<? extends IParserFactory>> _parserFactories;
@@ -36,8 +33,7 @@ public class SlizaaPluginRegistry {
     //
     _classLoaders = checkNotNull(classLoaders);
     _parserFactories = new LinkedList<>();
-    _graphDbFunctions = new LinkedList<>();
-    _graphDbProcedures = new LinkedList<>();
+    _neo4jExtensions = new LinkedList<>();
   }
 
   /**
@@ -46,8 +42,9 @@ public class SlizaaPluginRegistry {
    *
    * @return
    */
-  public List<Class<?>> getGraphDbUserFunctions() {
-    return _graphDbFunctions;
+  @Override
+  public List<Class<?>> getNeo4jExtensions() {
+    return _neo4jExtensions;
   }
 
   /**
@@ -56,16 +53,7 @@ public class SlizaaPluginRegistry {
    *
    * @return
    */
-  public List<Class<?>> getGraphDbProcedures() {
-    return _graphDbProcedures;
-  }
-
-  /**
-   * <p>
-   * </p>
-   *
-   * @return
-   */
+  @Override
   public List<Class<? extends IParserFactory>> getParserFactories() {
     return _parserFactories;
   }
@@ -77,34 +65,35 @@ public class SlizaaPluginRegistry {
   public void initialize() {
 
     //
-    new FastClasspathScanner("-org.slizaa.scanner.spi.parser", "-org.neo4j.kernel.builtinprocs")
+    new FastClasspathScanner("-org.slizaa.scanner.spi.parser", "-org.neo4j.kernel.builtinprocs",
+        "-org.neo4j.kernel.impl.proc", "-org.neo4j.server.security.auth")
 
-        // set verbose
-        // .verbose()
+            // set verbose
+            // .verbose()
 
-        // set the classloader to scan
-        .overrideClassLoaders(_classLoaders.toArray(new ClassLoader[0]))
+            // set the classloader to scan
+            .overrideClassLoaders(_classLoaders.toArray(new ClassLoader[0]))
 
-        //
-        .matchClassesImplementing(IParserFactory.class, matchingClass -> {
-          _parserFactories.add(matchingClass);
-        })
+            //
+            .matchClassesImplementing(IParserFactory.class, matchingClass -> {
+              _parserFactories.add(matchingClass);
+            })
 
-        //
-        .matchClassesWithMethodAnnotation(Procedure.class, (matchingClass, matchingMethodOrConstructor) -> {
-          if (!_graphDbProcedures.contains(matchingClass)) {
-            _graphDbProcedures.add(matchingClass);
-          }
-        })
+            //
+            .matchClassesWithMethodAnnotation(Procedure.class, (matchingClass, matchingMethodOrConstructor) -> {
+              if (!_neo4jExtensions.contains(matchingClass)) {
+                _neo4jExtensions.add(matchingClass);
+              }
+            })
 
-        //
-        .matchClassesWithMethodAnnotation(UserFunction.class, (matchingClass, matchingMethodOrConstructor) -> {
-          if (!_graphDbFunctions.contains(matchingClass)) {
-            _graphDbFunctions.add(matchingClass);
-          }
-        })
+            //
+            .matchClassesWithMethodAnnotation(UserFunction.class, (matchingClass, matchingMethodOrConstructor) -> {
+              if (!_neo4jExtensions.contains(matchingClass)) {
+                _neo4jExtensions.add(matchingClass);
+              }
+            })
 
-        // Actually perform the scan (nothing will happen without this call)
-        .scan();
+            // Actually perform the scan (nothing will happen without this call)
+            .scan();
   }
 }

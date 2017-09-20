@@ -16,22 +16,21 @@ import org.neo4j.kernel.internal.GraphDatabaseAPI;
 import org.neo4j.logging.FormattedLogProvider;
 import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
-import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
 
 public class GraphDbFactory implements IGraphDbFactory {
 
   /** - */
-  private Supplier<List<ClassLoader>> _extensionClassLoaderSupplier;
+  private Supplier<List<Class<?>>> _neo4jExtensionsSupplier;
 
   /**
    * <p>
    * Creates a new instance of type {@link GraphDbFactory}.
    * </p>
    *
-   * @param extensionClassLoaderSupplier
+   * @param neo4jExtensionsSupplier
    */
-  public GraphDbFactory(Supplier<List<ClassLoader>> extensionClassLoaderSupplier) {
-    _extensionClassLoaderSupplier = checkNotNull(extensionClassLoaderSupplier);
+  public GraphDbFactory(Supplier<List<Class<?>>> neo4jExtensionsSupplier) {
+    _neo4jExtensionsSupplier = checkNotNull(neo4jExtensionsSupplier);
   }
 
   /**
@@ -62,50 +61,19 @@ public class GraphDbFactory implements IGraphDbFactory {
         .setConfig(bolt.listen_address, "localhost:" + port).setConfig(bolt.encryption_level, "DISABLED")
         .newGraphDatabase();
 
-    // get the extension class loaders
-    List<ClassLoader> extensionLoaders = _extensionClassLoaderSupplier.get();
+    //
+    Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
+        .resolveDependency(Procedures.class);
 
     //
-    if (extensionLoaders != null) {
-
-      //
-      SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry(extensionLoaders);
-
-      // initialize
-      pluginRegistry.initialize();
-
-      //
-      Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
-          .resolveDependency(Procedures.class);
-
-      //
-      for (Class<?> functionClass : pluginRegistry.getGraphDbUserFunctions()) {
-        try {
-          System.out.println("***************************************");
-          System.out.println(" - " + functionClass.getName());
-          System.out.println("***************************************");
-          proceduresService.registerFunction(functionClass);
-        } catch (KernelException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+    for (Class<?> clazz : _neo4jExtensionsSupplier.get()) {
+      try {
+        proceduresService.registerFunction(clazz);
+        proceduresService.registerProcedure(clazz);
+      } catch (KernelException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
       }
-
-      //
-      for (Class<?> procedureClass : pluginRegistry.getGraphDbProcedures()) {
-        try {
-          System.out.println("***************************************");
-          System.out.println(" - " + procedureClass.getName());
-          System.out.println("***************************************");
-          proceduresService.registerProcedure(procedureClass);
-        } catch (KernelException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-      }
-
-      //
-      proceduresService.getAllProcedures().forEach(prodSig -> System.out.println(prodSig.name()));
     }
 
     //

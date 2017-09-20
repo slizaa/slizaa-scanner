@@ -1,6 +1,6 @@
 package org.slizaa.scanner.api.graphdb;
 
-public interface IGraphDb {
+public interface IGraphDb extends AutoCloseable {
 
   <T> T getUserObject(Class<T> userObject);
 

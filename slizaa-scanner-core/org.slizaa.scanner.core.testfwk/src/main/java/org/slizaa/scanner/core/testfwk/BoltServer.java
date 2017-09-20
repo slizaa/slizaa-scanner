@@ -1,4 +1,4 @@
-package org.slizaa.scanner.itest.jtype.fwk;
+package org.slizaa.scanner.core.testfwk;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +8,6 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.kernel.api.exceptions.KernelException;
 import org.neo4j.kernel.configuration.BoltConnector;
 import org.neo4j.kernel.configuration.Connector.ConnectorType;
-import org.neo4j.kernel.impl.proc.Procedures;
-import org.neo4j.kernel.internal.GraphDatabaseAPI;
-import org.slizaa.scanner.jtype.graphdbextensions.JTypeProcedures;
 
 /**
  * <p>
@@ -54,12 +51,12 @@ public class BoltServer {
     // proceduresService.registerProcedure(procedure);
     // proceduresService.registerFunction(procedure);
     // }
-
-    Procedures proceduresService = ((GraphDatabaseAPI) graphDb).getDependencyResolver()
-        .resolveDependency(Procedures.class);
-
-    proceduresService.registerFunction(JTypeProcedures.class);
-    proceduresService.registerProcedure(JTypeProcedures.class);
+    //
+    // Procedures proceduresService = ((GraphDatabaseAPI) graphDb).getDependencyResolver()
+    // .resolveDependency(Procedures.class);
+    //
+    // proceduresService.registerFunction(JTypeProcedures.class);
+    // proceduresService.registerProcedure(JTypeProcedures.class);
 
     return graphDb;
   }

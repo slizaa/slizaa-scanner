@@ -47,12 +47,12 @@ public class SlizaaExportDatabaseTest {
       Session session = driver.session();
 
       //
-      File exportFile = _temporaryFolder.newFile("exportDatabase.txt");
-
-      //
       session.run(
           "CREATE (u1:User {name:'Brookreson'})-[r:CONTAINS]->(u2:User {name:'Honki'}) RETURN id(u1), id(r), id(u2)");
 
+      //
+      File exportFile = _temporaryFolder.newFile("exportDatabase.txt");
+      
       //
       session.run("CALL slizaa.exportDatabase({fileName})",
           Collections.singletonMap("fileName", exportFile.getAbsolutePath())).summary();

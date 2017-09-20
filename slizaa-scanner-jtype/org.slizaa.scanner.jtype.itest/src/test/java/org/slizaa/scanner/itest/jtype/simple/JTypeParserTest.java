@@ -11,32 +11,30 @@
 package org.slizaa.scanner.itest.jtype.simple;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.slizaa.scanner.core.testfwk.junit.ContentDefinitionsUtils.simpleBinaryFile;
 
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.AfterClass;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Result;
-import org.slizaa.scanner.itest.jtype.AbstractJTypeParserTest;
+import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.types.Node;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 import org.slizaa.scanner.itest.jtype.simple.example.ExampleClass;
-import org.slizaa.scanner.jtype.model.IMethodNode;
-import org.slizaa.scanner.jtype.model.JTypeLabel;
-import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.ResourceType;
-import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.systemdefinition.ISystemDefinition;
-import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
+import org.slizaa.scanner.itest.jtype.simple.example.ExampleInterface;
+import org.slizaa.scanner.jtype.model.ITypeNode;
 
-public class JTypeParserTest extends AbstractJTypeParserTest {
+public class JTypeParserTest {
 
-  @Test
-  public void testDirectories() {
+  @ClassRule
+  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(simpleBinaryFile("jtype", "1.2.3",
+      JTypeParserTest.class.getProtectionDomain().getCodeSource().getLocation().getFile()));
 
-    Result result = executeStatement("Match (m:MODULE)-[:CONTAINS]->(d:DIRECTORY) return d");
-    result.forEachRemaining(map -> System.out.println(((Node) map.get("d")).getAllProperties()));
-  }
+  @Rule
+  public SlizaaClientRule            _client = new SlizaaClientRule();
 
   /**
    * <p>
@@ -45,11 +43,25 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
   @Test
   public void testTypeType() {
 
-    Node node = getSingleNode(executeStatement("Match (t:TYPE {fqn: $name}) return t",
-        Collections.singletonMap("name", ExampleClass.class.getName())));
-    assertThat(node.hasLabel(convert(JTypeLabel.TYPE))).isTrue();
-    assertThat(node.hasLabel(convert(JTypeLabel.CLASS))).isTrue();
-    assertThat(node.getProperty(IMethodNode.VISIBILITY)).isEqualTo("public");
+    //
+    StatementResult statementResult = _client.getSession().run("Match (t:TYPE {fqn: $name }) return t",
+        Collections.singletonMap("name", ExampleInterface.class.getName()));
+    Node node = statementResult.single().get(0).asNode();
+
+    // asserts
+    assertThat(node.labels()).containsOnly("TYPE", "INTERFACE");
+    assertThat(node.asMap()).containsEntry(ITypeNode.FQN, ExampleInterface.class.getName());
+    assertThat(node.asMap()).containsEntry(ITypeNode.NAME, ExampleInterface.class.getSimpleName());
+    assertThat(node.asMap()).containsEntry(ITypeNode.VISIBILITY, "public");
+    assertThat(node.asMap()).containsEntry(ITypeNode.SOURCE_FILE_NAME, "ExampleInterface.java");
+    assertThat(node.asMap()).containsEntry(ITypeNode.CLASS_VERSION, "52");
+    assertThat(node.asMap()).containsEntry(ITypeNode.ABSTRACT, true);
+
+    // Node node = getSingleNode(executeStatement("Match (t:TYPE {fqn: $name}) return t",
+    // Collections.singletonMap("name", ExampleClass.class.getName())));
+    // assertThat(node.hasLabel(convert(JTypeLabel.TYPE))).isTrue();
+    // assertThat(node.hasLabel(convert(JTypeLabel.CLASS))).isTrue();
+    // assertThat(node.getProperty(IMethodNode.VISIBILITY)).isEqualTo("public");
 
     // node = getTypeNode(ExampleInterface.class.getName());
     // assertThat(node.hasLabel(convert(JTypeLabel.TYPE)), is(true));
@@ -107,18 +119,18 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
   @Test
   public void testField() {
 
-    List<Node> nodes = getNodes(executeStatement("Match (t:TYPE {fqn: $name})-[:CONTAINS]->(f:FIELD) return f",
-        Collections.singletonMap("name", ExampleClass.class.getName())));
+    //
+    StatementResult statementResult = _client.getSession().run(
+        "Match (t:TYPE {fqn: $name})-[:CONTAINS]->(f:FIELD) return f",
+        Collections.singletonMap("name", ExampleClass.class.getName()));
+    List<Node> nodes = statementResult.list(rec -> rec.get(0).asNode());
 
     //
-    for (Node node : nodes) {
-      System.out.println("FIELD: " + node);
-    }
+    assertThat(nodes).hasSize(1);
+    assertThat(nodes.get(0).labels()).containsExactly("FIELD");
+    assertThat(nodes.get(0).asMap()).containsEntry("name", "_serializable");
+    System.out.println(nodes.get(0));
 
-    // // Feld: private Serializable _serializable;
-    // List<Node> fields = getFields(node, "_serializable");
-    // assertThat(fields.size(), is(1));
-    // assertTypeReference(fields.get(0), convert(JTypeModelRelationshipType.IS_OF_TYPE), "java.io.Serializable");
   }
   //
   // @Test
@@ -157,43 +169,4 @@ public class JTypeParserTest extends AbstractJTypeParserTest {
   // " - " + methodNode.getSingleRelationship(convert(JTypeModelRelationshipType.RETURNS), Direction.OUTGOING));
   // }
   // }
-
-  @AfterClass
-  public static void afterClass() {
-    _graphDb.shutdown();
-    _graphDb = null;
-  }
-
-  /**
-   * @see org.slizaa.scanner.itest.jtype.AbstractJTypeParserTest#shutDownDatabaseAfterTest()
-   */
-  @Override
-  protected boolean shutDownDatabaseAfterTest() {
-    return false;
-  }
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @return
-   */
-  protected ISystemDefinition getSystemDefinition() {
-
-    //
-    ISystemDefinition systemDefinition = new SystemDefinitionFactory().createNewSystemDefinition();
-
-    // add new (custom) content provider
-    FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider("jtype", "1.2.3",
-        AnalyzeMode.BINARIES_ONLY);
-    provider.addRootPath(AbstractJTypeParserTest.class.getProtectionDomain().getCodeSource().getLocation().getFile(),
-        ResourceType.BINARY);
-    systemDefinition.addContentDefinitionProvider(provider);
-
-    // initialize
-    systemDefinition.initialize(null);
-
-    //
-    return systemDefinition;
-  }
 }

@@ -73,4 +73,9 @@ public class Neo4jGraphDb implements IGraphDb {
   public void shutdown() {
     _databaseService.shutdown();
   }
+
+  @Override
+  public void close() throws Exception {
+    _databaseService.shutdown();
+  }
 }

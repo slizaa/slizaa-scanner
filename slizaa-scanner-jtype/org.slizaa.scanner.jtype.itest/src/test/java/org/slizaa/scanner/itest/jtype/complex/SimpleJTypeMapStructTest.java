@@ -10,63 +10,29 @@
  ******************************************************************************/
 package org.slizaa.scanner.itest.jtype.complex;
 
-import java.io.File;
+import static org.slizaa.scanner.core.testfwk.junit.ContentDefinitionsUtils.multipleBinaryMvnArtifacts;
+
 import java.io.IOException;
 
-import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.kernel.api.exceptions.KernelException;
-import org.ops4j.pax.url.mvn.MavenResolver;
-import org.ops4j.pax.url.mvn.MavenResolvers;
-import org.slizaa.scanner.itest.jtype.AbstractJTypeParserTest;
-import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.ResourceType;
-import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.systemdefinition.ISystemDefinition;
-import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 
 /**
   */
-public class SimpleJTypeMapStructTest extends AbstractJTypeParserTest {
+public class SimpleJTypeMapStructTest {
 
-  /** - */
-  private static final String MAPSTRUCT           = "mapstruct";
+  @ClassRule
+  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(
+      multipleBinaryMvnArtifacts(new String[] { "org.mapstruct", "mapstruct", "1.0.0.Beta1" },
+          new String[] { "org.mapstruct", "mapstruct-processor", "1.0.0.Beta1" }));
 
-  /** - */
-  private static final String MAPSTRUCT_PROCESSOR = "mapstruct-processor";
-
-  /** - */
-  private static final String MAPSTRUCT_VERSION   = "1.0.0.Beta1";
-
-  /** - */
-  private File                _mapStructClassesJar;
-
-  /** - */
-  private File                _mapStructSourcesZip;
-
-  /** - */
-  private File                _mapStructProcessorClassesJar;
-
-  /** - */
-  private File                _mapStructProcessorSourcesZip;
-
-  @Before
-  public void before() throws IOException {
-
-    // create the resolver
-    MavenResolver mavenResolver = MavenResolvers.createMavenResolver(null, null);
-
-    //
-    _mapStructClassesJar = mavenResolver.resolve("org.mapstruct", MAPSTRUCT, null, "jar", MAPSTRUCT_VERSION);
-    _mapStructSourcesZip = mavenResolver.resolve("org.mapstruct", MAPSTRUCT, "sources", "jar", MAPSTRUCT_VERSION);
-    _mapStructProcessorClassesJar = mavenResolver.resolve("org.mapstruct", MAPSTRUCT_PROCESSOR, null, "jar",
-        MAPSTRUCT_VERSION);
-    _mapStructProcessorSourcesZip = mavenResolver.resolve("org.mapstruct", MAPSTRUCT_PROCESSOR, "sources", "jar",
-        MAPSTRUCT_VERSION);
-
-    //
-    super.before();
-  }
+  @Rule
+  public SlizaaClientRule            _client = new SlizaaClientRule();
 
   /**
    * <p>
@@ -79,120 +45,7 @@ public class SimpleJTypeMapStructTest extends AbstractJTypeParserTest {
   public void test() throws KernelException, IOException {
 
     //
-    // //
-    // System.out.println("Done.\n");
-    //
-    // System.out.println("Press ENTER to quit.");
-    // System.in.read();
+    StatementResult statementResult = _client.getSession().run("Match (t:TYPE) return count(t)");
+    System.out.println(statementResult.single().get(0).asInt());
   }
-
-  @Override
-  protected ISystemDefinition getSystemDefinition() {
-    try {
-      return getSystemDefinition_BinariesOnly();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @param descr
-   * @return
-   * @throws IOException
-   */
-  public ISystemDefinition getSystemDefinition_BinariesOnly() throws IOException {
-
-    //
-    ISystemDefinition descr = new SystemDefinitionFactory().createNewSystemDefinition();
-
-    // add new (custom) content provider
-    FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider(MAPSTRUCT, MAPSTRUCT_VERSION,
-        AnalyzeMode.BINARIES_ONLY);
-    provider.addRootPath(_mapStructClassesJar, ResourceType.BINARY);
-    descr.addContentDefinitionProvider(provider);
-
-    // add new (custom) content provider
-    FileBasedContentDefinitionProvider provider2 = new FileBasedContentDefinitionProvider(MAPSTRUCT_PROCESSOR,
-        MAPSTRUCT_VERSION, AnalyzeMode.BINARIES_ONLY);
-    provider2.addRootPath(_mapStructProcessorClassesJar, ResourceType.BINARY);
-    descr.addContentDefinitionProvider(provider2);
-
-    // initialize
-    descr.initialize(null);
-
-    //
-    return descr;
-  }
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @param descr
-   * @return
-   * @throws IOException
-   */
-  public ISystemDefinition getSystemDefinition_BinariesOnlyWithAttachedSources() throws IOException {
-
-    //
-    ISystemDefinition descr = new SystemDefinitionFactory().createNewSystemDefinition();
-
-    // add new (custom) content provider
-    FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider(MAPSTRUCT, MAPSTRUCT_VERSION,
-        AnalyzeMode.BINARIES_ONLY);
-    provider.addRootPath(_mapStructClassesJar, ResourceType.BINARY);
-    provider.addRootPath(_mapStructSourcesZip, ResourceType.SOURCE);
-    descr.addContentDefinitionProvider(provider);
-
-    // add new (custom) content provider
-    FileBasedContentDefinitionProvider provider2 = new FileBasedContentDefinitionProvider(MAPSTRUCT_PROCESSOR,
-        MAPSTRUCT_VERSION, AnalyzeMode.BINARIES_ONLY);
-    provider2.addRootPath(_mapStructProcessorClassesJar, ResourceType.BINARY);
-    provider2.addRootPath(_mapStructProcessorSourcesZip, ResourceType.SOURCE);
-    descr.addContentDefinitionProvider(provider2);
-
-    // initialize
-    descr.initialize(null);
-
-    //
-    return descr;
-  }
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @param descr
-   * @return
-   * @throws IOException
-   */
-  public ISystemDefinition getSystemDefinition_BinariesAndSources() throws IOException {
-
-    //
-    ISystemDefinition descr = new SystemDefinitionFactory().createNewSystemDefinition();
-
-    // add new (custom) content provider
-    FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider(MAPSTRUCT, MAPSTRUCT_VERSION,
-        AnalyzeMode.BINARIES_AND_SOURCES);
-    provider.addRootPath(_mapStructClassesJar, ResourceType.BINARY);
-    provider.addRootPath(_mapStructSourcesZip, ResourceType.SOURCE);
-    descr.addContentDefinitionProvider(provider);
-
-    // add new (custom) content provider
-    FileBasedContentDefinitionProvider provider2 = new FileBasedContentDefinitionProvider(MAPSTRUCT_PROCESSOR,
-        MAPSTRUCT_VERSION, AnalyzeMode.BINARIES_AND_SOURCES);
-    provider2.addRootPath(_mapStructProcessorClassesJar, ResourceType.BINARY);
-    provider2.addRootPath(_mapStructProcessorSourcesZip, ResourceType.SOURCE);
-    descr.addContentDefinitionProvider(provider2);
-
-    // initialize
-    descr.initialize(null);
-
-    //
-    return descr;
-  }
-
 }

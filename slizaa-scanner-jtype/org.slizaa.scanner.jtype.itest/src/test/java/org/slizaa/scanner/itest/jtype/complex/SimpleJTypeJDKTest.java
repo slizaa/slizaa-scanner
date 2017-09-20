@@ -11,9 +11,14 @@
 package org.slizaa.scanner.itest.jtype.complex;
 
 import java.io.File;
+import java.util.Collections;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.slizaa.scanner.itest.jtype.AbstractJTypeParserTest;
+import org.neo4j.driver.v1.StatementResult;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
+import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.ResourceType;
 import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
@@ -22,7 +27,13 @@ import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
 
 /**
  */
-public class SimpleJTypeJDKTest extends AbstractJTypeParserTest {
+public class SimpleJTypeJDKTest {
+
+  @ClassRule
+  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(getSystemDefinition());
+
+  @Rule
+  public SlizaaClientRule            _client = new SlizaaClientRule();
 
   /**
    * <p>
@@ -31,14 +42,22 @@ public class SimpleJTypeJDKTest extends AbstractJTypeParserTest {
   @Test
   public void test() {
 
-    // TODO: Tests
+    //
+    StatementResult statementResult = _client.getSession().run("Match (t:TYPE) return count(t)");
+    System.out.println(statementResult.single().get(0).asInt());
+
+    //
+    _client.getSession().run("CALL slizaa.exportDatabase({fileName})",
+        Collections.singletonMap("fileName", "C:\\tmp\\exportDatabase.txt")).summary();
   }
 
   /**
-   * @see org.slizaa.scanner.itest.jtype.AbstractJTypeParserTest#getSystemDefinition()
+   * <p>
+   * </p>
+   *
+   * @return
    */
-  @Override
-  protected ISystemDefinition getSystemDefinition() {
+  private static ISystemDefinition getSystemDefinition() {
 
     //
     ISystemDefinition systemDefinition = new SystemDefinitionFactory().createNewSystemDefinition();

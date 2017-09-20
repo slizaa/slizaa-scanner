@@ -1,4 +1,4 @@
-package org.neo4j.harness.junit;
+package org.slizaa.scanner.core.testfwk.junit;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -7,25 +7,10 @@ import org.neo4j.driver.v1.Config;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.Session;
-import org.neo4j.driver.v1.StatementResult;
 
 public class SlizaaClientRule implements TestRule {
 
-  /** - */
-  private SlizaaTestServerRule _serverRule;
-
-  private Session          _session;
-
-  /**
-   * <p>
-   * Creates a new instance of type {@link SlizaaClientRule}.
-   * </p>
-   *
-   * @param server
-   */
-  public SlizaaClientRule(SlizaaTestServerRule server) {
-    _serverRule = server;
-  }
+  private Session _session;
 
   /**
    * <p>
@@ -48,7 +33,7 @@ public class SlizaaClientRule implements TestRule {
       @Override
       public void evaluate() throws Throwable {
         //
-        try (Driver driver = GraphDatabase.driver(_serverRule.boltURI(),
+        try (Driver driver = GraphDatabase.driver("bolt://localhost:5001",
             Config.build().withoutEncryption().toConfig())) {
 
           _session = driver.session();
@@ -57,7 +42,6 @@ public class SlizaaClientRule implements TestRule {
 
           _session = null;
         }
-
       }
     };
   }

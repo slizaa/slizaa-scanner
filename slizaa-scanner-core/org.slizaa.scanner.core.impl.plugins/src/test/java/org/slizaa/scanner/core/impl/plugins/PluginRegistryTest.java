@@ -21,10 +21,8 @@ public class PluginRegistryTest {
     pluginRegistry.initialize();
 
     //
-    assertThat(pluginRegistry.getGraphDbUserFunctions()).containsExactlyInAnyOrder(DummyFunctionsClass.class);
-
-    //
-    assertThat(pluginRegistry.getGraphDbProcedures()).containsExactlyInAnyOrder(DummyProceduresClass.class);
+    assertThat(pluginRegistry.getNeo4jExtensions()).containsExactlyInAnyOrder(DummyProceduresClass.class,
+        DummyFunctionsClass.class);
 
     //
     assertThat(pluginRegistry.getParserFactories()).containsExactlyInAnyOrder(DummyParserFactory.class);
