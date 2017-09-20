@@ -74,7 +74,7 @@ public class BoltServer {
   public static void main(String[] args) throws Exception {
 
     // Wherever the Neo4J storage location is.
-    startServer(new File(args[0]));
+    startServer(new File("C:\\Users\\WUETHE~1\\AppData\\Local\\Temp\\slizaaTestDatabases4814019141351147573"));
 
     System.out.println("Press ENTER to quit.");
     System.in.read();

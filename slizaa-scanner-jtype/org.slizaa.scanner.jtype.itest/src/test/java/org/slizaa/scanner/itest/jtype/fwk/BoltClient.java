@@ -48,7 +48,7 @@ public class BoltClient {
       // StatementResult result = session.run("create index on :TYPE(fqn)");
       // StatementResult result = session.run("create index on :TYPE_REFERENCE(fqn)");
       // StatementResult result = session.run("CALL apoc.export.csv.all('c:/temp/krasserExport.csv',{})");
-      StatementResult result = session.run("CALL slizaa.dump('c:/temp/krasserExport.csv')");
+      StatementResult result = session.run("Match (d) return d");
 
       // StatementResult result = session.run("LOAD CSV WITH HEADERS FROM 'file:///c:/temp/krasserExport.csv' AS row
       // RETURN count(row);");
