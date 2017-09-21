@@ -13,6 +13,7 @@ import org.osgi.util.tracker.BundleTracker;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.api.importer.IModelImporterFactory;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
+import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
 import org.slizaa.scanner.importer.ModelImporterFactory;
 
 public class Activator implements BundleActivator {
@@ -48,7 +49,11 @@ public class Activator implements BundleActivator {
 
     //
     context.registerService(IModelImporterFactory.class.getName(), new ModelImporterFactory(), null);
-    context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(() -> getExtensionClassLoader()), null);
+    context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(() -> {
+      SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry(getExtensionClassLoader());
+      pluginRegistry.initialize();
+      return pluginRegistry.getNeo4jExtensions();
+    }), null);
   }
 
   /**
