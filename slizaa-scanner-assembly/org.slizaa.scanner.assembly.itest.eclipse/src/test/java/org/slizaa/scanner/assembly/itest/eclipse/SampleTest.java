@@ -49,9 +49,6 @@ public class SampleTest {
   @Inject
   private IGraphDbFactory graphDbFactory;
 
-  /** - */
-  private File            _jtypeFile;
-
   /**
    * <p>
    * </p>
