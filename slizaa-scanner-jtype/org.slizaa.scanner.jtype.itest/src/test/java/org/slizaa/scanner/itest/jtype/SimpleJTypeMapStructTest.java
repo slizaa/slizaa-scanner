@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.itest.jtype.complex;
+package org.slizaa.scanner.itest.jtype;
 
 import static org.slizaa.scanner.core.testfwk.junit.ContentDefinitionsUtils.multipleBinaryMvnArtifacts;
 

@@ -14,9 +14,11 @@ import org.slizaa.scanner.api.model.INode;
 
 public interface IMethodReferenceNode extends INode {
 
-  public static final String OWNER_TYPE_NAME = "type_fqn";
+  public static final String OWNER_TYPE_NAME = "typeFqn";
 
   public static final String NAME = "name";
 
   public static final String SIGNATURE = "signature";
+
+  public static final String IS_INTERFACE = "isInterface";
 }

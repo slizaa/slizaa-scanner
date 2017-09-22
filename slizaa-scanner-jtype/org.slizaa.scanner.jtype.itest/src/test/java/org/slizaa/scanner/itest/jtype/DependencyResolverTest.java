@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.itest.jtype.procdures;
+package org.slizaa.scanner.itest.jtype;
 
 import static org.slizaa.scanner.core.testfwk.junit.ContentDefinitionsUtils.multipleBinaryMvnArtifacts;
 
@@ -36,13 +36,8 @@ public class DependencyResolverTest {
   @Test
   public void testDependencyResolver() {
 
-    // //
-    // StatementResult statementResult = _client.getSession().run("Match (t:TYPE) Match (tref:TYPE_REFERENCE) WHERE
-    // t.fqn = tref.fqn return t.fqn, tref.fqn");
-    // statementResult.forEachRemaining(c -> System.out.println(c.fields()));
-
     StatementResult statementResult = _client.getSession()
-        .run("Match (mref:METHOD_REFERENCE) return mref.signature");
+        .run("Match (mref:METHOD_REFERENCE)-[rel]->(t:TYPE_REFERENCE) return DISTINCT mref.name, type(rel), t.fqn");
     statementResult.forEachRemaining(c -> System.out.println(c.fields()));
   }
 }

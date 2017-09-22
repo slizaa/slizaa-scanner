@@ -97,6 +97,7 @@ public class JTypeNodeHelper {
     node.putProperty(IMethodReferenceNode.OWNER_TYPE_NAME, referencedMethod.getOwnerTypeName().replace('/', '.'));
     node.putProperty(IMethodReferenceNode.NAME, referencedMethod.getMethodName());
     node.putProperty(IMethodReferenceNode.SIGNATURE, referencedMethod.getMethodSignature());
+    node.putProperty(IMethodReferenceNode.IS_INTERFACE, referencedMethod.getMethodSignature());
 
     //
     return node;

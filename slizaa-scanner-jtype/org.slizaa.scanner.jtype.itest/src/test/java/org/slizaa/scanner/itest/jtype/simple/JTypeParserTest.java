@@ -23,8 +23,12 @@ import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.types.Node;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
+import org.slizaa.scanner.itest.jtype.simple.example.AbstractExampleClass;
 import org.slizaa.scanner.itest.jtype.simple.example.ExampleClass;
 import org.slizaa.scanner.itest.jtype.simple.example.ExampleInterface;
+import org.slizaa.scanner.itest.jtype.simple.example.SimpleClassWithOneField;
+import org.slizaa.scanner.itest.jtype.simple.example.SuperClass;
+import org.slizaa.scanner.itest.jtype.simple.example.SuperInterface;
 import org.slizaa.scanner.jtype.model.ITypeNode;
 
 public class JTypeParserTest {
@@ -76,48 +80,146 @@ public class JTypeParserTest {
     // assertThat(node.hasLabel(convert(JTypeLabel.ANNOTATION)), is(true));
   }
 
-  // /**
-  // * <p>
-  // * </p>
-  // */
-  // @Test
-  // public void testImplements() {
-  //
-  // Node node = getTypeNode(ExampleClass.class.getName());
-  // assertTypeReference(node, convert(JTypeModelRelationshipType.IMPLEMENTS), SuperInterface.class.getName());
-  // }
-  //
-  // /**
-  // * <p>
-  // * </p>
-  // */
-  // @Test
-  // public void testExtends() {
-  //
-  // Node node = getTypeNode(ExampleClass.class.getName());
-  // assertTypeReference(node, convert(JTypeModelRelationshipType.EXTENDS), SuperClass.class.getName());
-  //
-  // node = getTypeNode(ExampleInterface.class.getName());
-  // assertTypeReference(node, convert(JTypeModelRelationshipType.EXTENDS), "java.lang.Object");
-  // assertTypeReference(node, convert(JTypeModelRelationshipType.EXTENDS), SuperInterface.class.getName());
-  // }
-  //
-  // /**
-  // * <p>
-  // * </p>
-  // */
-  // @Test
-  // public void testAbstract() {
-  //
-  // Node node = getTypeNode(AbstractExampleClass.class.getName());
-  // assertThat(node.hasProperty("abstract"), is(true));
-  //
-  // node = getTypeNode(ExampleInterface.class.getName());
-  // assertThat(node.hasProperty("abstract"), is(true));
-  // }
-  //
+  /**
+   * <p>
+   * 
+   * <pre>
+   * public class org.slizaa.scanner.itest.jtype.simple.example.ExampleClass extends org.slizaa.scanner.itest.jtype.simple.example.SuperClass implements org.slizaa.scanner.itest.jtype.simple.example.SuperInterface
+   * </pre>
+   * </p>
+   */
   @Test
-  public void testField() {
+  public void testImplements() {
+
+    StatementResult statementResult = _client.getSession().run(
+        "Match (t:TYPE {fqn: $name })-[rel:IMPLEMENTS]->(typeReference:TYPE_REFERENCE) return typeReference.fqn",
+        Collections.singletonMap("name", ExampleClass.class.getName()));
+
+    List<String> records = statementResult.list(rec -> rec.get(0).asString());
+
+    assertThat(records).containsOnly(SuperInterface.class.getName());
+  }
+
+  /**
+   * <p>
+   * Tests that the 'EXTENDS' relationship exists.
+   * 
+   * <pre>
+   * public class org.slizaa.scanner.itest.jtype.simple.example.ExampleClass extends org.slizaa.scanner.itest.jtype.simple.example.SuperClass implements org.slizaa.scanner.itest.jtype.simple.example.SuperInterface
+   * </pre>
+   * </p>
+   */
+  @Test
+  public void testExtends_1() {
+
+    StatementResult statementResult = _client.getSession().run(
+        "Match (t:TYPE {fqn: $name })-[rel:EXTENDS]->(typeReference:TYPE_REFERENCE) return typeReference.fqn",
+        Collections.singletonMap("name", ExampleClass.class.getName()));
+
+    List<String> records = statementResult.list(rec -> rec.get(0).asString());
+
+    assertThat(records).containsOnly(SuperClass.class.getName());
+  }
+
+  /**
+   * <p>
+   * Tests that the 'EXTENDS' relationship exists.
+   * 
+   * <pre>
+   * public class org.slizaa.scanner.itest.jtype.simple.example.SuperClass
+   * </pre>
+   * </p>
+   */
+  @Test
+  public void testExtends_2() {
+
+    StatementResult statementResult = _client.getSession().run(
+        "Match (t:TYPE {fqn: $name })-[rel:EXTENDS]->(typeReference:TYPE_REFERENCE) return typeReference.fqn",
+        Collections.singletonMap("name", SuperClass.class.getName()));
+
+    List<String> records = statementResult.list(rec -> rec.get(0).asString());
+
+    assertThat(records).containsOnly(Object.class.getName());
+  }
+
+  /**
+   * <p>
+   * </p>
+   */
+  @Test
+  public void testAbstract_1() {
+
+    StatementResult statementResult = _client.getSession().run("Match (t:TYPE {fqn: $name }) return t.abstract",
+        Collections.singletonMap("name", AbstractExampleClass.class.getName()));
+
+    assertThat(statementResult.single().get(0).asBoolean()).isTrue();
+  }
+
+  /**
+   * <p>
+   * </p>
+   */
+  @Test
+  public void testAbstract_2() {
+
+    StatementResult statementResult = _client.getSession().run("Match (t:TYPE {fqn: $name }) return t.abstract",
+        Collections.singletonMap("name", ExampleInterface.class.getName()));
+
+    assertThat(statementResult.single().get(0).asBoolean()).isTrue();
+  }
+
+  /**
+   * Tests that the METHOD_REFERENCE has 'IS_DEFINED_BY' and 'RETURNS' relationships:
+   * 
+   * <pre>
+   * 4: invokeinterface #19,  1           // InterfaceMethod org/neo4j/graphdb/GraphDatabaseService.beginTx:()Lorg/neo4j/graphdb/Transaction;
+   * </pre>
+   */
+  @Test
+  public void testInvokesMethod() {
+
+    //
+    StatementResult statementResult = _client.getSession().run(
+        "MATCH (m:METHOD {name: 'exampleInvokesMethod'})-[:INVOKES]->(mref:METHOD_REFERENCE)-[rel]->(typeReference:TYPE_REFERENCE) return mref.name, type(rel), typeReference.fqn");
+
+    List<String[]> records = statementResult
+        .list(rec -> new String[] { rec.get(0).asString(), rec.get(1).asString(), rec.get(2).asString() });
+
+    assertThat(records).containsOnly(
+        new String[] { "beginTx", "IS_DEFINED_BY", "org.neo4j.graphdb.GraphDatabaseService" },
+        new String[] { "beginTx", "RETURNS", "org.neo4j.graphdb.Transaction" });
+  }
+
+  /**
+   * <pre>
+   * private java.io.Serializable _serializable;
+   * descriptor: Ljava/io/Serializable;
+   * flags: ACC_PRIVATE
+   * </pre>
+   */
+  @Test
+  public void testField_1() {
+
+    //
+    StatementResult statementResult = _client.getSession().run(
+        "Match (t:TYPE {fqn: $name})-[:CONTAINS]->(f:FIELD) return f",
+        Collections.singletonMap("name", SimpleClassWithOneField.class.getName()));
+    List<Node> nodes = statementResult.list(rec -> rec.get(0).asNode());
+
+    //
+    assertThat(nodes).hasSize(1);
+    assertThat(nodes.get(0).labels()).containsExactly("FIELD");
+    assertThat(nodes.get(0).asMap()).containsOnlyKeys("accessFlags", "deprecated", "final", "fqn", "name", "static",
+        "transient", "visibility", "volatile");
+    assertThat(nodes.get(0).asMap()).containsEntry("accessFlags", "2");
+    assertThat(nodes.get(0).asMap()).containsEntry("deprecated", false);
+    assertThat(nodes.get(0).asMap()).containsEntry("final", false);
+    assertThat(nodes.get(0).asMap()).containsEntry("fqn", "java.io.Serializable _serializable");
+    assertThat(nodes.get(0).asMap()).containsEntry("name", "_serializable");
+  }
+
+  @Test
+  public void testField_2() {
 
     //
     StatementResult statementResult = _client.getSession().run(
@@ -128,9 +230,13 @@ public class JTypeParserTest {
     //
     assertThat(nodes).hasSize(1);
     assertThat(nodes.get(0).labels()).containsExactly("FIELD");
+    assertThat(nodes.get(0).asMap()).containsOnlyKeys("accessFlags", "deprecated", "final", "fqn", "name", "static",
+        "transient", "visibility", "volatile");
+    assertThat(nodes.get(0).asMap()).containsEntry("accessFlags", "2");
+    assertThat(nodes.get(0).asMap()).containsEntry("deprecated", false);
+    assertThat(nodes.get(0).asMap()).containsEntry("final", false);
+    assertThat(nodes.get(0).asMap()).containsEntry("fqn", "java.io.Serializable _serializable");
     assertThat(nodes.get(0).asMap()).containsEntry("name", "_serializable");
-    System.out.println(nodes.get(0));
-
   }
   //
   // @Test

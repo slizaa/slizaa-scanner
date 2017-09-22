@@ -19,6 +19,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.api.model.IRelationship;
 import org.slizaa.scanner.api.model.RelationshipType;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
@@ -188,18 +189,21 @@ public class JTypeMethodVisitor extends MethodVisitor {
   public void visitMethodInsn(int opcode, String owner, String name, String rawSignature, boolean itf) {
 
     //
-    _typeLocalReferenceCache.addMethodReference(_methodNodeBean,
-        new MethodReferenceDescriptor(owner, name, rawSignature, itf), JTypeModelRelationshipType.CALLS);
+    IRelationship methodReferenceRelationship = _typeLocalReferenceCache.addMethodReference(_methodNodeBean,
+        new MethodReferenceDescriptor(owner, name, rawSignature, itf), JTypeModelRelationshipType.INVOKES);
+
+    //
+    IModifiableNode methodReference = (IModifiableNode) methodReferenceRelationship.getTargetBean();
 
     // owner
-    addTypeReference(_methodNodeBean, Type.getObjectType(owner), JTypeModelRelationshipType.USES);
+    addTypeReference(methodReference, Type.getObjectType(owner), JTypeModelRelationshipType.IS_DEFINED_BY);
 
     // return type
-    addTypeReference(_methodNodeBean, Type.getReturnType(rawSignature), JTypeModelRelationshipType.USES);
+    addTypeReference(methodReference, Type.getReturnType(rawSignature), JTypeModelRelationshipType.RETURNS);
 
     // arg types type
     for (Type type : Type.getArgumentTypes(rawSignature)) {
-      addTypeReference(_methodNodeBean, type, JTypeModelRelationshipType.USES);
+      addTypeReference(methodReference, type, JTypeModelRelationshipType.HAS_PARAMETER);
     }
   }
 

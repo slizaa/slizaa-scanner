@@ -8,10 +8,10 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.itest.jtype.complex;
+package org.slizaa.scanner.itest.jtype;
 
 import java.io.File;
-import java.util.Collections;
+import java.io.FilenameFilter;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -25,9 +25,7 @@ import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.ISystemDefinition;
 import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
 
-/**
- */
-public class SimpleJTypeJDKTest {
+public class SimpleDirectoryBasedTest {
 
   @ClassRule
   public static SlizaaTestServerRule _server = new SlizaaTestServerRule(getSystemDefinition());
@@ -45,10 +43,6 @@ public class SimpleJTypeJDKTest {
     //
     StatementResult statementResult = _client.getSession().run("Match (t:TYPE) return count(t)");
     System.out.println(statementResult.single().get(0).asInt());
-
-    //
-    _client.getSession().run("CALL slizaa.exportDatabase({fileName})",
-        Collections.singletonMap("fileName", "C:\\tmp\\exportDatabase.txt")).summary();
   }
 
   /**
@@ -63,26 +57,28 @@ public class SimpleJTypeJDKTest {
     ISystemDefinition systemDefinition = new SystemDefinitionFactory().createNewSystemDefinition();
 
     // create property string
-    String version = System.getProperty("java.version");
-    String classpath = System.getProperty("sun.boot.class.path");
+    File[] children = new File("samples").listFiles(new FilenameFilter() {
+      @Override
+      public boolean accept(File file, String name) {
+        return new File(file, name).isFile() && name.endsWith(".jar") && !name.contains("source_");
+      }
+    });
 
     //
-    for (String path : classpath.split(File.pathSeparator)) {
+    for (File file : children) {
 
-      if (new File(path).exists()) {
-        // name
-        String name = path.substring(path.lastIndexOf(File.separator) + 1);
-        int indexOfDot = name.lastIndexOf('.');
-        if (indexOfDot != -1) {
-          name = name.substring(0, indexOfDot);
-        }
-
-        // add new (custom) content provider
-        FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider("jdk-" + name, version,
-            AnalyzeMode.BINARIES_ONLY);
-        provider.addRootPath(path, ResourceType.BINARY);
-        systemDefinition.addContentDefinitionProvider(provider);
+      // name
+      String name = file.getName();
+      int indexOfDot = name.lastIndexOf('.');
+      if (indexOfDot != -1) {
+        name = name.substring(0, indexOfDot);
       }
+
+      // add new (custom) content provider
+      FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider(name, "0.0.0",
+          AnalyzeMode.BINARIES_ONLY);
+      provider.addRootPath(file.getAbsoluteFile(), ResourceType.BINARY);
+      systemDefinition.addContentDefinitionProvider(provider);
     }
 
     // initialize

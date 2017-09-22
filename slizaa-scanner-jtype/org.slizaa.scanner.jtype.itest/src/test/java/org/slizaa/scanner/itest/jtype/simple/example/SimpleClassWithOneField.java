@@ -8,23 +8,11 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.jtype.model;
+package org.slizaa.scanner.itest.jtype.simple.example;
 
-import org.slizaa.scanner.api.model.RelationshipType;
+import java.io.Serializable;
 
-/**
- * <p>
- * </p>
- * 
- * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
- */
-public enum JTypeModelRelationshipType implements RelationshipType {
+public class SimpleClassWithOneField {
 
-  EXTENDS, IMPLEMENTS, BOUND_TO, HAS_PARAMETER, RETURNS, THROWS, IS_OF_TYPE, READ, WRITE, ANNOTATED_BY, USES, INVOKES, DEFINES_INNER_CLASS, IS_INNER_CLASS_DEFINED_BY, IS_DEFINED_BY,
-
-  //
-  DEPENDS_ON,
-
-  @Deprecated
-  REFERENCES, 
+  private Serializable _serializable;
 }
