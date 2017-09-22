@@ -14,6 +14,8 @@ import org.objectweb.asm.Type;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.NodeFactory;
 import org.slizaa.scanner.jtype.model.IFieldReferenceNode;
+import org.slizaa.scanner.jtype.model.IMethodNode;
+import org.slizaa.scanner.jtype.model.IMethodReferenceNode;
 import org.slizaa.scanner.jtype.model.ITypeReferenceNode;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 
@@ -69,7 +71,7 @@ public class JTypeNodeHelper {
    * @param fieldDescriptor
    * @return
    */
-  public static IModifiableNode createFieldReferenceNode(final FieldDescriptor fieldDescriptor) {
+  public static IModifiableNode createFieldReferenceNode(final FieldReferenceDescriptor fieldDescriptor) {
 
     //
     IModifiableNode node = NodeFactory.createNode();
@@ -87,6 +89,19 @@ public class JTypeNodeHelper {
     return node;
   }
 
+  public static IModifiableNode createMethodReferenceNode(MethodReferenceDescriptor referencedMethod) {
+
+    //
+    IModifiableNode node = NodeFactory.createNode();
+    node.addLabel(JTypeLabel.METHOD_REFERENCE);
+    node.putProperty(IMethodReferenceNode.OWNER_TYPE_NAME, referencedMethod.getOwnerTypeName().replace('/', '.'));
+    node.putProperty(IMethodReferenceNode.NAME, referencedMethod.getMethodName());
+    node.putProperty(IMethodReferenceNode.SIGNATURE, referencedMethod.getMethodSignature());
+
+    //
+    return node;
+  }
+
   /**
    * Checks whether the value contains the flag.
    * 
@@ -99,5 +114,4 @@ public class JTypeNodeHelper {
   public static boolean hasFlag(int value, int flag) {
     return (value & flag) == flag;
   }
-
 }

@@ -20,7 +20,7 @@ import org.objectweb.asm.Type;
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public class FieldDescriptor {
+public class FieldReferenceDescriptor {
 
   /** - */
   private String  _ownerTypeName;
@@ -36,7 +36,7 @@ public class FieldDescriptor {
 
   /**
    * <p>
-   * Creates a new instance of type {@link FieldDescriptor}.
+   * Creates a new instance of type {@link FieldReferenceDescriptor}.
    * </p>
    * 
    * @param ownerTypeName
@@ -44,7 +44,7 @@ public class FieldDescriptor {
    * @param fieldType
    * @param isStatic
    */
-  public FieldDescriptor(String ownerTypeName, String fieldName, String fieldType, boolean isStatic) {
+  public FieldReferenceDescriptor(String ownerTypeName, String fieldName, String fieldType, boolean isStatic) {
 
     checkNotNull(ownerTypeName);
     checkNotNull(fieldName);
@@ -134,7 +134,7 @@ public class FieldDescriptor {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    FieldDescriptor other = (FieldDescriptor) obj;
+    FieldReferenceDescriptor other = (FieldReferenceDescriptor) obj;
     if (_fieldName == null) {
       if (other._fieldName != null)
         return false;

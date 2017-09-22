@@ -18,7 +18,6 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.TypePath;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.api.model.RelationshipType;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
@@ -93,7 +92,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
     if (visible) {
       addTypeReference(_methodNodeBean, Type.getType(desc), JTypeModelRelationshipType.REFERENCES);
     }
-    
+
     //
     return null;
   }
@@ -132,12 +131,13 @@ public class JTypeMethodVisitor extends MethodVisitor {
     String ownerTypeName = Utils.getFullyQualifiedTypeName(Type.getObjectType(owner));
     String fieldType = Utils.getFullyQualifiedTypeName(Type.getType(desc));
 
-    FieldDescriptor fieldDescriptor = new FieldDescriptor(ownerTypeName, name, fieldType,
+    FieldReferenceDescriptor fieldDescriptor = new FieldReferenceDescriptor(ownerTypeName, name, fieldType,
         opcode == Opcodes.GETSTATIC || opcode == Opcodes.PUTSTATIC);
 
     //
     JTypeModelRelationshipType relationshipType = opcode == Opcodes.GETSTATIC || opcode == Opcodes.GETFIELD
-        ? JTypeModelRelationshipType.READ : JTypeModelRelationshipType.WRITE;
+        ? JTypeModelRelationshipType.READ
+        : JTypeModelRelationshipType.WRITE;
 
     //
     _typeLocalReferenceCache.addFieldReference(_methodNodeBean, fieldDescriptor, relationshipType);
@@ -181,23 +181,15 @@ public class JTypeMethodVisitor extends MethodVisitor {
    */
   @Override
   public void visitMethodInsn(int opcode, String owner, String name, String desc) {
-    // System.out.println("owner" + owner);
-    // System.out.println("name" + name);
-    // System.out.println("desc" + desc);
-    // System.out.println("visitMethodInsn(" + opcode + ", " + owner + ", " + name + ", " + desc + ")");
-    //
-    // Type t = Type.getObjectType(owner);
-    // System.out.println(t.getClassName());
-    // _typeLocalReferenceCache.addTypeReference(_methodNodeBean, t, JTypeModelRelationshipType.REFERENCES);
-    // _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getReturnType(desc),
-    // JTypeModelRelationshipType.REFERENCES);
-    // _typeLocalReferenceCache.addTypeReference(_methodNodeBean, Type.getArgumentTypes(desc),
-    // JTypeModelRelationshipType.REFERENCES);
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void visitMethodInsn(int opcode, String owner, String name, String rawSignature, boolean itf) {
+
+    //
+    _typeLocalReferenceCache.addMethodReference(_methodNodeBean,
+        new MethodReferenceDescriptor(owner, name, rawSignature, itf), JTypeModelRelationshipType.CALLS);
 
     // owner
     addTypeReference(_methodNodeBean, Type.getObjectType(owner), JTypeModelRelationshipType.USES);
@@ -217,7 +209,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
   public void visitMultiANewArrayInsn(String desc, int dims) {
 
     //
-    addTypeReference(_methodNodeBean,  Type.getType(desc), JTypeModelRelationshipType.USES);
+    addTypeReference(_methodNodeBean, Type.getType(desc), JTypeModelRelationshipType.USES);
   }
 
   /**
@@ -229,7 +221,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
     if (visible) {
       addTypeReference(_methodNodeBean, Type.getType(desc), JTypeModelRelationshipType.REFERENCES);
     }
-    
+
     //
     return null;
   }

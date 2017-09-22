@@ -38,19 +38,22 @@ import com.google.common.cache.LoadingCache;
 public class TypeLocalReferenceCache {
 
   /** - */
-  private IPrimitiveDatatypeNodeProvider                 _primitiveDatatypeNodes;
+  private IPrimitiveDatatypeNodeProvider                           _primitiveDatatypeNodes;
 
   /** - */
-  private LoadingCache<String, INode>                    _typeReferenceNodeCache;
+  private LoadingCache<String, INode>                              _typeReferenceNodeCache;
 
   /** - */
-  private LoadingCache<FieldDescriptor, IModifiableNode> _fieldReferenceNodeCache;
+  private LoadingCache<FieldReferenceDescriptor, IModifiableNode>  _fieldReferenceNodeCache;
 
   /** - */
-  private List<INode>                                    _dependsOnRelationshipTargets;
+  private LoadingCache<MethodReferenceDescriptor, IModifiableNode> _methodReferenceNodeCache;
 
   /** - */
-  private IModifiableNode                                _typeBean;
+  private List<INode>                                              _dependsOnRelationshipTargets;
+
+  /** - */
+  private IModifiableNode                                          _typeBean;
 
   /**
    * <p>
@@ -68,12 +71,21 @@ public class TypeLocalReferenceCache {
     });
 
     //
-    _fieldReferenceNodeCache = CacheBuilder.newBuilder().build(new CacheLoader<FieldDescriptor, IModifiableNode>() {
-      public IModifiableNode load(FieldDescriptor referencedField) {
-        return JTypeNodeHelper.createFieldReferenceNode(referencedField);
-      }
-    });
+    _fieldReferenceNodeCache = CacheBuilder.newBuilder()
+        .build(new CacheLoader<FieldReferenceDescriptor, IModifiableNode>() {
+          public IModifiableNode load(FieldReferenceDescriptor referencedField) {
+            return JTypeNodeHelper.createFieldReferenceNode(referencedField);
+          }
+        });
 
+    //
+    _methodReferenceNodeCache = CacheBuilder.newBuilder()
+        .build(new CacheLoader<MethodReferenceDescriptor, IModifiableNode>() {
+          public IModifiableNode load(MethodReferenceDescriptor referencedMethod) {
+            return JTypeNodeHelper.createMethodReferenceNode(referencedMethod);
+          }
+        });
+    
     //
     _dependsOnRelationshipTargets = new ArrayList<>();
   }
@@ -87,7 +99,7 @@ public class TypeLocalReferenceCache {
   public Set<String> getAllReferencedTypes() {
     return _typeReferenceNodeCache.asMap().keySet();
   }
-  
+
   /**
    * <p>
    * </p>
@@ -117,8 +129,8 @@ public class TypeLocalReferenceCache {
    * @param relationshipType
    * @return
    */
-  public IRelationship addFieldReference(final IModifiableNode startNode, final FieldDescriptor fieldDescriptor,
-      final RelationshipType relationshipType) {
+  public IRelationship addFieldReference(final IModifiableNode startNode,
+      final FieldReferenceDescriptor fieldDescriptor, final RelationshipType relationshipType) {
 
     //
     INode fieldTypeBean = _typeReferenceNodeCache.getUnchecked(fieldDescriptor.getFieldType().replace('/', '.'));
@@ -134,6 +146,25 @@ public class TypeLocalReferenceCache {
 
     // field access
     return startNode.addRelationship(_fieldReferenceNodeCache.getUnchecked(fieldDescriptor), relationshipType);
+  }
+
+  /**
+   * @param startNode
+   * @param fieldDescriptor
+   * @param relationshipType
+   * @return
+   */
+  public IRelationship addMethodReference(final IModifiableNode startNode,
+      final MethodReferenceDescriptor methodReferenceDescriptor, final RelationshipType relationshipType) {
+
+    //
+    INode fieldOwnerBean = _typeReferenceNodeCache
+        .getUnchecked(methodReferenceDescriptor.getOwnerTypeName().replace('/', '.'));
+    addDependsOnRelationship(fieldOwnerBean);
+
+    // field access
+    return startNode.addRelationship(_methodReferenceNodeCache.getUnchecked(methodReferenceDescriptor),
+        relationshipType);
   }
 
   /**
@@ -200,7 +231,7 @@ public class TypeLocalReferenceCache {
       throw new RuntimeException();
       // return null;
     }
-    
+
     //
     if (Utils.isVoidOrPrimitive(referencedType)) {
       throw new RuntimeException();

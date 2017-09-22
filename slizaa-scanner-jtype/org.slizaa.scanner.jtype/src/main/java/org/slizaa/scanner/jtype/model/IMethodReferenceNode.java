@@ -10,21 +10,13 @@
  ******************************************************************************/
 package org.slizaa.scanner.jtype.model;
 
-import org.slizaa.scanner.api.model.RelationshipType;
+import org.slizaa.scanner.api.model.INode;
 
-/**
- * <p>
- * </p>
- * 
- * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
- */
-public enum JTypeModelRelationshipType implements RelationshipType {
+public interface IMethodReferenceNode extends INode {
 
-  EXTENDS, IMPLEMENTS, BOUND_TO, HAS_PARAMETER, RETURNS, THROWS, IS_OF_TYPE, READ, WRITE, ANNOTATED_BY, USES, INVOKES, DEFINES_INNER_CLASS, IS_INNER_CLASS_DEFINED_BY, CALLS,
+  public static final String OWNER_TYPE_NAME = "type_fqn";
 
-  //
-  DEPENDS_ON,
+  public static final String NAME = "name";
 
-  @Deprecated
-  REFERENCES,
+  public static final String SIGNATURE = "signature";
 }
