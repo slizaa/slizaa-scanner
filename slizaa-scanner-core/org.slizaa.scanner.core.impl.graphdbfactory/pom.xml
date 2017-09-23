@@ -12,11 +12,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.github.lukehutch</groupId>
-			<artifactId>fast-classpath-scanner</artifactId>
-			<version>2.4.7</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slizaa.scanner.core</groupId>
 			<artifactId>org.slizaa.scanner.core.api</artifactId>
 			<version>${project.version}</version>

@@ -1,6 +1,7 @@
 package org.slizaa.scanner.core.eclipse.internal;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,8 +75,16 @@ public class Activator implements BundleActivator {
    */
   private List<ClassLoader> getExtensionClassLoader() {
 
+    Bundle[] bundles = _tracker.getBundles();
+
     //
-    return Arrays.stream(_tracker.getBundles()).map(bundle -> bundle.adapt(BundleWiring.class).getClassLoader())
-        .collect(Collectors.toList());
+    if (bundles != null) {
+      return Arrays.stream(bundles).map(bundle -> bundle.adapt(BundleWiring.class).getClassLoader())
+          .collect(Collectors.toList());
+    }
+    //
+    else {
+      return Collections.emptyList();
+    }
   }
 }

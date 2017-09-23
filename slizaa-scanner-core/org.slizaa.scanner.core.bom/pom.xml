@@ -49,6 +49,16 @@
 				<version>${neo4j-apoc-version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.github.lukehutch</groupId>
+				<artifactId>fast-classpath-scanner</artifactId>
+				<version>2.6.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>6.0_BETA</version>
+			</dependency>
+			<dependency>
 				<groupId>org.ops4j.pax.url</groupId>
 				<artifactId>pax-url-aether</artifactId>
 				<version>2.5.2</version>
@@ -101,7 +111,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.neo4j.test</groupId>
 				<artifactId>neo4j-harness</artifactId>

@@ -21,10 +21,10 @@ public class PluginRegistryTest {
     pluginRegistry.initialize();
 
     //
-    assertThat(pluginRegistry.getNeo4jExtensions()).containsExactlyInAnyOrder(DummyProceduresClass.class,
+    assertThat(pluginRegistry.getNeo4jExtensions()).containsOnly(DummyProceduresClass.class,
         DummyFunctionsClass.class);
 
     //
-    assertThat(pluginRegistry.getParserFactories()).containsExactlyInAnyOrder(DummyParserFactory.class);
+    assertThat(pluginRegistry.getParserFactories()).containsExactly(DummyParserFactory.class);
   }
 }

@@ -29,6 +29,7 @@ import org.ops4j.pax.exam.spi.reactors.PerMethod;
 import org.ops4j.pax.url.mvn.MavenResolvers;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
 
@@ -86,7 +87,7 @@ public class SampleTest {
         bundle("reference:" + jtypeFile.toURI().toString()),
 
         //
-        mavenBundle("io.github.lukehutch", "fast-classpath-scanner", "2.4.7")
+        mavenBundle("io.github.lukehutch", "fast-classpath-scanner", "2.6.1-SNAPSHOT")
 
     );
   }
@@ -94,9 +95,15 @@ public class SampleTest {
   /**
    * <p>
    * </p>
+   * @throws BundleException 
    */
   @Test
-  public void testDatabaseAndDriver() {
+  public void testDatabaseAndDriver() throws BundleException {
+    
+    //
+    for (Bundle bundle: bundleContext.getBundles()) {
+      bundle.start();
+    }
 
     // TODO: TEMP DIR
     IGraphDb graphDb = graphDbFactory.createGraphDb(5001, new File("C:\\_schnurz"), null);

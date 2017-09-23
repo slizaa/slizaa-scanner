@@ -36,6 +36,10 @@
 			<artifactId>server-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -49,7 +53,7 @@
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.neo4j.test</groupId>
 			<artifactId>neo4j-harness</artifactId>
@@ -79,6 +83,33 @@
 	<build>
 		<plugins>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>org.ow2.asm:asm</include>
+								</includes>
+							</artifactSet>
+							<relocations>
+								<relocation>
+									<pattern>org.objectweb.asm</pattern>
+									<shadedPattern>org.slizaa.org.objectweb.asm</shadedPattern>
+								</relocation>
+							</relocations>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- configure the maven bundle plugin -->
 			<plugin>
 				<groupId>biz.aQute.bnd</groupId>
@@ -95,6 +126,7 @@
 					<bnd><![CDATA[
         				Bundle-SymbolicName: ${artifactId}
         				Slizaa-Scanner-Extension: true
+        				Import-Package:!org.objectweb.asm.*,*
         				]]></bnd>
 				</configuration>
 			</plugin>
