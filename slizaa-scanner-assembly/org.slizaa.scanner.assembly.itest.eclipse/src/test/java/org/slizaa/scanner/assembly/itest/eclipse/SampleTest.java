@@ -87,7 +87,7 @@ public class SampleTest {
         bundle("reference:" + jtypeFile.toURI().toString()),
 
         //
-        mavenBundle("io.github.lukehutch", "fast-classpath-scanner", "2.6.1-SNAPSHOT")
+        mavenBundle("io.github.lukehutch", "fast-classpath-scanner", "2.6.2")
 
     );
   }
