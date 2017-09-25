@@ -12,12 +12,16 @@ package org.slizaa.scanner.itest.jtype;
 
 import static org.slizaa.scanner.core.testfwk.junit.ContentDefinitionsUtils.multipleBinaryMvnArtifacts;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.neo4j.driver.v1.StatementResult;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
+
+import com.google.common.base.Stopwatch;
 
 public class DependencyResolverTest {
 
@@ -36,12 +40,24 @@ public class DependencyResolverTest {
   @Test
   public void testDependencyResolver() {
 
-    StatementResult statementResult = _client.getSession().run(
-        "MATCH (node)-[:INVOKES]->(mref:METHOD_REFERENCE)-[IS_DEFINED_BY]->(tref:TYPE_REFERENCE) MATCH (t:TYPE)-[:CONTAINS]->(m:METHOD) WHERE tref.fqn = t.fqn AND mref.fqn = m.fqn CREATE (mref)-[:RESOLVES_TO {derived:true}]->(m) CREATE (node)-[:INVOKES {derived:true}]->(m)");
-    statementResult.forEachRemaining(c -> System.out.println(c.fields()));
+    Stopwatch stopwatch = Stopwatch.createStarted();
 
-    statementResult = _client.getSession().run(
-        "MATCH (m1:METHOD)-[:INVOKES]->(m2:METHOD) RETURN m1, m2");
-    statementResult.forEachRemaining(c -> System.out.println(c.fields()));
+    StatementResult statementResult = _client.getSession()
+        .run("MATCH (node)-[:INVOKES]->(mref:METHOD_REFERENCE) MATCH (m:METHOD) " + "WHERE "
+    // + "NOT (mref)-[:RESOLVES_TO]->(m) "
+    // + "AND "
+    // + "tref.fqn = t.fqn "
+            + "mref.fqn = m.fqn " + "CREATE (mref)-[:RESOLVES_TO {derived:true}]->(m) CREATE (node)-[:INVOKES {derived:true}]->(m)");
+    statementResult.consume();
+
+    System.out.println(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
+
+    // statementResult = _client.getSession()
+    // .run("MATCH p=(mref:METHOD_REFERENCE)-[:RESOLVES_TO]->(m:METHOD) RETURN count(p)");
+    // statementResult.forEachRemaining(c -> System.out.println(c.fields()));
+    //
+    // statementResult = _client.getSession()
+    // .run("MATCH (mref:METHOD_REFERENCE) WHERE NOT (mref)-[:RESOLVES_TO]->(:METHOD) RETURN mref.fqn");
+    // statementResult.forEachRemaining(c -> System.out.println(c.fields()));
   }
 }

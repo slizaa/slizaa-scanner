@@ -212,13 +212,13 @@ public class JTypeClassVisitor extends ClassVisitor {
     _typeBean.addRelationship(methodBean, CoreModelRelationshipType.CONTAINS);
 
     // add method name
-    String methodSignature = Utils.getMethodSignature(name, desc);
     methodBean.putProperty(IMethodNode.NAME, name);
+    String methodSignature = Utils.getMethodSignature(this._typeBean.getFullyQualifiedName() + "." + name, desc);
     methodBean.putProperty(IMethodNode.FQN, methodSignature);
 
     // set labels
     methodBean.addLabel(JTypeLabel.METHOD);
-    if (methodSignature.startsWith("void <init>")) {
+    if ("<init>".equals(name)) {
       methodBean.addLabel(JTypeLabel.CONSTRUCTOR);
     }
 
