@@ -36,8 +36,12 @@ public class DependencyResolverTest {
   @Test
   public void testDependencyResolver() {
 
-    StatementResult statementResult = _client.getSession()
-        .run("Match (mref:METHOD_REFERENCE)-[rel]->(t:TYPE_REFERENCE) return DISTINCT mref.name, type(rel), t.fqn");
+    StatementResult statementResult = _client.getSession().run(
+        "MATCH (node)-[:INVOKES]->(mref:METHOD_REFERENCE)-[IS_DEFINED_BY]->(tref:TYPE_REFERENCE) MATCH (t:TYPE)-[:CONTAINS]->(m:METHOD) WHERE tref.fqn = t.fqn AND mref.fqn = m.fqn CREATE (mref)-[:RESOLVES_TO {derived:true}]->(m) CREATE (node)-[:INVOKES {derived:true}]->(m)");
+    statementResult.forEachRemaining(c -> System.out.println(c.fields()));
+
+    statementResult = _client.getSession().run(
+        "MATCH (m1:METHOD)-[:INVOKES]->(m2:METHOD) RETURN m1, m2");
     statementResult.forEachRemaining(c -> System.out.println(c.fields()));
   }
 }
