@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.ResourceType;
+import org.slizaa.scanner.spi.content.support.DefaultVariablePath;
 import org.slizaa.scanner.systemdefinition.internal.SystemDefinition;
 
 import com.google.gson.annotations.Expose;
@@ -33,7 +34,7 @@ import com.google.gson.annotations.SerializedName;
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
 public class FileBasedContentDefinitionProvider extends AbstractContentDefinitionProvider implements
-    IContentDefinitionProvider {
+    ITempDefinitionProvider {
 
   /** the name of this entry */
   @Expose
@@ -48,12 +49,12 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
   /** the binary paths */
   @Expose
   @SerializedName("binary-paths")
-  protected List<VariablePath> _binaryPaths;
+  protected List<DefaultVariablePath> _binaryPaths;
 
   /** the source paths */
   @Expose
   @SerializedName("source-paths")
-  private List<VariablePath>   _sourcePaths;
+  private List<DefaultVariablePath>   _sourcePaths;
 
   /** the analyze mode of this entry */
   @Expose
@@ -83,8 +84,8 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * </p>
    */
   public FileBasedContentDefinitionProvider() {
-    _binaryPaths = new LinkedList<VariablePath>();
-    _sourcePaths = new LinkedList<VariablePath>();
+    _binaryPaths = new LinkedList<DefaultVariablePath>();
+    _sourcePaths = new LinkedList<DefaultVariablePath>();
   }
 
   /**
@@ -101,17 +102,17 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
     _version = original._version;
     _analyzeMode = original._analyzeMode;
 
-    _binaryPaths = new LinkedList<VariablePath>(original._binaryPaths);
-    _sourcePaths = new LinkedList<VariablePath>(original._sourcePaths);
+    _binaryPaths = new LinkedList<DefaultVariablePath>(original._binaryPaths);
+    _sourcePaths = new LinkedList<DefaultVariablePath>(original._sourcePaths);
   }
 
   @Override
-  public IContentDefinitionProvider copyInstance() {
+  public ITempDefinitionProvider copyInstance() {
     return new FileBasedContentDefinitionProvider(this);
   }
 
   @Override
-  public void merge(IContentDefinitionProvider provider) {
+  public void merge(ITempDefinitionProvider provider) {
     checkState(provider != null, "Provider has to be set.");
     checkState(provider instanceof FileBasedContentDefinitionProvider, String.format(
         "Provider has to be instance of %s, but is instance of %s", FileBasedContentDefinitionProvider.class.getName(),
@@ -217,7 +218,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
     //
     _binaryPaths.clear();
     for (String path : binaryRootPaths) {
-      _binaryPaths.add(new VariablePath(path));
+      _binaryPaths.add(new DefaultVariablePath(path));
     }
 
     //
@@ -231,7 +232,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * 
    * @return the binary paths.
    */
-  public List<VariablePath> getBinaryPaths() {
+  public List<DefaultVariablePath> getBinaryPaths() {
     return _binaryPaths;
   }
 
@@ -247,7 +248,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
     //
     _sourcePaths.clear();
     for (String path : sourceRootPaths) {
-      _sourcePaths.add(new VariablePath(path));
+      _sourcePaths.add(new DefaultVariablePath(path));
     }
 
     //
@@ -261,7 +262,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * 
    * @return
    */
-  public List<VariablePath> getSourcePaths() {
+  public List<DefaultVariablePath> getSourcePaths() {
     return _sourcePaths;
   }
 
@@ -273,7 +274,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * @param type
    */
   public void addRootPath(File path, ResourceType type) {
-    addRootPath(new VariablePath(path.getAbsolutePath()), type);
+    addRootPath(new DefaultVariablePath(path.getAbsolutePath()), type);
   }
 
   /**
@@ -284,7 +285,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * @param type
    */
   public void addRootPath(String path, ResourceType type) {
-    addRootPath(new VariablePath(path), type);
+    addRootPath(new DefaultVariablePath(path), type);
   }
 
   /**
@@ -295,7 +296,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * @param path
    * @param type
    */
-  public void addRootPath(VariablePath path, ResourceType type) {
+  public void addRootPath(DefaultVariablePath path, ResourceType type) {
 
     //
     if (ResourceType.BINARY.equals(type)) {
@@ -319,7 +320,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * @param path
    * @param contentType
    */
-  public void removeRootPath(VariablePath path, ResourceType type) {
+  public void removeRootPath(DefaultVariablePath path, ResourceType type) {
 
     //
     if (ResourceType.BINARY.equals(type)) {
@@ -447,7 +448,7 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
    * @return
    * @throws CoreException
    */
-  private VariablePath[] convert(List<VariablePath> variablePaths) {
-    return variablePaths != null ? variablePaths.toArray(new VariablePath[0]) : new VariablePath[0];
+  private DefaultVariablePath[] convert(List<DefaultVariablePath> variablePaths) {
+    return variablePaths != null ? variablePaths.toArray(new DefaultVariablePath[0]) : new DefaultVariablePath[0];
   }
 }

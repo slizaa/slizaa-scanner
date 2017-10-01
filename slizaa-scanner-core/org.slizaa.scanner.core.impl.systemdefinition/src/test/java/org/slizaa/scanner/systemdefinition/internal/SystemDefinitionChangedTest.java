@@ -17,8 +17,8 @@ import java.io.File;
 
 import org.junit.Test;
 import org.slizaa.scanner.spi.content.ResourceType;
+import org.slizaa.scanner.spi.content.support.DefaultVariablePath;
 import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.systemdefinition.VariablePath;
 
 public class SystemDefinitionChangedTest extends AbstractSystemChangedTest {
 
@@ -57,7 +57,7 @@ public class SystemDefinitionChangedTest extends AbstractSystemChangedTest {
     assertThat(systemDefinitionChangedEvents()).hasSize(2);
 
     //
-    provider.removeRootPath(new VariablePath(srcPath), ResourceType.SOURCE);
+    provider.removeRootPath(new DefaultVariablePath(srcPath), ResourceType.SOURCE);
     assertThat(systemDefinitionChangedEvents()).hasSize(3);
 
     //

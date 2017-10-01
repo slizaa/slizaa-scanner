@@ -13,7 +13,7 @@ package org.slizaa.scanner.spi.parser;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 
 /**
  * <p>
@@ -46,7 +46,7 @@ public interface IParserFactory {
    * @return the newly created {@link IParser}
    * @throws CoreException
    */
-  IParser createParser(IContentDefinitions systemDefinition);
+  IParser createParser(IContentDefinitionProvider systemDefinition);
 
   /**
    * <p>
@@ -58,7 +58,7 @@ public interface IParserFactory {
    * @throws Exception
    */
   // TODO
-  void batchParseStart(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+  void batchParseStart(IContentDefinitionProvider systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
       throws Exception;
 
   /**
@@ -72,7 +72,7 @@ public interface IParserFactory {
    * @throws Exception
    */
   // TODO
-  void batchParseStop(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+  void batchParseStop(IContentDefinitionProvider systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
       throws Exception;
 
   /**
@@ -130,7 +130,7 @@ public interface IParserFactory {
      * {@inheritDoc}
      */
     @Override
-    public void batchParseStart(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+    public void batchParseStart(IContentDefinitionProvider systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
         throws Exception {
       // empty default implementation
     }
@@ -139,7 +139,7 @@ public interface IParserFactory {
      * {@inheritDoc}
      */
     @Override
-    public void batchParseStop(IContentDefinitions systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
+    public void batchParseStop(IContentDefinitionProvider systemDefinition, Object graphDatabase, IProgressMonitor subMonitor)
         throws Exception {
       // empty default implementation
     }

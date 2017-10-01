@@ -26,15 +26,6 @@ public interface IContentDefinition {
 
   /**
    * <p>
-   * Returns the internal identifier of this content entry.
-   * </p>
-   * 
-   * @return the internal identifier of this content entry.
-   */
-  String getId();
-
-  /**
-   * <p>
    * Returns the name of this content entry.
    * </p>
    * 

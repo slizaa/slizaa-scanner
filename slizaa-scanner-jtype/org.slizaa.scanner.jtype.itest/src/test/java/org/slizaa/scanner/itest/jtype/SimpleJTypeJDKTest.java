@@ -17,13 +17,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.neo4j.driver.v1.StatementResult;
+import org.slizaa.scanner.core.contentdefinition.FileBasedContentDefinitionProvider;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.ResourceType;
-import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.systemdefinition.ISystemDefinition;
-import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 
 /**
  */
@@ -57,19 +55,20 @@ public class SimpleJTypeJDKTest {
    *
    * @return
    */
-  private static ISystemDefinition getSystemDefinition() {
-
-    //
-    ISystemDefinition systemDefinition = new SystemDefinitionFactory().createNewSystemDefinition();
+  private static IContentDefinitionProvider getSystemDefinition() {
 
     // create property string
     String version = System.getProperty("java.version");
     String classpath = System.getProperty("sun.boot.class.path");
 
     //
+    FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider();
+
+    //
     for (String path : classpath.split(File.pathSeparator)) {
 
       if (new File(path).exists()) {
+
         // name
         String name = path.substring(path.lastIndexOf(File.separator) + 1);
         int indexOfDot = name.lastIndexOf('.');
@@ -77,18 +76,13 @@ public class SimpleJTypeJDKTest {
           name = name.substring(0, indexOfDot);
         }
 
-        // add new (custom) content provider
-        FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider("jdk-" + name, version,
+        // add the JARs
+        provider.createFileBasedContentDefinition("jdk-" + name, version, new File[] {}, null,
             AnalyzeMode.BINARIES_ONLY);
-        provider.addRootPath(path, ResourceType.BINARY);
-        systemDefinition.addContentDefinitionProvider(provider);
       }
     }
 
-    // initialize
-    systemDefinition.initialize(null);
-
     //
-    return systemDefinition;
+    return provider;
   }
 }

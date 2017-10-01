@@ -17,13 +17,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.neo4j.driver.v1.StatementResult;
+import org.slizaa.scanner.core.contentdefinition.FileBasedContentDefinitionProvider;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
 import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.ResourceType;
-import org.slizaa.scanner.systemdefinition.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.systemdefinition.ISystemDefinition;
-import org.slizaa.scanner.systemdefinition.SystemDefinitionFactory;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 
 public class SimpleDirectoryBasedTest {
 
@@ -51,18 +49,18 @@ public class SimpleDirectoryBasedTest {
    *
    * @return
    */
-  private static ISystemDefinition getSystemDefinition() {
+  private static IContentDefinitionProvider getSystemDefinition() {
 
     //
-    ISystemDefinition systemDefinition = new SystemDefinitionFactory().createNewSystemDefinition();
-
-    // create property string
     File[] children = new File("samples").listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File file, String name) {
         return new File(file, name).isFile() && name.endsWith(".jar") && !name.contains("source_");
       }
     });
+
+    //
+    FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider();
 
     //
     for (File file : children) {
@@ -75,16 +73,10 @@ public class SimpleDirectoryBasedTest {
       }
 
       // add new (custom) content provider
-      FileBasedContentDefinitionProvider provider = new FileBasedContentDefinitionProvider(name, "0.0.0",
-          AnalyzeMode.BINARIES_ONLY);
-      provider.addRootPath(file.getAbsoluteFile(), ResourceType.BINARY);
-      systemDefinition.addContentDefinitionProvider(provider);
+      provider.createFileBasedContentDefinition(name, "0.0.0", new File[] { file }, null, AnalyzeMode.BINARIES_ONLY);
     }
 
-    // initialize
-    systemDefinition.initialize(null);
-
     //
-    return systemDefinition;
+    return provider;
   }
 }

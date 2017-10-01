@@ -37,7 +37,7 @@ public interface IModelImporter {
 
   /**
    * <p>
-   * Parses the underlying {@link IContentDefinitions}.
+   * Parses the underlying {@link IContentDefinitionProvider}.
    * </p>
    * 
    * @param monitor

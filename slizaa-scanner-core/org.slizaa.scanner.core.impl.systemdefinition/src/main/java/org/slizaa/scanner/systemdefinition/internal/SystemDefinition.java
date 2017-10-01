@@ -29,7 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.systemdefinition.AbstractContentDefinitionProvider;
-import org.slizaa.scanner.systemdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.systemdefinition.ITempDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.IResourceChangedListener;
 import org.slizaa.scanner.systemdefinition.ISystemDefinition;
 import org.slizaa.scanner.systemdefinition.ISystemDefinitionChangedListener;
@@ -64,7 +64,7 @@ public class SystemDefinition implements ISystemDefinition {
   /** - */
   @Expose
   @SerializedName("project-content-providers")
-  private List<IContentDefinitionProvider>       _projectContentProviders;
+  private List<ITempDefinitionProvider>       _projectContentProviders;
 
   /** - */
   private Object                                 _identifierLock;
@@ -88,7 +88,7 @@ public class SystemDefinition implements ISystemDefinition {
    *
    * @param currentId
    */
-  public SystemDefinition(int currentId, List<IContentDefinitionProvider> contentDefinitionProviders) {
+  public SystemDefinition(int currentId, List<ITempDefinitionProvider> contentDefinitionProviders) {
     checkNotNull(contentDefinitionProviders);
 
     //
@@ -98,9 +98,9 @@ public class SystemDefinition implements ISystemDefinition {
 
     //
     _contentDefinitions = new ArrayList<IContentDefinition>();
-    _projectContentProviders = new ArrayList<IContentDefinitionProvider>();
-    for (IContentDefinitionProvider provider : contentDefinitionProviders) {
-      IContentDefinitionProvider copy = provider;
+    _projectContentProviders = new ArrayList<ITempDefinitionProvider>();
+    for (ITempDefinitionProvider provider : contentDefinitionProviders) {
+      ITempDefinitionProvider copy = provider;
       if (copy instanceof AbstractContentDefinitionProvider) {
         ((AbstractContentDefinitionProvider) copy).setSystemDefinition(this);
       }
@@ -150,9 +150,9 @@ public class SystemDefinition implements ISystemDefinition {
 
     //
     _contentDefinitions = new ArrayList<IContentDefinition>();
-    _projectContentProviders = new ArrayList<IContentDefinitionProvider>();
-    for (IContentDefinitionProvider provider : systemDefinition._projectContentProviders) {
-      IContentDefinitionProvider copy = provider.copyInstance();
+    _projectContentProviders = new ArrayList<ITempDefinitionProvider>();
+    for (ITempDefinitionProvider provider : systemDefinition._projectContentProviders) {
+      ITempDefinitionProvider copy = provider.copyInstance();
       if (copy instanceof AbstractContentDefinitionProvider) {
         ((AbstractContentDefinitionProvider) copy).setSystemDefinition(this);
       }
@@ -175,19 +175,19 @@ public class SystemDefinition implements ISystemDefinition {
     _currentId = systemDefinition._currentId;
 
     //
-    Map<String, IContentDefinitionProvider> map = new HashMap<String, IContentDefinitionProvider>();
-    for (IContentDefinitionProvider provider : _projectContentProviders) {
+    Map<String, ITempDefinitionProvider> map = new HashMap<String, ITempDefinitionProvider>();
+    for (ITempDefinitionProvider provider : _projectContentProviders) {
       map.put(provider.getId(), provider);
     }
     _projectContentProviders.clear();
 
     // add or merge providers
-    for (IContentDefinitionProvider provider : systemDefinition._projectContentProviders) {
+    for (ITempDefinitionProvider provider : systemDefinition._projectContentProviders) {
 
       if (!map.containsKey(provider.getId())) {
         _projectContentProviders.add(provider.copyInstance());
       } else {
-        IContentDefinitionProvider p = map.get(provider.getId());
+        ITempDefinitionProvider p = map.get(provider.getId());
         p.merge(provider);
         _projectContentProviders.add(p);
       }
@@ -233,7 +233,7 @@ public class SystemDefinition implements ISystemDefinition {
    * {@inheritDoc}
    */
   @Override
-  public List<? extends IContentDefinitionProvider> getContentDefinitionProviders() {
+  public List<? extends ITempDefinitionProvider> getContentDefinitionProviders() {
     return Collections.unmodifiableList(_projectContentProviders);
   }
 
@@ -255,13 +255,13 @@ public class SystemDefinition implements ISystemDefinition {
    * {@inheritDoc}
    */
   @Override
-  public void addContentDefinitionProvider(IContentDefinitionProvider... contentProviders) {
+  public void addContentDefinitionProvider(ITempDefinitionProvider... contentProviders) {
 
     //
     checkNotNull(contentProviders);
 
     //
-    for (IContentDefinitionProvider provider : contentProviders) {
+    for (ITempDefinitionProvider provider : contentProviders) {
       checkState(
           provider instanceof AbstractContentDefinitionProvider,
           String.format("IProjectContentProvider must be instance of %s.",
@@ -269,7 +269,7 @@ public class SystemDefinition implements ISystemDefinition {
     }
 
     //
-    for (IContentDefinitionProvider provider : contentProviders) {
+    for (ITempDefinitionProvider provider : contentProviders) {
 
       if (provider != null && !_projectContentProviders.contains(provider)) {
 
@@ -290,13 +290,13 @@ public class SystemDefinition implements ISystemDefinition {
    * {@inheritDoc}
    */
   @Override
-  public void removeContentDefinitionProvider(IContentDefinitionProvider... contentProviders) {
+  public void removeContentDefinitionProvider(ITempDefinitionProvider... contentProviders) {
 
     //
     checkNotNull(contentProviders);
 
     //
-    for (IContentDefinitionProvider provider : contentProviders) {
+    for (ITempDefinitionProvider provider : contentProviders) {
 
       if (provider != null && _projectContentProviders.contains(provider)) {
 
@@ -317,7 +317,7 @@ public class SystemDefinition implements ISystemDefinition {
    * {@inheritDoc}
    */
   @Override
-  public void moveUpContentDefinitionProvider(IContentDefinitionProvider... contentProviders) {
+  public void moveUpContentDefinitionProvider(ITempDefinitionProvider... contentProviders) {
 
     // assert selected items are not null
     checkNotNull(contentProviders);
@@ -331,17 +331,17 @@ public class SystemDefinition implements ISystemDefinition {
     _initialized = false;
 
     // order the selected items
-    List<IContentDefinitionProvider> orderSelectedItems = Arrays.asList(contentProviders);
-    Collections.sort(orderSelectedItems, new Comparator<IContentDefinitionProvider>() {
+    List<ITempDefinitionProvider> orderSelectedItems = Arrays.asList(contentProviders);
+    Collections.sort(orderSelectedItems, new Comparator<ITempDefinitionProvider>() {
       @Override
-      public int compare(IContentDefinitionProvider o1, IContentDefinitionProvider o2) {
+      public int compare(ITempDefinitionProvider o1, ITempDefinitionProvider o2) {
         return _projectContentProviders.indexOf(o1) - _projectContentProviders.indexOf(o2);
       }
     });
 
     try {
       // move the items up
-      for (IContentDefinitionProvider provider : orderSelectedItems) {
+      for (ITempDefinitionProvider provider : orderSelectedItems) {
 
         //
         int index = _projectContentProviders.indexOf(provider);
@@ -363,7 +363,7 @@ public class SystemDefinition implements ISystemDefinition {
    * {@inheritDoc}
    */
   @Override
-  public void moveDownContentDefinitionProvider(IContentDefinitionProvider... contentProviders) {
+  public void moveDownContentDefinitionProvider(ITempDefinitionProvider... contentProviders) {
 
     // assert selected items are not null
     checkNotNull(contentProviders);
@@ -377,17 +377,17 @@ public class SystemDefinition implements ISystemDefinition {
     _initialized = false;
 
     // order the selected items
-    List<IContentDefinitionProvider> orderSelectedItems = Arrays.asList(contentProviders);
-    Collections.sort(orderSelectedItems, new Comparator<IContentDefinitionProvider>() {
+    List<ITempDefinitionProvider> orderSelectedItems = Arrays.asList(contentProviders);
+    Collections.sort(orderSelectedItems, new Comparator<ITempDefinitionProvider>() {
       @Override
-      public int compare(IContentDefinitionProvider o1, IContentDefinitionProvider o2) {
+      public int compare(ITempDefinitionProvider o1, ITempDefinitionProvider o2) {
         return _projectContentProviders.indexOf(o2) - _projectContentProviders.indexOf(o1);
       }
     });
 
     // move the items up
     try {
-      for (IContentDefinitionProvider provider : orderSelectedItems) {
+      for (ITempDefinitionProvider provider : orderSelectedItems) {
 
         //
         int index = _projectContentProviders.indexOf(provider);
@@ -414,10 +414,10 @@ public class SystemDefinition implements ISystemDefinition {
     List<String> idList = Arrays.asList(ids);
 
     //
-    List<IContentDefinitionProvider> providerToRemove = new LinkedList<>();
+    List<ITempDefinitionProvider> providerToRemove = new LinkedList<>();
 
     //
-    for (IContentDefinitionProvider provider : _projectContentProviders) {
+    for (ITempDefinitionProvider provider : _projectContentProviders) {
 
       //
       if (idList.contains(provider.getId())) {
@@ -426,7 +426,7 @@ public class SystemDefinition implements ISystemDefinition {
     }
 
     //
-    removeContentDefinitionProvider(providerToRemove.toArray(new IContentDefinitionProvider[0]));
+    removeContentDefinitionProvider(providerToRemove.toArray(new ITempDefinitionProvider[0]));
   }
 
   /**
@@ -464,12 +464,12 @@ public class SystemDefinition implements ISystemDefinition {
     // clear the project content list
     _contentDefinitions.clear();
 
-    for (IContentDefinitionProvider contentProvider : _projectContentProviders) {
+    for (ITempDefinitionProvider contentProvider : _projectContentProviders) {
       ((AbstractContentDefinitionProvider) contentProvider).prepare();
     }
 
     //
-    for (IContentDefinitionProvider contentProvider : _projectContentProviders) {
+    for (ITempDefinitionProvider contentProvider : _projectContentProviders) {
 
       //
       ((AbstractContentDefinitionProvider) contentProvider).initializeProjectContent(null);
@@ -654,9 +654,9 @@ public class SystemDefinition implements ISystemDefinition {
 
       //
       JsonArray jsonArray = (JsonArray) jsonObject.get("project-content-providers");
-      List<IContentDefinitionProvider> providers = new LinkedList<>();
+      List<ITempDefinitionProvider> providers = new LinkedList<>();
       for (JsonElement jsonElement : jsonArray) {
-        providers.add((IContentDefinitionProvider) context.deserialize(jsonElement, IContentDefinitionProvider.class));
+        providers.add((ITempDefinitionProvider) context.deserialize(jsonElement, ITempDefinitionProvider.class));
       }
 
       //

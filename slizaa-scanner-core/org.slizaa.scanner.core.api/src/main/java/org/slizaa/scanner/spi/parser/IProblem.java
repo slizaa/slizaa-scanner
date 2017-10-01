@@ -12,13 +12,13 @@ package org.slizaa.scanner.spi.parser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 import org.slizaa.scanner.spi.content.IResource;
 
 /**
  * <p>
  * Common interface for problems and errors that occur while parsing the content of a
- * {@link IContentDefinitions}.
+ * {@link IContentDefinitionProvider}.
  * </p>
  * <p>
  * Clients may implement this interface.

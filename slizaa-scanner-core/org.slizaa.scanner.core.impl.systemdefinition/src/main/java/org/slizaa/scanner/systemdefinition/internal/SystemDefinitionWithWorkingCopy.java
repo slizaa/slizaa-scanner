@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.systemdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.systemdefinition.ITempDefinitionProvider;
 import org.slizaa.scanner.systemdefinition.IResourceChangedListener;
 import org.slizaa.scanner.systemdefinition.ISystemDefinitionChangedListener;
 import org.slizaa.scanner.systemdefinition.ISystemDefinitionWithWorkingCopy;
@@ -120,17 +120,17 @@ public class SystemDefinitionWithWorkingCopy implements ISystemDefinitionWithWor
   }
 
   @Override
-  public List<? extends IContentDefinitionProvider> getContentDefinitionProviders() {
+  public List<? extends ITempDefinitionProvider> getContentDefinitionProviders() {
     return _original.getContentDefinitionProviders();
   }
 
   @Override
-  public void addContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProvider) {
+  public void addContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProvider) {
     _original.addContentDefinitionProvider(contentDefinitionProvider);
   }
 
   @Override
-  public void removeContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProvider) {
+  public void removeContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProvider) {
     _original.removeContentDefinitionProvider(contentDefinitionProvider);
   }
 
@@ -140,12 +140,12 @@ public class SystemDefinitionWithWorkingCopy implements ISystemDefinitionWithWor
   }
 
   @Override
-  public void moveUpContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProviders) {
+  public void moveUpContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProviders) {
     _original.moveUpContentDefinitionProvider(contentDefinitionProviders);
   }
 
   @Override
-  public void moveDownContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProviders) {
+  public void moveDownContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProviders) {
     _original.moveDownContentDefinitionProvider(contentDefinitionProviders);
   }
 

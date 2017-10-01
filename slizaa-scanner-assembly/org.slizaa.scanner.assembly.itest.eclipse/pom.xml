@@ -26,11 +26,37 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.ops4j.pax.url</groupId>
-			<artifactId>pax-url-wrap</artifactId>
-			<version>2.5.2</version>
+			<groupId>org.slizaa.scanner.jtype</groupId>
+			<artifactId>org.slizaa.scanner.jtype</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.slizaa.scanner.jtype</groupId>
+			<artifactId>org.slizaa.scanner.jtype</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slizaa.scanner.assembly</groupId>
+			<artifactId>org.slizaa.scanner.core.eclipse</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.lukehutch</groupId>
+			<artifactId>fast-classpath-scanner</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.neo4j.driver</groupId>
@@ -38,40 +64,39 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.ops4j.pax.url</groupId>
+			<artifactId>pax-url-wrap</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-container-native</artifactId>
 			<version>${exam.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-junit4</artifactId>
 			<version>${exam.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-link-mvn</artifactId>
 			<version>${exam.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.ops4j.pax.url</groupId>
 			<artifactId>pax-url-aether</artifactId>
-			<version>${url.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
 			<version>3.11.3</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
@@ -86,5 +111,21 @@
 
 	</dependencies>
 
-
+	<build>
+		<plugins>
+			<!-- generate dependencies versions -->
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -1,1 +1,2 @@
 Export-Package: org.slizaa.scanner.spi.*, org.slizaa.scanner.api.*, !org.slizaa.scanner.api.model.internal
+-includeresource: OSGI-OPT/src=src/main/java

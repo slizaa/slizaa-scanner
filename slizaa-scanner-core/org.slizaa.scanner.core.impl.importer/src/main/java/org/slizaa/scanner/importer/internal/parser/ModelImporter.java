@@ -34,7 +34,7 @@ import org.slizaa.scanner.api.importer.IModelImporter;
 import org.slizaa.scanner.api.model.IModifiableNode;
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 import org.slizaa.scanner.spi.content.IResource;
 import org.slizaa.scanner.spi.parser.IParser;
 import org.slizaa.scanner.spi.parser.IParserFactory;
@@ -60,7 +60,7 @@ public class ModelImporter implements IModelImporter {
   private final Logger        logger       = LoggerFactory.getLogger(ModelImporter.class);
 
   /** - */
-  private IContentDefinitions _contentDefinitions;
+  private IContentDefinitionProvider _contentDefinitions;
 
   /** - */
   private File                _directory;
@@ -79,7 +79,7 @@ public class ModelImporter implements IModelImporter {
    * Creates a new instance of type {@link ModelImporter}.
    * </p>
    */
-  public ModelImporter(IContentDefinitions systemDefinition, File directory, IParserFactory... parserFactories) {
+  public ModelImporter(IContentDefinitionProvider systemDefinition, File directory, IParserFactory... parserFactories) {
 
     checkNotNull(systemDefinition);
     checkNotNull(directory);
@@ -94,7 +94,7 @@ public class ModelImporter implements IModelImporter {
   /**
    * {@inheritDoc}
    */
-  public final IContentDefinitions getSystemDefinition() {
+  public final IContentDefinitionProvider getSystemDefinition() {
     return _contentDefinitions;
   }
 

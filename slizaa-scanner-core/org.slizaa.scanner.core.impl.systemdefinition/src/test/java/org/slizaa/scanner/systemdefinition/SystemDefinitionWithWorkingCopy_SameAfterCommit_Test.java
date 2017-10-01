@@ -30,14 +30,14 @@ public class SystemDefinitionWithWorkingCopy_SameAfterCommit_Test {
 
     //
     SystemDefinitionWithWorkingCopy systemDefinition = TestHelper.createDefaultSystemDefinitionWithWorkingCopy();
-    IContentDefinitionProvider prov_1 = systemDefinition.getContentDefinitionProviders().get(0);
-    IContentDefinitionProvider prov_2 = systemDefinition.getContentDefinitionProviders().get(1);
+    ITempDefinitionProvider prov_1 = systemDefinition.getContentDefinitionProviders().get(0);
+    ITempDefinitionProvider prov_2 = systemDefinition.getContentDefinitionProviders().get(1);
 
     //
     systemDefinition.startWorkingCopy();
 
-    IContentDefinitionProvider prov_1_copy = systemDefinition.getContentDefinitionProviders().get(0);
-    IContentDefinitionProvider prov_2_copy = systemDefinition.getContentDefinitionProviders().get(1);
+    ITempDefinitionProvider prov_1_copy = systemDefinition.getContentDefinitionProviders().get(0);
+    ITempDefinitionProvider prov_2_copy = systemDefinition.getContentDefinitionProviders().get(1);
     
     assertSame(prov_1, prov_1_copy);
     assertSame(prov_2, prov_2_copy);

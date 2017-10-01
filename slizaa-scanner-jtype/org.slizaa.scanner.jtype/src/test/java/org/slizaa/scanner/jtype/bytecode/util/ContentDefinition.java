@@ -8,31 +8,26 @@ import java.util.Collections;
 
 import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 import org.slizaa.scanner.spi.content.IResource;
 import org.slizaa.scanner.spi.content.ResourceType;
 
 public class ContentDefinition implements IContentDefinition {
 
   /** - */
-  private Collection<IResource> _binaryResources;
+  private Collection<IResource>      _binaryResources;
 
   /** - */
-  private IContentDefinitions   _contentDefinitions;
+  private IContentDefinitionProvider _contentDefinitions;
 
   /**
    * <p>
    * Creates a new instance of type {@link ContentDefinition}.
    * </p>
    */
-  public ContentDefinition(IContentDefinitions contentDefinitions) {
+  public ContentDefinition(IContentDefinitionProvider contentDefinitions) {
     _contentDefinitions = checkNotNull(contentDefinitions);
     _binaryResources = new ArrayList<>();
-  }
-
-  @Override
-  public String getId() {
-    return "00001";
   }
 
   @Override

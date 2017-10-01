@@ -12,10 +12,13 @@ package org.slizaa.scanner.systemdefinition.internal;
 
 import java.util.Map;
 
-import org.slizaa.scanner.systemdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.spi.content.support.DefaultVariablePath;
+import org.slizaa.scanner.systemdefinition.ITempDefinitionProvider;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import net.bytebuddy.implementation.bytecode.constant.DefaultValue;
 
 /**
  * <p>
@@ -38,9 +41,9 @@ public class GsonProjectDescriptionHelper {
     GsonBuilder builder = new GsonBuilder();
     builder.excludeFieldsWithoutExposeAnnotation();
     builder.setPrettyPrinting();
-    builder.registerTypeAdapter(IContentDefinitionProvider.class, new ContentDefinitionProviderJsonAdapter(classLoader,
+    builder.registerTypeAdapter(ITempDefinitionProvider.class, new ContentDefinitionProviderJsonAdapter(classLoader,
         idClassnameMap));
-
+    builder.registerTypeAdapter(DefaultVariablePath.class, new DefaultVariablePathAdapter());
     builder.registerTypeAdapter(SystemDefinition.class, new SystemDefinition.SystemDefinitionJsonDeserializer());
 
     //

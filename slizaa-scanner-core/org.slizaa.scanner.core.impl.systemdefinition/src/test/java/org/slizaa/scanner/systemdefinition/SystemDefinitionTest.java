@@ -36,9 +36,9 @@ public class SystemDefinitionTest {
   public void testAddRemoveProviders() {
 
     //
-    IContentDefinitionProvider provider_1 = createContentDefinitionProvider();
-    IContentDefinitionProvider provider_2 = createContentDefinitionProvider();
-    IContentDefinitionProvider provider_3 = createContentDefinitionProvider();
+    ITempDefinitionProvider provider_1 = createContentDefinitionProvider();
+    ITempDefinitionProvider provider_2 = createContentDefinitionProvider();
+    ITempDefinitionProvider provider_3 = createContentDefinitionProvider();
 
     //
     _systemDefinition.addContentDefinitionProvider(provider_1);
@@ -75,9 +75,9 @@ public class SystemDefinitionTest {
     assertThat(_systemDefinition.isInitialized()).isFalse();
 
     //
-    IContentDefinitionProvider provider_1 = createContentDefinitionProvider();
-    IContentDefinitionProvider provider_2 = createContentDefinitionProvider();
-    IContentDefinitionProvider provider_3 = createContentDefinitionProvider();
+    ITempDefinitionProvider provider_1 = createContentDefinitionProvider();
+    ITempDefinitionProvider provider_2 = createContentDefinitionProvider();
+    ITempDefinitionProvider provider_3 = createContentDefinitionProvider();
 
     //
     _systemDefinition.addContentDefinitionProvider(provider_1);

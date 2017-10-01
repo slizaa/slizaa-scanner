@@ -71,6 +71,10 @@
           <artifactId>common</artifactId>
           <groupId>org.eclipse.equinox</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>pax-url-aether</artifactId>
+          <groupId>org.ops4j.pax.url</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>

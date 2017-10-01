@@ -58,7 +58,7 @@ public class BatchInserterFacade implements AutoCloseable {
   private Map<IResource, IModifiableNode> _resourcesMap;
 
   /** - */
-  private Map<String, INode>              _modulesMap;
+  private Map<IContentDefinition, INode>  _modulesMap;
 
   /**
    * <p>
@@ -97,10 +97,7 @@ public class BatchInserterFacade implements AutoCloseable {
   public IModifiableNode getOrCreateModuleNode(final IContentDefinition contentDefinition) {
 
     //
-    String contentDefinitionId = contentDefinition.getId();
-
-    //
-    if (!_modulesMap.containsKey(contentDefinitionId)) {
+    if (!_modulesMap.containsKey(contentDefinition)) {
 
       //
       IModifiableNode moduleNode = NodeFactory.createNode();
@@ -108,12 +105,11 @@ public class BatchInserterFacade implements AutoCloseable {
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_NAME, contentDefinition.getName());
       moduleNode.putProperty(INode.FQN, contentDefinition.getName());
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_VERSION, contentDefinition.getVersion());
-      moduleNode.putProperty(IModuleNode.PROPERTY_CONTENT_ENTRY_ID, contentDefinitionId);
-      _modulesMap.put(contentDefinitionId, moduleNode);
+      _modulesMap.put(contentDefinition, moduleNode);
     }
 
     //
-    return (IModifiableNode) _modulesMap.get(contentDefinitionId);
+    return (IModifiableNode) _modulesMap.get(contentDefinition);
   }
 
   /**
@@ -161,39 +157,12 @@ public class BatchInserterFacade implements AutoCloseable {
   /**
    * <p>
    * </p>
-   * 
-   * @return
-   */
-  public Map<String, INode> getModulesMap() {
-    return Collections.unmodifiableMap(_modulesMap);
-  }
-
-  /**
-   * <p>
-   * </p>
    *
    * @return
    */
   public Map<String, INode> getDirectoriesMap() {
     return Collections.unmodifiableMap(_directoriesMap);
   }
-
-//  /**
-//   * <p>
-//   * </p>
-//   * 
-//   * @param systemDefinition
-//   * @param storedModulesMap
-//   */
-//  public void setupModuleNodes(IContentDefinitions systemDefinition, Map<String, IModifiableNode> storedModulesMap) {
-//
-//    //
-//    for (IContentDefinition contentDefinition : systemDefinition.getContentDefinitions()) {
-//      if (storedModulesMap.containsKey(contentDefinition.getId())) {
-//        _modulesMap.put(contentDefinition.getId(), storedModulesMap.remove(contentDefinition.getId()));
-//      }
-//    }
-//  }
 
   public void clearResourceAndDirectoriesMap() {
     _resourcesMap.clear();
@@ -217,9 +186,9 @@ public class BatchInserterFacade implements AutoCloseable {
       //
       id = _batchInserter.createNode(nodeBean.getProperties(),
           LabelAndRelationshipCache.convert(nodeBean.getLabels().toArray(new Label[0])));
-      
+
       ((IModifiableNode) nodeBean).setNodeId(id);
-      
+
       //
       for (Map.Entry<RelationshipType, List<IRelationship>> entry : nodeBean.getRelationships().entrySet()) {
         for (IRelationship relationship : entry.getValue()) {
@@ -228,8 +197,8 @@ public class BatchInserterFacade implements AutoCloseable {
               relationship.getRelationshipProperties());
         }
       }
-    } 
-    
+    }
+
     return nodeBean.getId();
   }
 

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.slizaa.scanner.systemdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.systemdefinition.ITempDefinitionProvider;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -34,8 +34,8 @@ import com.google.gson.JsonSerializer;
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public class ContentDefinitionProviderJsonAdapter implements JsonSerializer<IContentDefinitionProvider>,
-    JsonDeserializer<IContentDefinitionProvider> {
+public class ContentDefinitionProviderJsonAdapter implements JsonSerializer<ITempDefinitionProvider>,
+    JsonDeserializer<ITempDefinitionProvider> {
 
   /** the CLASSNAME attribute */
   private static final String TYPE     = "provider-id";
@@ -83,7 +83,7 @@ public class ContentDefinitionProviderJsonAdapter implements JsonSerializer<ICon
    * {@inheritDoc}
    */
   @Override
-  public JsonElement serialize(IContentDefinitionProvider src, Type typeOfSrc, JsonSerializationContext context) {
+  public JsonElement serialize(ITempDefinitionProvider src, Type typeOfSrc, JsonSerializationContext context) {
 
     String className = src.getClass().getName();
     String id = _classIdMap != null && _classIdMap.containsKey(className) ? _classIdMap.get(className) : className;
@@ -99,7 +99,7 @@ public class ContentDefinitionProviderJsonAdapter implements JsonSerializer<ICon
    * {@inheritDoc}
    */
   @Override
-  public IContentDefinitionProvider deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+  public ITempDefinitionProvider deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
 
     JsonObject jsonObject = json.getAsJsonObject();

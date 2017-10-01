@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.slizaa.scanner.jtype.bytecode.internal.PrimitiveDatatypeNodeProvider;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 import org.slizaa.scanner.spi.parser.IParser;
 import org.slizaa.scanner.spi.parser.IParserFactory;
 
@@ -44,7 +44,7 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public IParser createParser(IContentDefinitions contentDefinition) {
+  public IParser createParser(IContentDefinitionProvider contentDefinition) {
     return new JTypeByteCodeParser(this);
   }
 
@@ -52,7 +52,7 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStart(IContentDefinitions contentDefinitions, Object graphDatabase, IProgressMonitor subMonitor)
+  public void batchParseStart(IContentDefinitionProvider contentDefinitions, Object graphDatabase, IProgressMonitor subMonitor)
       throws Exception {
 
     GraphDatabaseService graphDatabaseService = (GraphDatabaseService) graphDatabase;
@@ -74,7 +74,7 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStop(IContentDefinitions contentDefinition, Object graphDatabase, IProgressMonitor subMonitor) {
+  public void batchParseStop(IContentDefinitionProvider contentDefinition, Object graphDatabase, IProgressMonitor subMonitor) {
 
     //
     _datatypeNodeProvider = null;

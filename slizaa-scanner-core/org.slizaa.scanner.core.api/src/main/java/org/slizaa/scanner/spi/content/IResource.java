@@ -22,7 +22,30 @@ package org.slizaa.scanner.spi.content;
  * @noimplement This interface is not intended to be implemented by clients.
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IResource extends IPathIdentifier {
+public interface IResource {
+
+  /**
+   * <p>
+   * Returns the root directory or archive file that contains the resource (e.g. <code>'c:/dev/classes.zip'</code> or
+   * <code>'c:/dev/source'</code>). Note that resource paths are always slash-delimited ('/').
+   * </p>
+   * 
+   * @return the root directory or archive file that contains the resource.
+   */
+  public String getRoot();
+
+  /**
+   * <p>
+   * Returns the full path of the resource, e.g. <code>'org/example/Test.java'</code>. Note that resource paths are
+   * always slash-delimited ('/').
+   * </p>
+   * <p>
+   * The result of this method is equivalent to <code>'getDirectory() + "/" + getName()'</code>.
+   * </p>
+   * 
+   * @return the full path of the resource.
+   */
+  public String getPath();
 
   /**
    * <p>

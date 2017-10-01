@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.slizaa.scanner.systemdefinition;
 
+import org.slizaa.scanner.spi.content.support.DefaultVariablePath;
+
 /**
  * <p>
  * Service interface. To provide an {@link IVariablePathResolver}, implement this interface and register an instance at
@@ -22,11 +24,11 @@ public interface IVariablePathResolver {
 
   /**
    * <p>
-   * Returns the resolved {@link VariablePath}.
+   * Returns the resolved {@link DefaultVariablePath}.
    * </p>
    * 
    * @param variablePath
    * @return
    */
-  String resolve(VariablePath variablePath);
+  String resolve(DefaultVariablePath variablePath);
 }

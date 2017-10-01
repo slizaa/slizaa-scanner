@@ -23,7 +23,8 @@ import org.slizaa.scanner.spi.content.AnalyzeMode;
 import org.slizaa.scanner.spi.content.IContentDefinition;
 import org.slizaa.scanner.spi.content.IResource;
 import org.slizaa.scanner.spi.content.ResourceType;
-import org.slizaa.scanner.systemdefinition.internal.ContentDefinition;
+import org.slizaa.scanner.spi.content.support.FileBasedContentDefinition;
+import org.slizaa.scanner.spi.content.support.DefaultVariablePath;
 import org.slizaa.scanner.systemdefinition.internal.SystemDefinition;
 import org.slizaa.scanner.systemdefinition.internal.SystemDefinitionWithWorkingCopy;
 
@@ -32,12 +33,12 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * <p>
- * Superclass for all implementations of {@link IContentDefinitionProvider}
+ * Superclass for all implementations of {@link ITempDefinitionProvider}
  * </p>
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public abstract class AbstractContentDefinitionProvider implements IContentDefinitionProvider {
+public abstract class AbstractContentDefinitionProvider implements ITempDefinitionProvider {
 
   /** the (unique) id of the content definition provider */
   @Expose
@@ -224,7 +225,7 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
    * @throws CoreException
    */
   protected IContentDefinition createFileBasedContentDefinition(String contentName, String contentVersion,
-      VariablePath[] binaryPaths, VariablePath[] sourcePaths, AnalyzeMode analyzeMode) {
+      DefaultVariablePath[] binaryPaths, DefaultVariablePath[] sourcePaths, AnalyzeMode analyzeMode) {
 
     //
     // checkProjectSet();
@@ -235,7 +236,7 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     checkNotNull(binaryPaths);
     checkNotNull(analyzeMode);
 
-    ContentDefinition result = new ContentDefinition(this, _systemDefinition);
+    FileBasedContentDefinition result = new FileBasedContentDefinition(_systemDefinition);
 
     result.setAnalyzeMode(analyzeMode);
 
@@ -243,12 +244,12 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     result.setName(contentName);
     result.setVersion(contentVersion);
 
-    for (VariablePath binaryPath : binaryPaths) {
+    for (DefaultVariablePath binaryPath : binaryPaths) {
       result.addRootPath(binaryPath, ResourceType.BINARY);
     }
 
     if (sourcePaths != null) {
-      for (VariablePath sourcePath : sourcePaths) {
+      for (DefaultVariablePath sourcePath : sourcePaths) {
         result.addRootPath(sourcePath, ResourceType.SOURCE);
       }
     }
@@ -280,11 +281,11 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     checkNotNull(type);
 
     checkNotNull(contentDefinition);
-    checkState(contentDefinition instanceof ContentDefinition,
+    checkState(contentDefinition instanceof FileBasedContentDefinition,
         "IContentDefinition must be instance of type ContentDefinition.");
 
     //
-    IResource resource = ((ContentDefinition) contentDefinition).createNewResource(root, path, type);
+    IResource resource = ((FileBasedContentDefinition) contentDefinition).createNewResource(root, path, type);
 
     // fire event
     if (hasSystemDefinition()) {
@@ -309,11 +310,11 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     checkNotNull(type);
 
     checkNotNull(contentDefinition);
-    checkState(contentDefinition instanceof ContentDefinition,
+    checkState(contentDefinition instanceof FileBasedContentDefinition,
         "IContentDefinition must be instance of type ContentDefinition.");
 
     //
-    ((ContentDefinition) contentDefinition).removeResource(resource, type);
+    ((FileBasedContentDefinition) contentDefinition).removeResource(resource, type);
 
     // fire event
     if (hasSystemDefinition()) {

@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 
 /**
  * <p>
@@ -31,7 +31,7 @@ import org.slizaa.scanner.spi.content.IContentDefinitions;
  * @noimplement This interface is not intended to be implemented by clients.
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ISystemDefinition extends IContentDefinitions {
+public interface ISystemDefinition extends IContentDefinitionProvider {
 
   /**
    * <p>
@@ -41,7 +41,7 @@ public interface ISystemDefinition extends IContentDefinitions {
    * 
    * @return
    */
-  List<? extends IContentDefinitionProvider> getContentDefinitionProviders();
+  List<? extends ITempDefinitionProvider> getContentDefinitionProviders();
 
   /**
    * <p>
@@ -51,7 +51,7 @@ public interface ISystemDefinition extends IContentDefinitions {
    * @param contentDefinitionProvider
    *          the {@link IContentDefinitionProvider} that should be added to this {@link ISystemDefinition}.
    */
-  void addContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProvider);
+  void addContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProvider);
 
   /**
    * <p>
@@ -61,7 +61,7 @@ public interface ISystemDefinition extends IContentDefinitions {
    * @param contentDefinitionProvider
    *          the {@link IContentDefinitionProvider} that should be removed from this {@link ISystemDefinition}.
    */
-  void removeContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProvider);
+  void removeContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProvider);
 
   /**
    * <p>
@@ -81,7 +81,7 @@ public interface ISystemDefinition extends IContentDefinitions {
    * @param contentDefinitionProviders
    *          the {@link IContentDefinitionProvider IContentDefinitionProviders} to move up.
    */
-  void moveUpContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProviders);
+  void moveUpContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProviders);
 
   /**
    * <p>
@@ -91,7 +91,7 @@ public interface ISystemDefinition extends IContentDefinitions {
    * @param contentDefinitionProviders
    *          the {@link IContentDefinitionProvider IContentDefinitionProviders} to move up.
    */
-  void moveDownContentDefinitionProvider(IContentDefinitionProvider... contentDefinitionProviders);
+  void moveDownContentDefinitionProvider(ITempDefinitionProvider... contentDefinitionProviders);
 
   /**
    * <p>

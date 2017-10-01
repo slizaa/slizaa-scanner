@@ -12,7 +12,7 @@ package org.slizaa.scanner.spi.content;
 
 /**
  * <p>
- * Specifies how an {@link IContentDefinition} entry in a {@link IContentDefinitions} should be analyzed.
+ * Specifies how an {@link IContentDefinition} entry in a {@link IContentDefinitionProvider} should be analyzed.
  * </p>
  * 
  * @author Nils Hartmann (nils@nilshartmann.net)

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 
-public class ContentDefinitions implements IContentDefinitions {
+public class ContentDefinitions implements IContentDefinitionProvider {
 
   private List<IContentDefinition> _contentDefinitions;
 

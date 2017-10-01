@@ -20,7 +20,7 @@ import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
 import org.slizaa.scanner.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.spi.content.IContentDefinitions;
+import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
 import org.slizaa.scanner.spi.parser.IParserFactory;
 
 /**
@@ -35,7 +35,7 @@ public class SlizaaTestServerRule implements TestRule {
   private File                          _databaseDirectory;
 
   /** - */
-  private Supplier<IContentDefinitions> _contentDefinitionsSupplier;
+  private Supplier<IContentDefinitionProvider> _contentDefinitionsSupplier;
 
   /**
    * <p>
@@ -44,16 +44,16 @@ public class SlizaaTestServerRule implements TestRule {
    *
    * @param contentDefinitions
    */
-  public SlizaaTestServerRule(IContentDefinitions contentDefinitions) {
-    this(createDatabaseDirectory(), new Supplier<IContentDefinitions>() {
+  public SlizaaTestServerRule(IContentDefinitionProvider contentDefinitions) {
+    this(createDatabaseDirectory(), new Supplier<IContentDefinitionProvider>() {
       @Override
-      public IContentDefinitions get() {
+      public IContentDefinitionProvider get() {
         return contentDefinitions;
       }
     });
   }
 
-  public SlizaaTestServerRule(Supplier<IContentDefinitions> contentDefinitions) {
+  public SlizaaTestServerRule(Supplier<IContentDefinitionProvider> contentDefinitions) {
     this(createDatabaseDirectory(), contentDefinitions);
   }
 
@@ -65,7 +65,7 @@ public class SlizaaTestServerRule implements TestRule {
    * @param workingDirectory
    * @param contentDefinitions
    */
-  private SlizaaTestServerRule(File workingDirectory, Supplier<IContentDefinitions> contentDefinitions) {
+  private SlizaaTestServerRule(File workingDirectory, Supplier<IContentDefinitionProvider> contentDefinitions) {
     checkNotNull(contentDefinitions);
     _databaseDirectory = checkNotNull(workingDirectory);
     _contentDefinitionsSupplier = checkNotNull(contentDefinitions);
