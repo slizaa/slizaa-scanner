@@ -15,8 +15,9 @@
 	</properties>
 
 	<modules>
-		<module>org.slizaa.scanner.core.eclipse</module>
-		<module>org.slizaa.scanner.assembly.itest.eclipse</module>
+		<module>org.slizaa.scanner.eclipse</module>
+		<module>org.slizaa.scanner.eclipse.itest</module>
+		<module>org.slizaa.scanner.assembly</module>
 	</modules>
 
 	<dependencyManagement>

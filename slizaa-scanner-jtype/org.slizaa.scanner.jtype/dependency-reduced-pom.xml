@@ -68,14 +68,16 @@
           <groupId>com.google.guava</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>common</artifactId>
-          <groupId>org.eclipse.equinox</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>pax-url-aether</artifactId>
           <groupId>org.ops4j.pax.url</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.equinox.common</artifactId>
+      <version>3.8.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.neo4j</groupId>
