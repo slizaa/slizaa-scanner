@@ -26,6 +26,7 @@ import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
+@Deprecated
 public class FileBasedContentDefinitionProvider extends AbstractContentDefinitionProvider
     implements IContentDefinitionProvider {
 
