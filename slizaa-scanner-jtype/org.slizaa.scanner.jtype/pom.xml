@@ -127,13 +127,6 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<bnd><![CDATA[
-        				Bundle-SymbolicName: ${artifactId}
-        				Slizaa-Scanner-Extension: true
-        				Import-Package:!org.objectweb.asm.*,*
-        				]]></bnd>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

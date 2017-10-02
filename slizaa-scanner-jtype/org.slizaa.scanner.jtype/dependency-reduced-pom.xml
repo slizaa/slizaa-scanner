@@ -42,11 +42,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <bnd>Bundle-SymbolicName: ${artifactId}
-        				Slizaa-Scanner-Extension: true
-        				Import-Package:!org.objectweb.asm.*,*</bnd>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
