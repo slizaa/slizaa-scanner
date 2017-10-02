@@ -13,6 +13,7 @@ package org.slizaa.scanner.jtype.bytecode;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
+import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
@@ -25,6 +26,7 @@ import org.slizaa.scanner.jtype.bytecode.internal.PrimitiveDatatypeNodeProvider;
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
+@SlizaaParserFactory
 public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implements IParserFactory {
 
   /** - */
@@ -52,8 +54,8 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStart(IContentDefinitionProvider contentDefinitions, Object graphDatabase, IProgressMonitor subMonitor)
-      throws Exception {
+  public void batchParseStart(IContentDefinitionProvider contentDefinitions, Object graphDatabase,
+      IProgressMonitor subMonitor) throws Exception {
 
     GraphDatabaseService graphDatabaseService = (GraphDatabaseService) graphDatabase;
 
@@ -74,7 +76,8 @@ public class JTypeByteCodeParserFactory extends IParserFactory.Adapter implement
    * {@inheritDoc}
    */
   @Override
-  public void batchParseStop(IContentDefinitionProvider contentDefinition, Object graphDatabase, IProgressMonitor subMonitor) {
+  public void batchParseStop(IContentDefinitionProvider contentDefinition, Object graphDatabase,
+      IProgressMonitor subMonitor) {
 
     //
     _datatypeNodeProvider = null;
