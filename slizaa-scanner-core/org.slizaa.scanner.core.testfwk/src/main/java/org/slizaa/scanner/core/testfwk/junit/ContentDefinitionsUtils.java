@@ -9,9 +9,9 @@ import java.io.IOException;
 import org.ops4j.pax.url.mvn.MavenResolvers;
 import org.slizaa.scanner.core.contentdefinition.FileBasedContentDefinitionProvider;
 import org.slizaa.scanner.core.contentdefinition.MvnBasedContentDefinitionProvider;
-import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
-import org.slizaa.scanner.spi.content.ResourceType;
+import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.contentdefinition.ResourceType;
 
 public class ContentDefinitionsUtils {
 

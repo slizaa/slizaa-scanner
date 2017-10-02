@@ -14,9 +14,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.ops4j.pax.url.mvn.MavenResolvers;
-import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.contentdefinition.AbstractContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 
 /**
  * <p>

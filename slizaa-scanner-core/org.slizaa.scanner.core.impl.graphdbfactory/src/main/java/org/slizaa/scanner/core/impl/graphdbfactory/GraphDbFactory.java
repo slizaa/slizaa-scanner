@@ -14,8 +14,8 @@ import org.neo4j.kernel.configuration.Connector.ConnectorType;
 import org.neo4j.kernel.impl.proc.Procedures;
 import org.neo4j.kernel.internal.GraphDatabaseAPI;
 import org.neo4j.logging.FormattedLogProvider;
-import org.slizaa.scanner.api.graphdb.IGraphDb;
-import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
+import org.slizaa.scanner.core.api.graphdb.IGraphDb;
+import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 
 public class GraphDbFactory implements IGraphDbFactory {
 

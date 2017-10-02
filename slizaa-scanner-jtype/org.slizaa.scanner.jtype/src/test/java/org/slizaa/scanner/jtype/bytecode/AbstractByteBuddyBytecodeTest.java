@@ -4,15 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.function.Supplier;
 
-import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.INode;
-import org.slizaa.scanner.api.model.internal.NodeBean;
-import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
+import org.slizaa.scanner.core.spi.parser.IParser;
+import org.slizaa.scanner.core.spi.parser.IParserContext;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.NodeFactory;
+import org.slizaa.scanner.core.spi.parser.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.jtype.bytecode.util.ContentCreator;
 import org.slizaa.scanner.jtype.bytecode.util.ContentDefinitions;
 import org.slizaa.scanner.jtype.bytecode.util.PrimitiveDatatypeNodeProvider;
-import org.slizaa.scanner.spi.parser.IParser;
-import org.slizaa.scanner.spi.parser.IParserContext;
 
 import net.bytebuddy.dynamic.DynamicType.Builder;
 
@@ -49,9 +49,9 @@ public abstract class AbstractByteBuddyBytecodeTest {
 
     IParser codeParser = parserFactory.createParser(definitions);
 
-    IModifiableNode resourceBean = new NodeBean();
-    IModifiableNode directoryBean = new NodeBean();
-    IModifiableNode moduleBean = new NodeBean();
+    INode resourceBean = NodeFactory.createNode();
+    INode directoryBean = NodeFactory.createNode();
+    INode moduleBean = NodeFactory.createNode();
 
     codeParser.parseResource(definitions.getContentDefinitions().get(0),
         definitions.getContentDefinitions().get(0).getBinaryResources().iterator().next(), resourceBean,
@@ -62,12 +62,12 @@ public abstract class AbstractByteBuddyBytecodeTest {
           }
 
           @Override
-          public IModifiableNode getParentDirectoryNode() {
+          public INode getParentDirectoryNode() {
             return directoryBean;
           }
 
           @Override
-          public IModifiableNode getParentModuleNode() {
+          public INode getParentModuleNode() {
             return moduleBean;
           }
         });

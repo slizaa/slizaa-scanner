@@ -3,7 +3,7 @@ package org.slizaa.scanner.core.impl.graphdbfactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.slizaa.scanner.api.graphdb.IGraphDb;
+import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 
 /**
  * <p>

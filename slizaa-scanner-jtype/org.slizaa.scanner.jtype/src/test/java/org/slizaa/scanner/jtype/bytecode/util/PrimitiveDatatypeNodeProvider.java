@@ -1,28 +1,28 @@
 package org.slizaa.scanner.jtype.bytecode.util;
 
-import org.slizaa.scanner.api.model.INode;
-import org.slizaa.scanner.api.model.internal.NodeBean;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.NodeFactory;
 import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 
 public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProvider {
 
-  private INode _primitiveDatatypeByte    = new NodeBean();
+  private INode _primitiveDatatypeByte    = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeShort   = new NodeBean();
+  private INode _primitiveDatatypeShort   = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeInt     = new NodeBean();
+  private INode _primitiveDatatypeInt     = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeLong    = new NodeBean();
+  private INode _primitiveDatatypeLong    = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeFloat   = new NodeBean();
+  private INode _primitiveDatatypeFloat   = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeDouble  = new NodeBean();
+  private INode _primitiveDatatypeDouble  = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeChar    = new NodeBean();
+  private INode _primitiveDatatypeChar    = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeBoolean = new NodeBean();
+  private INode _primitiveDatatypeBoolean = NodeFactory.createNode();
 
-  private INode _primitiveDatatypeVoid    = new NodeBean();
+  private INode _primitiveDatatypeVoid    = NodeFactory.createNode();
 
   @Override
   public INode getPrimitiveDatatypeByte() {

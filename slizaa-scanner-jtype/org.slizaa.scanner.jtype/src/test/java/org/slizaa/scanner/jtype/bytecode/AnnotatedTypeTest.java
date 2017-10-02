@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.internal.runners.ErrorReportingRunner;
 import org.junit.runner.RunWith;
-import org.slizaa.scanner.api.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 

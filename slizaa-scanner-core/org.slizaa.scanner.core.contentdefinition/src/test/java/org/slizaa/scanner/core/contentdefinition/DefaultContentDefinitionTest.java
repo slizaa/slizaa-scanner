@@ -5,11 +5,11 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.ops4j.pax.url.mvn.MavenResolvers;
-import org.slizaa.scanner.core.contentdefinition.FileBasedContentDefinition;
 import org.slizaa.scanner.core.contentdefinition.FileBasedContentDefinitionProvider;
-import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IResource;
-import org.slizaa.scanner.spi.content.ResourceType;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.ResourceType;
+import org.slizaa.scanner.core.spi.contentdefinition.internal.FileBasedContentDefinition;
 
 public class DefaultContentDefinitionTest {
 

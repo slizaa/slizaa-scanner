@@ -11,10 +11,9 @@
 package org.slizaa.scanner.jtype.bytecode.internal;
 
 import org.objectweb.asm.Type;
-import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.NodeFactory;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.NodeFactory;
 import org.slizaa.scanner.jtype.model.IFieldReferenceNode;
-import org.slizaa.scanner.jtype.model.IMethodNode;
 import org.slizaa.scanner.jtype.model.IMethodReferenceNode;
 import org.slizaa.scanner.jtype.model.ITypeReferenceNode;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
@@ -29,7 +28,7 @@ public class JTypeNodeHelper {
    * @param type
    * @return
    */
-  public static IModifiableNode createTypeReferenceNode(final Type type) {
+  public static INode createTypeReferenceNode(final Type type) {
 
     //
     if (type == null) {
@@ -56,9 +55,9 @@ public class JTypeNodeHelper {
    * @param fullyQualifiedName
    * @return
    */
-  public static IModifiableNode createTypeReferenceNode(final String fullyQualifiedName) {
+  public static INode createTypeReferenceNode(final String fullyQualifiedName) {
 
-    IModifiableNode node = NodeFactory.createNode();
+    INode node = NodeFactory.createNode();
     node.addLabel(JTypeLabel.TYPE_REFERENCE);
     node.putProperty(ITypeReferenceNode.FQN, fullyQualifiedName.replace('/', '.'));
     return node;
@@ -71,10 +70,10 @@ public class JTypeNodeHelper {
    * @param fieldDescriptor
    * @return
    */
-  public static IModifiableNode createFieldReferenceNode(final FieldReferenceDescriptor fieldDescriptor) {
+  public static INode createFieldReferenceNode(final FieldReferenceDescriptor fieldDescriptor) {
 
     //
-    IModifiableNode node = NodeFactory.createNode();
+    INode node = NodeFactory.createNode();
     node.addLabel(JTypeLabel.FIELD_REFERENCE);
     node.putProperty(IFieldReferenceNode.OWNER_TYPE_NAME, fieldDescriptor.getOwnerTypeName().replace('/', '.'));
     node.putProperty(IFieldReferenceNode.NAME, fieldDescriptor.getFieldName());
@@ -90,12 +89,12 @@ public class JTypeNodeHelper {
   }
 
   // TODO: MOVE
-  public static IModifiableNode createMethodReferenceNode(MethodReferenceDescriptor referencedMethod) {
+  public static INode createMethodReferenceNode(MethodReferenceDescriptor referencedMethod) {
 
     String ownerTypeName = referencedMethod.getOwnerTypeName().replace('/', '.');
     
     //
-    IModifiableNode node = NodeFactory.createNode();
+    INode node = NodeFactory.createNode();
     node.addLabel(JTypeLabel.METHOD_REFERENCE);
     node.putProperty(IMethodReferenceNode.OWNER_TYPE_NAME, referencedMethod.getOwnerTypeName().replace('/', '.'));
     node.putProperty(IMethodReferenceNode.NAME, referencedMethod.getMethodName());

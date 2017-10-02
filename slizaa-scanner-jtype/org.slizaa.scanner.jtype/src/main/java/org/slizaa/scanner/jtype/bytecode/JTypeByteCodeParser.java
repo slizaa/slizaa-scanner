@@ -16,18 +16,18 @@ import java.util.Set;
 
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassReader;
-import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.parser.AbstractParser;
+import org.slizaa.scanner.core.spi.parser.IParser;
+import org.slizaa.scanner.core.spi.parser.IParserContext;
+import org.slizaa.scanner.core.spi.parser.IParserFactory;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.jtype.bytecode.internal.JTypeClassVisitor;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 import org.slizaa.scanner.jtype.model.JavaUtils;
-import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IResource;
-import org.slizaa.scanner.spi.parser.AbstractParser;
-import org.slizaa.scanner.spi.parser.IParser;
-import org.slizaa.scanner.spi.parser.IParserContext;
-import org.slizaa.scanner.spi.parser.IParserFactory;
 
 /**
  * <p>
@@ -77,7 +77,7 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
    * {@inheritDoc}
    */
   @Override
-  protected void doParseResource(IContentDefinition content, IResource resource, IModifiableNode resourceBean,
+  protected void doParseResource(IContentDefinition content, IResource resource, INode resourceBean,
       IParserContext context) {
 
     // tag parent directory as package

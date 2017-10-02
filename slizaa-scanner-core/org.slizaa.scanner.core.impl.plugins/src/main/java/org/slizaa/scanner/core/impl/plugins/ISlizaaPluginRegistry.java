@@ -2,7 +2,7 @@ package org.slizaa.scanner.core.impl.plugins;
 
 import java.util.List;
 
-import org.slizaa.scanner.spi.parser.IParserFactory;
+import org.slizaa.scanner.core.spi.parser.IParserFactory;
 
 public interface ISlizaaPluginRegistry {
 

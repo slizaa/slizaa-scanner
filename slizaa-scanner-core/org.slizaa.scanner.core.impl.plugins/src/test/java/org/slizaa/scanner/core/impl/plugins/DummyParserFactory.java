@@ -1,10 +1,10 @@
 package org.slizaa.scanner.core.impl.plugins;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
-import org.slizaa.scanner.spi.parser.IParser;
-import org.slizaa.scanner.spi.parser.IParserFactory;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.parser.IParser;
+import org.slizaa.scanner.core.spi.parser.IParserFactory;
 
 public class DummyParserFactory implements IParserFactory {
 

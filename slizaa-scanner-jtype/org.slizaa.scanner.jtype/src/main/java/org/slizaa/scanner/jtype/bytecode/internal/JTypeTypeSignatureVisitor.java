@@ -43,7 +43,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureVisitor;
-import org.slizaa.scanner.api.model.IModifiableNode;
+import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
 /**
@@ -53,7 +53,7 @@ import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 public final class JTypeTypeSignatureVisitor extends SignatureVisitor {
 
   /** - */
-  private IModifiableNode         _typeBean;
+  private INode         _typeBean;
 
   /** - */
   private TypeLocalReferenceCache _classLocalTypeReferenceCache;
@@ -63,7 +63,7 @@ public final class JTypeTypeSignatureVisitor extends SignatureVisitor {
    * Creates a new instance of type {@link JTypeTypeSignatureVisitor}.
    * </p>
    */
-  public JTypeTypeSignatureVisitor(IModifiableNode typeBean, TypeLocalReferenceCache classLocalTypeReferenceCache) {
+  public JTypeTypeSignatureVisitor(INode typeBean, TypeLocalReferenceCache classLocalTypeReferenceCache) {
     super(Opcodes.ASM6);
 
     //

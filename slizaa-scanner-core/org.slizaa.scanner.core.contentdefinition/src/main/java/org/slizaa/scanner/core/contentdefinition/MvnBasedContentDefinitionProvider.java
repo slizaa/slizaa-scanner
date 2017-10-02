@@ -16,8 +16,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.ops4j.pax.url.mvn.MavenResolvers;
-import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.contentdefinition.AbstractContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 
 /**
  * <p>

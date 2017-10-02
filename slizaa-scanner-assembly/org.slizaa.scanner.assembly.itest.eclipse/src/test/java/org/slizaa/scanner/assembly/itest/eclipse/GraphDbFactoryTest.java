@@ -14,8 +14,8 @@ import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 import org.osgi.framework.BundleException;
-import org.slizaa.scanner.api.graphdb.IGraphDb;
-import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
+import org.slizaa.scanner.core.api.graphdb.IGraphDb;
+import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 
 /**
  * <p>

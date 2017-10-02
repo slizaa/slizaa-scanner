@@ -12,8 +12,6 @@ package org.slizaa.scanner.jtype.bytecode.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.objectweb.asm.Type;
-
 /**
  * <p>
  * </p>

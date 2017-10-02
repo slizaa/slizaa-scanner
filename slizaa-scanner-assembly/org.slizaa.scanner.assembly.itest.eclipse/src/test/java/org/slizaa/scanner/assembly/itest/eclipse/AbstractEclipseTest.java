@@ -82,7 +82,7 @@ public abstract class AbstractEclipseTest {
         wrappedBundle(mavenBundle("org.neo4j.driver", "neo4j-java-driver").versionAsInProject()),
 
         //
-        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.api").versionAsInProject(),
+        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.spi-api").versionAsInProject(),
         mavenBundle("org.slizaa.scanner.assembly", "org.slizaa.scanner.core.eclipse").versionAsInProject(),
         bundle("reference:" + jtypeFile.toURI().toString()));
   }

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.slizaa.scanner.spi.content.AnalyzeMode;
-import org.slizaa.scanner.spi.content.IContentDefinition;
-import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
-import org.slizaa.scanner.spi.content.IResource;
-import org.slizaa.scanner.spi.content.ResourceType;
+import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.ResourceType;
 
 public class ContentDefinition implements IContentDefinition {
 

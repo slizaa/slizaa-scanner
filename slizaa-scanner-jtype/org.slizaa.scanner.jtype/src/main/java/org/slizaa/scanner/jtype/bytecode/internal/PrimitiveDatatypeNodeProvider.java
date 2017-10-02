@@ -14,9 +14,8 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.ResourceIterator;
-import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.INode;
-import org.slizaa.scanner.api.model.NodeFactory;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.NodeFactory;
 import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.jtype.model.JTypeLabel;
 
@@ -154,7 +153,7 @@ public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProv
    * @param primtiveDataType
    * @return
    */
-  private IModifiableNode createPrimitveDataTypeIfNotExists(GraphDatabaseService graphDatabase, String primtiveDataType,
+  private INode createPrimitveDataTypeIfNotExists(GraphDatabaseService graphDatabase, String primtiveDataType,
       JTypeLabel typeType) {
 
     //
@@ -175,7 +174,7 @@ public class PrimitiveDatatypeNodeProvider implements IPrimitiveDatatypeNodeProv
     }
 
     //
-    IModifiableNode nodeBean = NodeFactory.createNode(node.getId());
+    INode nodeBean = NodeFactory.createNode(node.getId());
     nodeBean.addLabel(typeType);
     nodeBean.putProperty("fqn", primtiveDataType);
 

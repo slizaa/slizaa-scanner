@@ -3,7 +3,7 @@ package org.slizaa.scanner.jtype.bytecode.internal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.objectweb.asm.Type;
-import org.slizaa.scanner.api.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 
 public class Utils {

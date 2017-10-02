@@ -13,10 +13,10 @@ package org.slizaa.scanner.jtype.bytecode;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.parser.IParser;
+import org.slizaa.scanner.core.spi.parser.IParserFactory;
 import org.slizaa.scanner.jtype.bytecode.internal.PrimitiveDatatypeNodeProvider;
-import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
-import org.slizaa.scanner.spi.parser.IParser;
-import org.slizaa.scanner.spi.parser.IParserFactory;
 
 /**
  * <p>

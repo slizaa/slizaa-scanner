@@ -21,10 +21,10 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
 import org.objectweb.asm.signature.SignatureReader;
-import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.IRelationship;
-import org.slizaa.scanner.api.model.NodeFactory;
-import org.slizaa.scanner.api.model.resource.CoreModelRelationshipType;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.IRelationship;
+import org.slizaa.scanner.core.spi.parser.model.NodeFactory;
+import org.slizaa.scanner.core.spi.parser.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory;
 import org.slizaa.scanner.jtype.model.IFieldNode;
 import org.slizaa.scanner.jtype.model.IMethodNode;
@@ -39,7 +39,7 @@ import org.slizaa.scanner.jtype.model.JavaTypeUtils;
 public class JTypeClassVisitor extends ClassVisitor {
 
   /** - */
-  private IModifiableNode            _typeBean;
+  private INode            _typeBean;
 
   /** - */
   private TypeLocalReferenceCache    _classLocalTypeReferenceCache;
@@ -80,7 +80,7 @@ public class JTypeClassVisitor extends ClassVisitor {
    * 
    * @return
    */
-  public IModifiableNode getTypeBean() {
+  public INode getTypeBean() {
     return _typeBean;
   }
 
@@ -187,7 +187,7 @@ public class JTypeClassVisitor extends ClassVisitor {
   public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 
     // create and add new method bean
-    IModifiableNode annotationInstanceBean = NodeFactory.createNode();
+    INode annotationInstanceBean = NodeFactory.createNode();
     _typeBean.addRelationship(annotationInstanceBean, JTypeModelRelationshipType.ANNOTATED_BY);
 
     // set labels
@@ -208,7 +208,7 @@ public class JTypeClassVisitor extends ClassVisitor {
   public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 
     // create and add new method bean
-    IModifiableNode methodBean = NodeFactory.createNode();
+    INode methodBean = NodeFactory.createNode();
     _typeBean.addRelationship(methodBean, CoreModelRelationshipType.CONTAINS);
 
     // add method name
@@ -285,7 +285,7 @@ public class JTypeClassVisitor extends ClassVisitor {
   public FieldVisitor visitField(int access, String name, String desc, String signature, final Object value) {
 
     // create bean and add it to the type bean
-    IModifiableNode fieldBean = NodeFactory.createNode();
+    INode fieldBean = NodeFactory.createNode();
     fieldBean.addLabel(JTypeLabel.FIELD);
     _typeBean.addRelationship(fieldBean, CoreModelRelationshipType.CONTAINS);
 
@@ -469,7 +469,7 @@ public class JTypeClassVisitor extends ClassVisitor {
    * @param fieldBean
    * @param type
    */
-  private IRelationship addReference(IModifiableNode fieldBean, Type type,
+  private IRelationship addReference(INode fieldBean, Type type,
       JTypeModelRelationshipType relationshipType) {
 
     //

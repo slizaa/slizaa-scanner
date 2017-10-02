@@ -17,10 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.objectweb.asm.Type;
-import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.INode;
-import org.slizaa.scanner.api.model.IRelationship;
-import org.slizaa.scanner.api.model.RelationshipType;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.IRelationship;
+import org.slizaa.scanner.core.spi.parser.model.RelationshipType;
 import org.slizaa.scanner.jtype.bytecode.IPrimitiveDatatypeNodeProvider;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
@@ -44,16 +43,16 @@ public class TypeLocalReferenceCache {
   private LoadingCache<String, INode>                              _typeReferenceNodeCache;
 
   /** - */
-  private LoadingCache<FieldReferenceDescriptor, IModifiableNode>  _fieldReferenceNodeCache;
+  private LoadingCache<FieldReferenceDescriptor, INode>  _fieldReferenceNodeCache;
 
   /** - */
-  private LoadingCache<MethodReferenceDescriptor, IModifiableNode> _methodReferenceNodeCache;
+  private LoadingCache<MethodReferenceDescriptor, INode> _methodReferenceNodeCache;
 
   /** - */
   private List<INode>                                              _dependsOnRelationshipTargets;
 
   /** - */
-  private IModifiableNode                                          _typeBean;
+  private INode                                          _typeBean;
 
   /**
    * <p>
@@ -72,16 +71,16 @@ public class TypeLocalReferenceCache {
 
     //
     _fieldReferenceNodeCache = CacheBuilder.newBuilder()
-        .build(new CacheLoader<FieldReferenceDescriptor, IModifiableNode>() {
-          public IModifiableNode load(FieldReferenceDescriptor referencedField) {
+        .build(new CacheLoader<FieldReferenceDescriptor, INode>() {
+          public INode load(FieldReferenceDescriptor referencedField) {
             return JTypeNodeHelper.createFieldReferenceNode(referencedField);
           }
         });
 
     //
     _methodReferenceNodeCache = CacheBuilder.newBuilder()
-        .build(new CacheLoader<MethodReferenceDescriptor, IModifiableNode>() {
-          public IModifiableNode load(MethodReferenceDescriptor referencedMethod) {
+        .build(new CacheLoader<MethodReferenceDescriptor, INode>() {
+          public INode load(MethodReferenceDescriptor referencedMethod) {
             return JTypeNodeHelper.createMethodReferenceNode(referencedMethod);
           }
         });
@@ -106,7 +105,7 @@ public class TypeLocalReferenceCache {
    *
    * @return
    */
-  public IModifiableNode getTypeBean() {
+  public INode getTypeBean() {
     return _typeBean;
   }
 
@@ -116,7 +115,7 @@ public class TypeLocalReferenceCache {
    *
    * @param typeBean
    */
-  public void setTypeBean(IModifiableNode typeBean) {
+  public void setTypeBean(INode typeBean) {
     _typeBean = typeBean;
   }
 
@@ -129,7 +128,7 @@ public class TypeLocalReferenceCache {
    * @param relationshipType
    * @return
    */
-  public IRelationship addFieldReference(final IModifiableNode startNode,
+  public IRelationship addFieldReference(final INode startNode,
       final FieldReferenceDescriptor fieldDescriptor, final RelationshipType relationshipType) {
 
     //
@@ -154,7 +153,7 @@ public class TypeLocalReferenceCache {
    * @param relationshipType
    * @return
    */
-  public IRelationship addMethodReference(final IModifiableNode startNode,
+  public IRelationship addMethodReference(final INode startNode,
       final MethodReferenceDescriptor methodReferenceDescriptor, final RelationshipType relationshipType) {
 
     //
@@ -174,7 +173,7 @@ public class TypeLocalReferenceCache {
    * @param referencedTypeName
    * @param relationshipType
    */
-  public IRelationship addTypeReference(final IModifiableNode startNode, String referencedTypeName,
+  public IRelationship addTypeReference(final INode startNode, String referencedTypeName,
       final RelationshipType relationshipType) {
 
     //
@@ -204,7 +203,7 @@ public class TypeLocalReferenceCache {
     return startNode.addRelationship(targetBean, relationshipType);
   }
 
-  public IRelationship addInnerClass(final IModifiableNode outerClass, IModifiableNode innerClass,
+  public IRelationship addInnerClass(final INode outerClass, INode innerClass,
       final RelationshipType relationshipType) {
 
     checkNotNull(outerClass);
@@ -223,7 +222,7 @@ public class TypeLocalReferenceCache {
    * @param referencedType
    * @param relationshipType
    */
-  public IRelationship addTypeReference(final IModifiableNode startNode, final Type referencedType,
+  public IRelationship addTypeReference(final INode startNode, final Type referencedType,
       final RelationshipType relationshipType) {
 
     //
@@ -258,7 +257,7 @@ public class TypeLocalReferenceCache {
    * @param referencedTypes
    * @param relationshipType
    */
-  public void addTypeReference(final IModifiableNode startNode, final Type[] referencedTypes,
+  public void addTypeReference(final INode startNode, final Type[] referencedTypes,
       final RelationshipType relationshipType) {
 
     //

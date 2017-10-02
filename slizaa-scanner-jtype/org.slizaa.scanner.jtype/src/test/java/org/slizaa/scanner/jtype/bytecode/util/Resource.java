@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.function.Supplier;
 
-import org.slizaa.scanner.spi.content.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IResource;
 
 public class Resource implements IResource {
 

@@ -18,9 +18,9 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.slizaa.scanner.api.model.IModifiableNode;
-import org.slizaa.scanner.api.model.IRelationship;
-import org.slizaa.scanner.api.model.RelationshipType;
+import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.core.spi.parser.model.IRelationship;
+import org.slizaa.scanner.core.spi.parser.model.RelationshipType;
 import org.slizaa.scanner.jtype.model.JTypeModelRelationshipType;
 
 /**
@@ -35,10 +35,10 @@ public class JTypeMethodVisitor extends MethodVisitor {
   private TypeLocalReferenceCache _typeLocalReferenceCache;
 
   /** - */
-  private IModifiableNode         _typeBean;
+  private INode         _typeBean;
 
   /** - */
-  private IModifiableNode         _methodNodeBean;
+  private INode         _methodNodeBean;
 
   /**
    * <p>
@@ -49,7 +49,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
    * @param recorder
    * @param type
    */
-  public JTypeMethodVisitor(IModifiableNode typeBean, IModifiableNode methodNodeBean,
+  public JTypeMethodVisitor(INode typeBean, INode methodNodeBean,
       TypeLocalReferenceCache typeReferenceHolder) {
     super(Opcodes.ASM6);
 
@@ -193,7 +193,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
         new MethodReferenceDescriptor(owner, name, rawSignature, itf), JTypeModelRelationshipType.INVOKES);
 
     //
-    IModifiableNode methodReference = (IModifiableNode) methodReferenceRelationship.getTargetBean();
+    INode methodReference = (INode) methodReferenceRelationship.getTargetBean();
 
     // owner
     addTypeReference(methodReference, Type.getObjectType(owner), JTypeModelRelationshipType.IS_DEFINED_BY);
@@ -277,7 +277,7 @@ public class JTypeMethodVisitor extends MethodVisitor {
    * @param targetTypeName
    * @param relationshipType
    */
-  private void addTypeReference(IModifiableNode startNode, Type targetType, RelationshipType relationshipType) {
+  private void addTypeReference(INode startNode, Type targetType, RelationshipType relationshipType) {
 
     //
     if (targetType != null && !Utils.isVoidOrPrimitive(targetType)) {

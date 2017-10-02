@@ -11,11 +11,11 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.util.tracker.BundleTracker;
-import org.slizaa.scanner.api.graphdb.IGraphDbFactory;
-import org.slizaa.scanner.api.importer.IModelImporterFactory;
+import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
+import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
+import org.slizaa.scanner.core.impl.importer.ModelImporterFactory;
 import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
-import org.slizaa.scanner.importer.ModelImporterFactory;
 
 public class Activator implements BundleActivator {
 

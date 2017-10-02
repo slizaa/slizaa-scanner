@@ -11,7 +11,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.slizaa.scanner.core</groupId>
-			<artifactId>org.slizaa.scanner.core.api</artifactId>
+			<artifactId>org.slizaa.scanner.core.spi-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

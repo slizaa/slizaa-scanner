@@ -16,12 +16,12 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slizaa.scanner.api.graphdb.IGraphDb;
+import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
+import org.slizaa.scanner.core.impl.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
-import org.slizaa.scanner.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.spi.content.IContentDefinitionProvider;
-import org.slizaa.scanner.spi.parser.IParserFactory;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
+import org.slizaa.scanner.core.spi.parser.IParserFactory;
 
 /**
  * <p>
