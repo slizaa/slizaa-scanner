@@ -1,2 +1,5 @@
 Slizaa-Scanner-Extension: true
 Import-Package: org.ops4j.pax.url.mvn.*;resolution:=optional, *
+Export-Package: org.slizaa.scanner.core.contentdefinition, org.slizaa.scanner.core.contentdefinition.utils
+-includeresource: OSGI-OPT/src=src/main/java
+-snapshot: BUILD-${tstamp}
