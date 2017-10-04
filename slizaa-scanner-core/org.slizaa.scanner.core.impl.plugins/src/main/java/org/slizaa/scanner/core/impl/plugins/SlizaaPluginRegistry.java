@@ -2,6 +2,7 @@ package org.slizaa.scanner.core.impl.plugins;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +14,9 @@ import org.slizaa.scanner.core.spi.parser.IParserFactory;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
+
+  /** - */
+  private List<Class<?>>                        _methodAnnotationMatchProcessors;
 
   /** - */
   private List<Class<?>>                        _neo4jExtensions;
@@ -35,6 +39,39 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     _classLoaders = checkNotNull(classLoaders);
     _parserFactories = new LinkedList<>();
     _neo4jExtensions = new LinkedList<>();
+    
+    //
+    _methodAnnotationMatchProcessors = new ArrayList<>();
+  }
+
+  @Override
+  public void registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor) {
+    _methodAnnotationMatchProcessors.
+
+  }
+
+  @Override
+  public <T> void registerCodeSourceToScan(Class<T> type, T codeSource) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public <T> void unregisterCodeSourceToScan(Class<T> type, T codeSource) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void retriggerScan(Class<?> type) {
+    // TODO Auto-generated method stub
+
   }
 
   /**
@@ -74,8 +111,20 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
       }
 
       @Override
+      public void scanStart(Object object) {
+        // TODO Auto-generated method stub
+
+      }
+
+      @Override
       public void consume(Class<?> classWithAnnotation) {
         System.out.println(classWithAnnotation.getName());
+
+      }
+
+      @Override
+      public void scanStop(Object object) {
+        // TODO Auto-generated method stub
 
       }
     };

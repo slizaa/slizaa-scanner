@@ -4,9 +4,9 @@ public interface IClassAnnotationMatchProcessor {
 
   Class<?> getAnnotationToMatch();
 
-  void scanStart();
+  void scanStart(Object object);
   
   void consume(Class<?> classWithAnnotation);
   
-  void scanStop();
+  void scanStop(Object object);
 }
