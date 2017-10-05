@@ -1,8 +1,6 @@
 package org.slizaa.scanner.core.impl.plugins;
 
-import java.util.List;
-
-import org.slizaa.scanner.core.spi.parser.IParserFactory;
+import java.util.function.Function;
 
 /**
  */
@@ -16,9 +14,9 @@ public interface ISlizaaPluginRegistry {
 
   <T> void unregisterCodeSourceToScan(Class<T> type, T codeSource);
 
-  void retriggerScan(Class<?> type);
+  <T> void registerCodeSourceClassLoaderProvider(Class<T> type, Function<?, ClassLoader> classLoaderProvider);
 
-  List<Class<?>> getNeo4jExtensions();
+  <T> void unregisterCodeSourceClassLoaderProvider(Class<T> type, Function<?, ClassLoader> classLoaderProvider);
 
-  List<Class<? extends IParserFactory>> getParserFactories();
+  <T> void rescan(Class<T> type);
 }

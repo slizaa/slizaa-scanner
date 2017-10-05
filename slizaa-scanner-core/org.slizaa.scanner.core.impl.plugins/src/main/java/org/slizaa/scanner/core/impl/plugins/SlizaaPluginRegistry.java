@@ -1,10 +1,9 @@
 package org.slizaa.scanner.core.impl.plugins;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import org.neo4j.procedure.Procedure;
 import org.neo4j.procedure.UserFunction;
@@ -16,44 +15,40 @@ import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
 
   /** - */
-  private List<Class<?>>                        _methodAnnotationMatchProcessors;
+  private List<IClassAnnotationMatchProcessor>  _classAnnotationMatchProcessors;
 
   /** - */
-  private List<Class<?>>                        _neo4jExtensions;
+  private List<IMethodAnnotationMatchProcessor> _methodAnnotationMatchProcessors;
 
   /** - */
-  private List<Class<? extends IParserFactory>> _parserFactories;
-
-  /** - */
-  private List<ClassLoader>                     _classLoaders;
+  private Map<Class<?>, List<?>>                _codeSourceToScan;
 
   /**
-   * <p>
-   * Creates a new instance of type {@link SlizaaPluginRegistry}.
-   * </p>
-   *
+   * 
    */
-  public SlizaaPluginRegistry(List<ClassLoader> classLoaders) {
+  public SlizaaPluginRegistry() {
 
     //
-    _classLoaders = checkNotNull(classLoaders);
-    _parserFactories = new LinkedList<>();
-    _neo4jExtensions = new LinkedList<>();
-    
-    //
+    _classAnnotationMatchProcessors = new ArrayList<>();
     _methodAnnotationMatchProcessors = new ArrayList<>();
   }
 
   @Override
   public void registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor) {
-    // TODO Auto-generated method stub
 
+    //
+    if (!_classAnnotationMatchProcessors.contains(processor)) {
+      _classAnnotationMatchProcessors.add(processor);
+    }
   }
 
   @Override
   public void registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor) {
-    _methodAnnotationMatchProcessors.
 
+    //
+    if (!_methodAnnotationMatchProcessors.contains(processor)) {
+      _methodAnnotationMatchProcessors.add(processor);
+    }
   }
 
   @Override
@@ -69,31 +64,21 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
   }
 
   @Override
-  public void retriggerScan(Class<?> type) {
+  public <T> void registerCodeSourceClassLoaderProvider(Class<T> type, Function<?, ClassLoader> classLoaderProvider) {
     // TODO Auto-generated method stub
-
+    
   }
 
-  /**
-   * <p>
-   * </p>
-   *
-   * @return
-   */
   @Override
-  public List<Class<?>> getNeo4jExtensions() {
-    return _neo4jExtensions;
+  public <T> void unregisterCodeSourceClassLoaderProvider(Class<T> type, Function<?, ClassLoader> classLoaderProvider) {
+    // TODO Auto-generated method stub
+    
   }
 
-  /**
-   * <p>
-   * </p>
-   *
-   * @return
-   */
   @Override
-  public List<Class<? extends IParserFactory>> getParserFactories() {
-    return _parserFactories;
+  public <T> void rescan(Class<T> type) {
+    // TODO Auto-generated method stub
+    
   }
 
   /**
