@@ -8,6 +8,9 @@ import java.util.function.Function;
  */
 public interface ISlizaaPluginRegistry {
 
+  /** - */
+  public static final String SLIZAA_EXTENSION = "Slizaa-Extension";
+
   /**
    * @param processor
    */

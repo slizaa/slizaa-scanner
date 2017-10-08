@@ -3,6 +3,7 @@ package org.slizaa.scanner.core.impl.plugins;
 import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
@@ -38,19 +39,8 @@ public class PluginRegistryTest {
       }
 
       @Override
-      public void scanStart(Object object) {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public void scanStop(Object object) {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public void consume(Class<?> classWithAnnotation) {
-        System.out.println("classWithAnnotation: " + classWithAnnotation);
-
+      public void consume(Object codeSource, ClassLoader classLoader, List<Class<?>> classesWithAnnotation) {
+        System.out.println("classWithAnnotations: " + classesWithAnnotation);
       }
     });
 
@@ -64,5 +54,12 @@ public class PluginRegistryTest {
     //
     // //
     // assertThat(pluginRegistry.getParserFactories()).containsExactly(DummyParserFactory.class);
+  }
+  
+  @Test
+  public void test1() {
+    
+    //
+   System.out.println( SlizaaPluginUtils.getExtensionsFromClasspath() );
   }
 }

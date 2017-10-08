@@ -1,14 +1,11 @@
 package org.slizaa.scanner.core.impl.plugins;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 public interface IClassAnnotationMatchProcessor {
 
   Class<? extends Annotation> getAnnotationToMatch();
 
-  void scanStart(Object object);
-  
-  void consume(Class<?> classWithAnnotation);
-  
-  void scanStop(Object object);
+  void consume(Object codeSource, ClassLoader classLoader, List<Class<?>> classesWithAnnotation);
 }

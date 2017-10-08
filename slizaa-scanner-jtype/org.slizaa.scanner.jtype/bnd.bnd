@@ -1,4 +1,4 @@
-Slizaa-Scanner-Extension: true
+Slizaa-Extension: true
 Import-Package:!org.objectweb.asm.*,*
 Export-Package: !*.internal.*, org.slizaa.scanner.jtype.*
 -snapshot: BUILD-${tstamp}
