@@ -33,13 +33,12 @@ public class PluginRegistryTest {
     pluginRegistry.registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
 
     //
-    CollectingClassAnnotationMatchProcessor processor = new CollectingClassAnnotationMatchProcessor(
+    DefaultClassAnnotationMatchProcessor processor = new DefaultClassAnnotationMatchProcessor(
         SlizaaParserFactory.class);
     pluginRegistry.registerClassAnnotationMatchProcessor(processor);
 
     //
     Stopwatch stopwatch = Stopwatch.createStarted();
-    processor.clear();
     pluginRegistry.scan();
 
     assertThat(processor.getCollectedClasses()).containsExactly(DummyParserFactory.class);

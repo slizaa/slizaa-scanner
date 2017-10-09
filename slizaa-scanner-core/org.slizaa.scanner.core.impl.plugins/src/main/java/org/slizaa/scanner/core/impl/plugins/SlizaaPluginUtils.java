@@ -41,7 +41,7 @@ public class SlizaaPluginUtils {
           //
           Manifest manifest = new Manifest(stream);
 
-          String value = manifest.getMainAttributes().getValue(ISlizaaPluginRegistry.SLIZAA_EXTENSION);
+          String value = manifest.getMainAttributes().getValue(ISlizaaPluginRegistry.SLIZAA_EXTENSION_HEADER);
           System.out.println(value);
           if (Boolean.parseBoolean(value)) {
 

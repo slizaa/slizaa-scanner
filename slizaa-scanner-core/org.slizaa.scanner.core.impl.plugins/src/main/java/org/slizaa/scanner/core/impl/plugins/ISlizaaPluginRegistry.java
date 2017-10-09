@@ -1,7 +1,5 @@
 package org.slizaa.scanner.core.impl.plugins;
 
-import java.util.function.Function;
-
 /**
  * <p>
  * </p>
@@ -9,7 +7,7 @@ import java.util.function.Function;
 public interface ISlizaaPluginRegistry {
 
   /** - */
-  public static final String SLIZAA_EXTENSION = "Slizaa-Extension";
+  public static final String SLIZAA_EXTENSION_HEADER = "Slizaa-Extension";
 
   /**
    * @param processor
@@ -22,33 +20,9 @@ public interface ISlizaaPluginRegistry {
   ISlizaaPluginRegistry registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor);
 
   /**
-   * @param type
-   * @param codeSource
-   */
-  <T> ISlizaaPluginRegistry registerCodeSourceToScan(Class<T> type, T codeSource);
-
-  /**
-   * @param type
-   * @param codeSource
-   */
-  <T> ISlizaaPluginRegistry unregisterCodeSourceToScan(Class<T> type, T codeSource);
-
-  /**
-   * @param type
-   * @param classLoaderProvider
-   */
-  <T> ISlizaaPluginRegistry registerCodeSourceClassLoaderProvider(Class<T> type, Function<T, ClassLoader> classLoaderProvider);
-
-  /**
-   * @param type
-   * @param classLoaderProvider
-   */
-  <T> ISlizaaPluginRegistry unregisterCodeSourceClassLoaderProvider(Class<T> type);
-
-  /**
    */
   <T> void scan();
-  
+
   /**
    * @param type
    */

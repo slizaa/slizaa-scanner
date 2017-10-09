@@ -4,7 +4,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.util.tracker.BundleTracker;
-import org.slizaa.scanner.core.impl.plugins.ISlizaaPluginRegistry;
+import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import org.slizaa.scanner.core.impl.plugins.ISlizaaPluginRegistry;
 public class SlizaaScannerExtensionBundleTracker extends BundleTracker<Bundle> {
 
   /** - */
-  private ISlizaaPluginRegistry _pluginRegistry;
+  private SlizaaPluginRegistry _pluginRegistry;
 
   /**
    * <p>
@@ -23,7 +23,7 @@ public class SlizaaScannerExtensionBundleTracker extends BundleTracker<Bundle> {
    * @param stateMask
    * @param customizer
    */
-  public SlizaaScannerExtensionBundleTracker(BundleContext context, ISlizaaPluginRegistry pluginRegistry) {
+  public SlizaaScannerExtensionBundleTracker(BundleContext context, SlizaaPluginRegistry pluginRegistry) {
     super(context, Bundle.RESOLVED | Bundle.STARTING | Bundle.ACTIVE | Bundle.STOPPING, null);
 
     //

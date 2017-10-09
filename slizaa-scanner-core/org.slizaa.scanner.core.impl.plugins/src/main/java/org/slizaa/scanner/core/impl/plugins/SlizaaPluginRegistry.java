@@ -39,7 +39,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
   }
 
   @Override
-  public ISlizaaPluginRegistry registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor) {
+  public SlizaaPluginRegistry registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor) {
 
     //
     ClassAnnotationMatchProcessorAdapter adapter = new ClassAnnotationMatchProcessorAdapter(processor);
@@ -54,7 +54,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
   }
 
   @Override
-  public ISlizaaPluginRegistry registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor) {
+  public SlizaaPluginRegistry registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor) {
 
     //
     if (!_methodAnnotationMatchProcessors.contains(checkNotNull(processor))) {
@@ -65,8 +65,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     return this;
   }
 
-  @Override
-  public <T> ISlizaaPluginRegistry registerCodeSourceToScan(Class<T> type, T codeSource) {
+  public <T> SlizaaPluginRegistry registerCodeSourceToScan(Class<T> type, T codeSource) {
 
     //
     @SuppressWarnings("unchecked")
@@ -79,8 +78,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     return this;
   }
 
-  @Override
-  public <T> ISlizaaPluginRegistry unregisterCodeSourceToScan(Class<T> type, T codeSource) {
+  public <T> SlizaaPluginRegistry unregisterCodeSourceToScan(Class<T> type, T codeSource) {
 
     //
     @SuppressWarnings("unchecked")
@@ -93,8 +91,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     return this;
   }
 
-  @Override
-  public <T> ISlizaaPluginRegistry registerCodeSourceClassLoaderProvider(Class<T> type,
+  public <T> SlizaaPluginRegistry registerCodeSourceClassLoaderProvider(Class<T> type,
       Function<T, ClassLoader> classLoaderProvider) {
     _classloaderProvider.put(checkNotNull(type), checkNotNull(classLoaderProvider));
 
@@ -103,8 +100,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
 
   }
 
-  @Override
-  public <T> ISlizaaPluginRegistry unregisterCodeSourceClassLoaderProvider(Class<T> type) {
+  public <T> SlizaaPluginRegistry unregisterCodeSourceClassLoaderProvider(Class<T> type) {
     _classloaderProvider.remove(checkNotNull(type));
 
     //

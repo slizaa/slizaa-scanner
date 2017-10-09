@@ -39,8 +39,7 @@ public class ParserFactoryFinder implements IClassAnnotationMatchProcessor {
   }
 
   @Override
-  public void consume(Object codeSource, List<Class<?>> classesWithAnnotation, Class<?> codeSourceType,
-      ClassLoader classLoader) {
+  public void consume(Object codeSource, Class<?> codeSourceType, List<Class<?>> classesWithAnnotation) {
     _classesWithAnnotation.put(codeSource, classesWithAnnotation);
   }
 }

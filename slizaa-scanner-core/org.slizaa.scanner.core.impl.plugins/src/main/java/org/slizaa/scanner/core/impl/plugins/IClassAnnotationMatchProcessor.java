@@ -4,11 +4,28 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
+ * <p>
+ * </p>
+ *
+ * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
 public interface IClassAnnotationMatchProcessor {
 
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
   Class<? extends Annotation> getAnnotationToMatch();
 
-  void consume(Object codeSource, List<Class<?>> classesWithAnnotation, Class<?> codeSourceType,
-      ClassLoader classLoader);
+  /**
+   * <p>
+   * </p>
+   *
+   * @param codeSource
+   * @param codeSourceType
+   * @param classesWithAnnotation
+   */
+  void consume(Object codeSource, Class<?> codeSourceType, List<Class<?>> classesWithAnnotation);
 }

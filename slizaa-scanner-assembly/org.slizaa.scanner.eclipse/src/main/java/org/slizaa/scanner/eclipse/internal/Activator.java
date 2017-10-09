@@ -12,8 +12,7 @@ import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.core.impl.importer.ModelImporterFactory;
-import org.slizaa.scanner.core.impl.plugins.CollectingClassAnnotationMatchProcessor;
-import org.slizaa.scanner.core.impl.plugins.ISlizaaPluginRegistry;
+import org.slizaa.scanner.core.impl.plugins.DefaultClassAnnotationMatchProcessor;
 import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
 import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
@@ -21,16 +20,16 @@ import org.slizaa.scanner.core.spi.parser.IParserFactory;
 public class Activator implements BundleActivator {
 
   /** - */
-  private BundleContext                           _bundleContext;
+  private BundleContext                        _bundleContext;
 
   /** - */
-  private SlizaaScannerExtensionBundleTracker     _tracker;
+  private SlizaaScannerExtensionBundleTracker  _tracker;
 
   /** - */
-  private ISlizaaPluginRegistry                   _pluginRegistry;
+  private SlizaaPluginRegistry                 _pluginRegistry;
 
   /** - */
-  private CollectingClassAnnotationMatchProcessor _parserFactoryCollector;
+  private DefaultClassAnnotationMatchProcessor _parserFactoryCollector;
 
   @Override
   public void start(BundleContext context) throws Exception {
@@ -39,7 +38,7 @@ public class Activator implements BundleActivator {
     _bundleContext = context;
 
     //
-    _parserFactoryCollector = new CollectingClassAnnotationMatchProcessor(SlizaaParserFactory.class);
+    _parserFactoryCollector = new DefaultClassAnnotationMatchProcessor(SlizaaParserFactory.class);
 
     //
     _pluginRegistry = new SlizaaPluginRegistry()
@@ -84,7 +83,6 @@ public class Activator implements BundleActivator {
   private IParserFactory[] createParserFactories() {
 
     //
-    _parserFactoryCollector.clear();
     _pluginRegistry.scan();
 
     // TODO CACHE!!
