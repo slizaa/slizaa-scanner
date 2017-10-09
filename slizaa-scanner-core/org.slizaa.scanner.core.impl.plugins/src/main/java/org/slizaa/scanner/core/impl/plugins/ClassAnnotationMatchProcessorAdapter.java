@@ -67,8 +67,8 @@ public class ClassAnnotationMatchProcessorAdapter {
    * @param codeSource
    * @param classLoader
    */
-  public void afterScan(Object codeSource, ClassLoader classLoader) {
-    _processor.consume(codeSource, classLoader, _result);
+  public void afterScan(Object codeSource, Class<?> type, ClassLoader classLoader) {
+    _processor.consume(codeSource, _result, type, classLoader);
   }
 
   @Override

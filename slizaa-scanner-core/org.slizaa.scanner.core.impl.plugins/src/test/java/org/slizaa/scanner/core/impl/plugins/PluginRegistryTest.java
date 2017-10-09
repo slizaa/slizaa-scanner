@@ -1,9 +1,10 @@
 package org.slizaa.scanner.core.impl.plugins;
 
-import java.lang.annotation.Annotation;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
@@ -31,35 +32,24 @@ public class PluginRegistryTest {
     pluginRegistry.registerCodeSourceToScan(ClassLoader.class, classLoader);
     pluginRegistry.registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
 
-    pluginRegistry.registerClassAnnotationMatchProcessor(new IClassAnnotationMatchProcessor() {
+    //
+    CollectingClassAnnotationMatchProcessor processor = new CollectingClassAnnotationMatchProcessor(
+        SlizaaParserFactory.class);
+    pluginRegistry.registerClassAnnotationMatchProcessor(processor);
 
-      @Override
-      public Class<? extends Annotation> getAnnotationToMatch() {
-        return SlizaaParserFactory.class;
-      }
-
-      @Override
-      public void consume(Object codeSource, ClassLoader classLoader, List<Class<?>> classesWithAnnotation) {
-        System.out.println("classWithAnnotations: " + classesWithAnnotation);
-      }
-    });
-
+    //
     Stopwatch stopwatch = Stopwatch.createStarted();
-    pluginRegistry.scan(ClassLoader.class);
-    System.out.println(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
+    processor.clear();
+    pluginRegistry.scan();
 
-    // //
-    // assertThat(pluginRegistry.getNeo4jExtensions()).containsOnly(DummyProceduresClass.class,
-    // DummyFunctionsClass.class);
-    //
-    // //
-    // assertThat(pluginRegistry.getParserFactories()).containsExactly(DummyParserFactory.class);
+    assertThat(processor.getCollectedClasses()).containsExactly(DummyParserFactory.class);
+    System.out.println(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
   }
-  
-  @Test
-  public void test1() {
-    
-    //
-   System.out.println( SlizaaPluginUtils.getExtensionsFromClasspath() );
-  }
+
+  // @Test
+  // public void test1() {
+  //
+  // //
+  // System.out.println(SlizaaPluginUtils.getExtensionsFromClasspath());
+  // }
 }

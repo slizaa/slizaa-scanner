@@ -25,6 +25,14 @@ public interface IModelImporterFactory {
 
   /**
    * <p>
+   * </p>
+   * 
+   * @return
+   */
+  IParserFactory[] getAllParserFactories();
+
+  /**
+   * <p>
    * Creates a new {@link IModelImporter} for the specified {@link IContentDefinitionProvider}.
    * </p>
    * 

@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.slizaa.scanner.core.impl.importer;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.File;
+import java.util.function.Supplier;
 
 import org.slizaa.scanner.core.api.importer.IModelImporter;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
@@ -25,6 +28,27 @@ import org.slizaa.scanner.core.spi.parser.IParserFactory;
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
 public class ModelImporterFactory implements IModelImporterFactory {
+
+  /** - */
+  private Supplier<IParserFactory[]> _parserFactorySupplier;
+
+  /**
+   * <p>
+   * </p>
+   * 
+   * @param parserFactorySupplier
+   */
+  public ModelImporterFactory(Supplier<IParserFactory[]> parserFactorySupplier) {
+    _parserFactorySupplier = checkNotNull(parserFactorySupplier);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IParserFactory[] getAllParserFactories() {
+    return _parserFactorySupplier.get();
+  }
 
   /**
    * {@inheritDoc}

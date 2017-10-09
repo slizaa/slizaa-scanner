@@ -38,11 +38,9 @@ public class ParserFactoryFinder implements IClassAnnotationMatchProcessor {
     return SlizaaParserFactory.class;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public void consume(Object codeSource, ClassLoader classLoader, List<Class<?>> classesWithAnnotation) {
+  public void consume(Object codeSource, List<Class<?>> classesWithAnnotation, Class<?> codeSourceType,
+      ClassLoader classLoader) {
     _classesWithAnnotation.put(codeSource, classesWithAnnotation);
   }
 }

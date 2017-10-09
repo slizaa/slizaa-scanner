@@ -14,37 +14,41 @@ public interface ISlizaaPluginRegistry {
   /**
    * @param processor
    */
-  void registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor);
+  ISlizaaPluginRegistry registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor);
 
   /**
    * @param processor
    */
-  void registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor);
+  ISlizaaPluginRegistry registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor);
 
   /**
    * @param type
    * @param codeSource
    */
-  <T> void registerCodeSourceToScan(Class<T> type, T codeSource);
+  <T> ISlizaaPluginRegistry registerCodeSourceToScan(Class<T> type, T codeSource);
 
   /**
    * @param type
    * @param codeSource
    */
-  <T> void unregisterCodeSourceToScan(Class<T> type, T codeSource);
+  <T> ISlizaaPluginRegistry unregisterCodeSourceToScan(Class<T> type, T codeSource);
 
   /**
    * @param type
    * @param classLoaderProvider
    */
-  <T> void registerCodeSourceClassLoaderProvider(Class<T> type, Function<T, ClassLoader> classLoaderProvider);
+  <T> ISlizaaPluginRegistry registerCodeSourceClassLoaderProvider(Class<T> type, Function<T, ClassLoader> classLoaderProvider);
 
   /**
    * @param type
    * @param classLoaderProvider
    */
-  <T> void unregisterCodeSourceClassLoaderProvider(Class<T> type);
+  <T> ISlizaaPluginRegistry unregisterCodeSourceClassLoaderProvider(Class<T> type);
 
+  /**
+   */
+  <T> void scan();
+  
   /**
    * @param type
    */

@@ -2,20 +2,10 @@ package org.slizaa.scanner.core.impl.plugins;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
-import java.util.jar.Manifest;
 
 import org.neo4j.kernel.impl.util.CopyOnWriteHashMap;
 
@@ -36,7 +26,6 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
   /** - */
   private Map<Class<?>, Function<?, ClassLoader>>    _classloaderProvider;
 
- 
   /**
    * 
    */
@@ -50,7 +39,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
   }
 
   @Override
-  public void registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor) {
+  public ISlizaaPluginRegistry registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor) {
 
     //
     ClassAnnotationMatchProcessorAdapter adapter = new ClassAnnotationMatchProcessorAdapter(processor);
@@ -59,19 +48,25 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     if (!_classAnnotationMatchProcessors.contains(checkNotNull(adapter))) {
       _classAnnotationMatchProcessors.add(adapter);
     }
+
+    //
+    return this;
   }
 
   @Override
-  public void registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor) {
+  public ISlizaaPluginRegistry registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor) {
 
     //
     if (!_methodAnnotationMatchProcessors.contains(checkNotNull(processor))) {
       _methodAnnotationMatchProcessors.add(processor);
     }
+
+    //
+    return this;
   }
 
   @Override
-  public <T> void registerCodeSourceToScan(Class<T> type, T codeSource) {
+  public <T> ISlizaaPluginRegistry registerCodeSourceToScan(Class<T> type, T codeSource) {
 
     //
     @SuppressWarnings("unchecked")
@@ -79,10 +74,13 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     if (!list.contains(codeSource)) {
       list.add(codeSource);
     }
+
+    //
+    return this;
   }
 
   @Override
-  public <T> void unregisterCodeSourceToScan(Class<T> type, T codeSource) {
+  public <T> ISlizaaPluginRegistry unregisterCodeSourceToScan(Class<T> type, T codeSource) {
 
     //
     @SuppressWarnings("unchecked")
@@ -90,17 +88,40 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     if (list != null) {
       list.remove(codeSource);
     }
+
+    //
+    return this;
   }
 
   @Override
-  public <T> void registerCodeSourceClassLoaderProvider(Class<T> type, Function<T, ClassLoader> classLoaderProvider) {
+  public <T> ISlizaaPluginRegistry registerCodeSourceClassLoaderProvider(Class<T> type,
+      Function<T, ClassLoader> classLoaderProvider) {
     _classloaderProvider.put(checkNotNull(type), checkNotNull(classLoaderProvider));
 
+    //
+    return this;
+
   }
 
   @Override
-  public <T> void unregisterCodeSourceClassLoaderProvider(Class<T> type) {
+  public <T> ISlizaaPluginRegistry unregisterCodeSourceClassLoaderProvider(Class<T> type) {
     _classloaderProvider.remove(checkNotNull(type));
+
+    //
+    return this;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public void scan() {
+    
+    //
+    _codeSourceToScan.entrySet().forEach(entry -> {
+
+      @SuppressWarnings("rawtypes")
+      Class clazz = entry.getKey();
+      _codeSourceToScan.get(entry.getKey()).forEach(codeSource -> scanSingleElement(clazz, codeSource));
+    });
   }
 
   @SuppressWarnings("unchecked")
@@ -149,7 +170,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     classpathScanner.scan();
 
     //
-    _classAnnotationMatchProcessors.forEach(adapter -> adapter.afterScan(codeSource, classLoader));
+    _classAnnotationMatchProcessors.forEach(adapter -> adapter.afterScan(codeSource, type, classLoader));
   }
 
   /**

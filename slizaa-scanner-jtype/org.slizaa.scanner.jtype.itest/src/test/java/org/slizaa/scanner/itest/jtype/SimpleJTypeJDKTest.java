@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Collections;
 
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.neo4j.driver.v1.StatementResult;
@@ -38,6 +39,7 @@ public class SimpleJTypeJDKTest {
    * </p>
    */
   @Test
+  @Ignore
   public void test() {
 
     //
