@@ -87,7 +87,7 @@ public class Activator implements BundleActivator {
 
     // TODO CACHE!!
     List<IParserFactory> result = new LinkedList<>();
-    _parserFactoryCollector.getCollectedClasses().stream().filter(cl -> IParserFactory.class.isAssignableFrom(cl))
+    _parserFactoryCollector.getCollectedResult().stream().filter(cl -> IParserFactory.class.isAssignableFrom(cl))
         .forEach(cl -> {
 
           try {

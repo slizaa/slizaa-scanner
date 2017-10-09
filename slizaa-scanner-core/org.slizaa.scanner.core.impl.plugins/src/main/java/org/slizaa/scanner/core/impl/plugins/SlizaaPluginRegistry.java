@@ -2,12 +2,14 @@ package org.slizaa.scanner.core.impl.plugins;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
-
-import org.neo4j.kernel.impl.util.CopyOnWriteHashMap;
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
@@ -26,59 +28,134 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
   /** - */
   private Map<Class<?>, Function<?, ClassLoader>>    _classloaderProvider;
 
+  /** - */
+  private Object                                     _lock = new Object();
+
   /**
    * 
    */
   public SlizaaPluginRegistry() {
 
     //
-    _classAnnotationMatchProcessors = new CopyOnWriteArrayList<>();
-    _methodAnnotationMatchProcessors = new CopyOnWriteArrayList<>();
-    _codeSourceToScan = new CopyOnWriteHashMap<>();
-    _classloaderProvider = new CopyOnWriteHashMap<>();
+    _classAnnotationMatchProcessors = new ArrayList<>();
+    _methodAnnotationMatchProcessors = new ArrayList<>();
+    _codeSourceToScan = new HashMap<>();
+    _classloaderProvider = new HashMap<>();
   }
 
+  /**
+   * <p>
+   * </p>
+   *
+   * @param type
+   * @param classLoaderProvider
+   * @return
+   */
+  public <T> SlizaaPluginRegistry registerCodeSourceClassLoaderProvider(Class<T> type,
+      Function<T, ClassLoader> classLoaderProvider) {
+
+    checkNotNull(type);
+    checkNotNull(classLoaderProvider);
+
+    synchronized (_lock) {
+      _classloaderProvider.put(type, classLoaderProvider);
+    }
+
+    //
+    return this;
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public SlizaaPluginRegistry registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor) {
+  public <T extends IClassAnnotationMatchProcessor> T registerClassAnnotationMatchProcessor(T processor) {
+
+    //
+    checkNotNull(processor);
 
     //
     ClassAnnotationMatchProcessorAdapter adapter = new ClassAnnotationMatchProcessorAdapter(processor);
 
     //
-    if (!_classAnnotationMatchProcessors.contains(checkNotNull(adapter))) {
-      _classAnnotationMatchProcessors.add(adapter);
+    synchronized (_lock) {
+      if (!_classAnnotationMatchProcessors.contains(adapter)) {
+
+        // add...
+        _classAnnotationMatchProcessors.add(adapter);
+
+        // ... and scan
+        _codeSourceToScan.forEach((type, codeSourceList) -> {
+          codeSourceList.forEach(codeSource -> {
+            scanSingleElement((Class) type, codeSource, Collections.singletonList(adapter));
+          });
+        });
+      }
     }
 
     //
-    return this;
+    return processor;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public SlizaaPluginRegistry registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor) {
+  public <T extends IMethodAnnotationMatchProcessor> T registerMethodAnnotationMatchProcessor(T processor) {
 
-    //
-    if (!_methodAnnotationMatchProcessors.contains(checkNotNull(processor))) {
-      _methodAnnotationMatchProcessors.add(processor);
-    }
-
-    //
-    return this;
+    throw new UnsupportedOperationException();
+//    checkNotNull(processor);
+//
+//    //
+//    if (!_methodAnnotationMatchProcessors.contains(processor)) {
+//      _methodAnnotationMatchProcessors.add(processor);
+//    }
+//
+//    //
+//    return this;
   }
 
-  public <T> SlizaaPluginRegistry registerCodeSourceToScan(Class<T> type, T codeSource) {
+  /**
+   * <p>
+   * </p>
+   *
+   * @param type
+   * @param codeSource
+   * @return
+   */
+  public <T> void registerCodeSourceToScan(Class<T> type, T codeSource) {
+
+    checkNotNull(type);
+    checkNotNull(codeSource);
+
+    // TODO: check class loader provider
 
     //
     @SuppressWarnings("unchecked")
-    List<T> list = (List<T>) _codeSourceToScan.computeIfAbsent(type, t -> new CopyOnWriteArrayList<>());
+    List<T> list = (List<T>) _codeSourceToScan.computeIfAbsent(type, t -> new ArrayList<>());
     if (!list.contains(codeSource)) {
       list.add(codeSource);
     }
 
     //
-    return this;
+    _classAnnotationMatchProcessors.forEach(adapter -> {
+      adapter.added(codeSource);
+    });
+
+    //
+    scanSingleElement(type, codeSource, _classAnnotationMatchProcessors);
   }
 
-  public <T> SlizaaPluginRegistry unregisterCodeSourceToScan(Class<T> type, T codeSource) {
+  /**
+   * <p>
+   * </p>
+   *
+   * @param type
+   * @param codeSource
+   * @return
+   */
+  public <T> void unregisterCodeSourceToScan(Class<T> type, T codeSource) {
 
     //
     @SuppressWarnings("unchecked")
@@ -88,47 +165,21 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     }
 
     //
-    return this;
-  }
-
-  public <T> SlizaaPluginRegistry registerCodeSourceClassLoaderProvider(Class<T> type,
-      Function<T, ClassLoader> classLoaderProvider) {
-    _classloaderProvider.put(checkNotNull(type), checkNotNull(classLoaderProvider));
-
-    //
-    return this;
-
-  }
-
-  public <T> SlizaaPluginRegistry unregisterCodeSourceClassLoaderProvider(Class<T> type) {
-    _classloaderProvider.remove(checkNotNull(type));
-
-    //
-    return this;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public void scan() {
-    
-    //
-    _codeSourceToScan.entrySet().forEach(entry -> {
-
-      @SuppressWarnings("rawtypes")
-      Class clazz = entry.getKey();
-      _codeSourceToScan.get(entry.getKey()).forEach(codeSource -> scanSingleElement(clazz, codeSource));
+    _classAnnotationMatchProcessors.forEach(adapter -> {
+      adapter.removed(codeSource);
     });
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> void scan(Class<T> type) {
-    _codeSourceToScan.get(checkNotNull(type)).forEach(codeSource -> scanSingleElement(type, (T) codeSource));
+  public <T> void rescan(Class<T> type) {
+    _codeSourceToScan.get(checkNotNull(type))
+        .forEach(codeSource -> scanSingleElement(type, (T) codeSource, _classAnnotationMatchProcessors));
   }
 
   @Override
-  public <T> void scan(Class<T> type, T codeSource) {
-    scanSingleElement(checkNotNull(type), checkNotNull(codeSource));
+  public <T> void rescan(Class<T> type, T codeSource) {
+    scanSingleElement(checkNotNull(type), checkNotNull(codeSource), _classAnnotationMatchProcessors);
   }
 
   /**
@@ -137,7 +188,8 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
    *
    * @param classLoaders
    */
-  private <T> void scanSingleElement(Class<T> type, T codeSource) {
+  private <T> void scanSingleElement(Class<T> type, T codeSource,
+      List<ClassAnnotationMatchProcessorAdapter> classAnnotationAdapters) {
 
     //
     ClassLoader classLoader = classLoader(checkNotNull(type), checkNotNull(codeSource));
@@ -152,21 +204,20 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
         .overrideClassLoaders(classLoader);
 
     //
-    _classAnnotationMatchProcessors.forEach(adapter -> {
-
+    classAnnotationAdapters.forEach(adapter -> {
       classpathScanner.matchClassesWithAnnotation(adapter.getAnnotationToMatch(), classWithAnnotation -> {
         adapter.addClassWithAnnotation(classWithAnnotation);
       });
     });
 
     //
-    _classAnnotationMatchProcessors.forEach(adapter -> adapter.beforeScan());
+    classAnnotationAdapters.forEach(adapter -> adapter.beforeScan());
 
     // Actually perform the scan (nothing will happen without this call)
     classpathScanner.scan();
 
     //
-    _classAnnotationMatchProcessors.forEach(adapter -> adapter.afterScan(codeSource, type, classLoader));
+    classAnnotationAdapters.forEach(adapter -> adapter.afterScan(codeSource, type, classLoader));
   }
 
   /**

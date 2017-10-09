@@ -10,27 +10,31 @@ public interface ISlizaaPluginRegistry {
   public static final String SLIZAA_EXTENSION_HEADER = "Slizaa-Extension";
 
   /**
+   * <p>
+   * </p>
+   *
    * @param processor
+   * @return
    */
-  ISlizaaPluginRegistry registerClassAnnotationMatchProcessor(IClassAnnotationMatchProcessor processor);
+  <T extends IClassAnnotationMatchProcessor> T registerClassAnnotationMatchProcessor(T processor);
 
   /**
+   * <p>
+   * </p>
+   *
    * @param processor
+   * @return
    */
-  ISlizaaPluginRegistry registerMethodAnnotationMatchProcessor(IMethodAnnotationMatchProcessor processor);
-
-  /**
-   */
-  <T> void scan();
+  <T extends IMethodAnnotationMatchProcessor> T registerMethodAnnotationMatchProcessor(T processor);
 
   /**
    * @param type
    */
-  <T> void scan(Class<T> type);
+  <T> void rescan(Class<T> type);
 
   /**
    * @param type
    * @param codeSource
    */
-  <T> void scan(Class<T> type, T codeSource);
+  <T> void rescan(Class<T> type, T codeSource);
 }

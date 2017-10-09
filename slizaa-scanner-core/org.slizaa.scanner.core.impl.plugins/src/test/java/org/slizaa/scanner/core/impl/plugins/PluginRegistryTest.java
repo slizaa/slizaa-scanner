@@ -1,6 +1,5 @@
 package org.slizaa.scanner.core.impl.plugins;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URL;
@@ -21,26 +20,57 @@ public class PluginRegistryTest {
    * @throws ClassNotFoundException
    */
   @Test
-  public void testPluginRegistry() throws ClassNotFoundException {
+  public void testPluginRegistry_1() throws ClassNotFoundException {
 
-    //
-    SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry();
-
+    // create test class loader
     ClassLoader classLoader = new URLClassLoader(
         new URL[] { this.getClass().getProtectionDomain().getCodeSource().getLocation() });
 
-    pluginRegistry.registerCodeSourceToScan(ClassLoader.class, classLoader);
-    pluginRegistry.registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
+    //
+    SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry()
+        .registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
 
     //
-    DefaultClassAnnotationMatchProcessor processor = new DefaultClassAnnotationMatchProcessor(
-        SlizaaParserFactory.class);
-    pluginRegistry.registerClassAnnotationMatchProcessor(processor);
+    DefaultClassAnnotationMatchProcessor processor = pluginRegistry
+        .registerClassAnnotationMatchProcessor(new DefaultClassAnnotationMatchProcessor(SlizaaParserFactory.class));
 
     //
     Stopwatch stopwatch = Stopwatch.createStarted();
-    pluginRegistry.scan();
+    pluginRegistry.registerCodeSourceToScan(ClassLoader.class, classLoader);
 
+    //
+    assertThat(processor.getCollectedClasses()).containsExactly(DummyParserFactory.class);
+    System.out.println(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @throws ClassNotFoundException
+   */
+  @Test
+  public void testPluginRegistry_2() throws ClassNotFoundException {
+
+    // create test class loader
+    ClassLoader classLoader = new URLClassLoader(
+        new URL[] { this.getClass().getProtectionDomain().getCodeSource().getLocation() });
+
+    //
+    SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry()
+        .registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
+
+    //
+    pluginRegistry.registerCodeSourceToScan(ClassLoader.class, classLoader);
+
+    //
+    Stopwatch stopwatch = Stopwatch.createStarted();
+
+    //
+    DefaultClassAnnotationMatchProcessor processor = pluginRegistry
+        .registerClassAnnotationMatchProcessor(new DefaultClassAnnotationMatchProcessor(SlizaaParserFactory.class));
+
+    //
     assertThat(processor.getCollectedClasses()).containsExactly(DummyParserFactory.class);
     System.out.println(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
   }

@@ -3,6 +3,7 @@ package org.slizaa.scanner.core.impl.plugins;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,10 @@ import java.util.stream.Collectors;
 public class DefaultClassAnnotationMatchProcessor implements IClassAnnotationMatchProcessor {
 
   /** - */
-  private Class<? extends Annotation>                _annotationToMatch;
+  private Class<? extends Annotation> _annotationToMatch;
 
   /** - */
-  private Map<Class<?>, Map<Object, List<Class<?>>>> _collectedClasses;
+  private Map<Object, List<Class<?>>> _collectedClasses;
 
   /**
    * <p>
@@ -36,21 +37,24 @@ public class DefaultClassAnnotationMatchProcessor implements IClassAnnotationMat
     return _annotationToMatch;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public void consume(Object codeSource, Class<?> codeSourceType, List<Class<?>> classesWithAnnotation) {
+  public void added(Object codeSource) {
+    _collectedClasses.computeIfAbsent(codeSource, key -> new ArrayList<>());
+  }
+
+  @Override
+  public void changed(Object codeSource, List<Class<?>> classesWithAnnotation) {
 
     //
-    Map<Object, List<Class<?>>> coudeSourceMap = _collectedClasses.computeIfAbsent(codeSourceType,
-        key -> new HashMap<>());
+    _collectedClasses.put(codeSource, classesWithAnnotation);
+  }
 
-    //
-    coudeSourceMap.put(codeSource, classesWithAnnotation);
+  @Override
+  public void removed(Object codeSource) {
+    _collectedClasses.remove(codeSource);
   }
 
   public List<Class<?>> getCollectedClasses() {
-    return _collectedClasses.values().stream().flatMap(map -> map.values().stream()).flatMap(l -> l.stream()).collect(Collectors.toList());
+    return _collectedClasses.values().stream().flatMap(l -> l.stream()).collect(Collectors.toList());
   }
 }

@@ -40,6 +40,26 @@ public class ClassAnnotationMatchProcessorAdapter {
   public Class<? extends Annotation> getAnnotationToMatch() {
     return _processor.getAnnotationToMatch();
   }
+  
+  /**
+   * <p>
+   * </p>
+   *
+   * @param codeSource
+   */
+  public void added(Object codeSource) {
+    _processor.added(codeSource);
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param codeSource
+   */
+  public void removed(Object codeSource) {
+    _processor.removed(codeSource);
+  }
 
   /**
    * <p>
@@ -68,7 +88,7 @@ public class ClassAnnotationMatchProcessorAdapter {
    * @param classLoader
    */
   public void afterScan(Object codeSource, Class<?> type, ClassLoader classLoader) {
-    _processor.consume(codeSource, type, _result);
+    _processor.changed(codeSource, _result);
   }
 
   @Override

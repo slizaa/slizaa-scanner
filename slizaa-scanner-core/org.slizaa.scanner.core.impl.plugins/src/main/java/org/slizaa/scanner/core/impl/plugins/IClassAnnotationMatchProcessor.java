@@ -24,8 +24,23 @@ public interface IClassAnnotationMatchProcessor {
    * </p>
    *
    * @param codeSource
-   * @param codeSourceType
+   */
+  void added(Object codeSource);
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param codeSource
    * @param classesWithAnnotation
    */
-  void consume(Object codeSource, Class<?> codeSourceType, List<Class<?>> classesWithAnnotation);
+  void changed(Object codeSource, List<Class<?>> classesWithAnnotation);
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param codeSource
+   */
+  void removed(Object codeSource);
 }
