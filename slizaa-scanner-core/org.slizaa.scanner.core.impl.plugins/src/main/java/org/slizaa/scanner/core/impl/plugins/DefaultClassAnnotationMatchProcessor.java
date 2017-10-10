@@ -9,13 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class DefaultClassAnnotationMatchProcessor implements IClassAnnotationMatchProcessor {
+public class DefaultClassAnnotationMatchProcessor<T> implements IClassAnnotationMatchProcessor {
 
   /** - */
-  private Class<? extends Annotation> _annotationToMatch;
+  private Class<? extends Annotation>         _annotationToMatch;
 
   /** - */
-  private Map<Object, List<Class<?>>> _collectedClasses;
+  private Map<Object, Map<Class<?>, T>>       _collectedClasses;
+
+  /** - */
+  private TransformationFunction<Class<?>, T> _transformationFunction;
 
   /**
    * <p>
@@ -24,8 +27,14 @@ public class DefaultClassAnnotationMatchProcessor implements IClassAnnotationMat
    *
    * @param annotationToMatch
    */
-  public DefaultClassAnnotationMatchProcessor(Class<? extends Annotation> annotationToMatch) {
+  public DefaultClassAnnotationMatchProcessor(Class<? extends Annotation> annotationToMatch,
+      TransformationFunction<Class<?>, T> transformationFunction) {
+
+    //
     _annotationToMatch = checkNotNull(annotationToMatch);
+    _transformationFunction = checkNotNull(transformationFunction);
+
+    //
     _collectedClasses = new HashMap<>();
   }
 
@@ -39,14 +48,32 @@ public class DefaultClassAnnotationMatchProcessor implements IClassAnnotationMat
 
   @Override
   public void added(Object codeSource) {
-    _collectedClasses.computeIfAbsent(codeSource, key -> new ArrayList<>());
+    _collectedClasses.computeIfAbsent(codeSource, key -> new HashMap<>()).clear();
   }
 
   @Override
   public void changed(Object codeSource, List<Class<?>> classesWithAnnotation) {
 
     //
-    _collectedClasses.put(codeSource, classesWithAnnotation);
+    Map<Class<?>, T> values = _collectedClasses.get(codeSource);
+
+    //
+    List<Class<?>> removedValues = new ArrayList<Class<?>>(values.keySet());
+    removedValues.removeAll(classesWithAnnotation);
+    removedValues.forEach(removedKey -> values.remove(removedKey));
+
+    //
+    classesWithAnnotation.forEach(key -> {
+      if (!values.containsKey(key)) {
+        try {
+          T value = _transformationFunction.apply(key);
+          values.put(key, value);
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+    });
   }
 
   @Override
@@ -54,7 +81,7 @@ public class DefaultClassAnnotationMatchProcessor implements IClassAnnotationMat
     _collectedClasses.remove(codeSource);
   }
 
-  public List<Class<?>> getCollectedClasses() {
-    return _collectedClasses.values().stream().flatMap(l -> l.stream()).collect(Collectors.toList());
+  public List<T> getCollectedClasses() {
+    return _collectedClasses.values().stream().flatMap(m -> m.values().stream()).collect(Collectors.toList());
   }
 }

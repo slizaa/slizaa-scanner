@@ -4,12 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -21,8 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.core.impl.importer.internal.parser.ModelImporter;
-import org.slizaa.scanner.core.impl.plugins.IClassAnnotationMatchProcessor;
+import org.slizaa.scanner.core.impl.plugins.DefaultClassAnnotationMatchProcessor;
 import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
+import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 
@@ -96,33 +93,19 @@ public class SlizaaTestServerRule implements TestRule {
       public void evaluate() throws Throwable {
 
         //
-        SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry();
+        SlizaaPluginRegistry pluginRegistry = new SlizaaPluginRegistry()
+            .registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
+
+        //
+        DefaultClassAnnotationMatchProcessor<IParserFactory> processor = pluginRegistry
+            .registerClassAnnotationMatchProcessor(new DefaultClassAnnotationMatchProcessor<>(SlizaaParserFactory.class,
+                cl -> (IParserFactory) cl.newInstance()));
+
         pluginRegistry.registerCodeSourceToScan(ClassLoader.class, this.getClass().getClassLoader());
-        pluginRegistry.registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
-
-        ParserFactoryFinder parserFactoryFinder = new ParserFactoryFinder();
-        pluginRegistry.registerClassAnnotationMatchProcessor(parserFactoryFinder);
-
-        //
-        pluginRegistry.scan(ClassLoader.class);
-
-        //
-        List<IParserFactory> factories = new ArrayList<IParserFactory>();
-        for (Class<?> parserFactoryClass : parserFactoryFinder.getAllClassesWithAnnotation()) {
-
-          //
-          if (IParserFactory.class.isAssignableFrom(parserFactoryClass)) {
-            factories.add((IParserFactory) parserFactoryClass.newInstance());
-          }
-          //
-          else {
-            throw new RuntimeException();
-          }
-        }
 
         // parse
         ModelImporter executer = new ModelImporter(_contentDefinitionsSupplier.get(), _databaseDirectory,
-            factories.toArray(new IParserFactory[0]));
+            processor.getCollectedClasses().toArray(new IParserFactory[0]));
 
         executer.parse(new SlizaaTestProgressMonitor());
 

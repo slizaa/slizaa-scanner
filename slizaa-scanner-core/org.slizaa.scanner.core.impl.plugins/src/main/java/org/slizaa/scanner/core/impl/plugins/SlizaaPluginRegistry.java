@@ -88,6 +88,7 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
         // ... and scan
         _codeSourceToScan.forEach((type, codeSourceList) -> {
           codeSourceList.forEach(codeSource -> {
+            adapter.added(codeSource);
             scanSingleElement((Class) type, codeSource, Collections.singletonList(adapter));
           });
         });

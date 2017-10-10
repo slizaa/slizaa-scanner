@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
+import org.slizaa.scanner.core.spi.parser.IParserFactory;
 
 import com.google.common.base.Stopwatch;
 
@@ -31,15 +32,16 @@ public class PluginRegistryTest {
         .registerCodeSourceClassLoaderProvider(ClassLoader.class, cl -> cl);
 
     //
-    DefaultClassAnnotationMatchProcessor processor = pluginRegistry
-        .registerClassAnnotationMatchProcessor(new DefaultClassAnnotationMatchProcessor(SlizaaParserFactory.class));
+    DefaultClassAnnotationMatchProcessor<IParserFactory> processor = pluginRegistry
+        .registerClassAnnotationMatchProcessor(new DefaultClassAnnotationMatchProcessor<IParserFactory>(
+            SlizaaParserFactory.class, cl -> (IParserFactory) cl.newInstance()));
 
     //
     Stopwatch stopwatch = Stopwatch.createStarted();
     pluginRegistry.registerCodeSourceToScan(ClassLoader.class, classLoader);
 
     //
-    assertThat(processor.getCollectedClasses()).containsExactly(DummyParserFactory.class);
+    assertThat(processor.getCollectedClasses()).hasSize(1);
     System.out.println(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
   }
 
@@ -67,11 +69,18 @@ public class PluginRegistryTest {
     Stopwatch stopwatch = Stopwatch.createStarted();
 
     //
-    DefaultClassAnnotationMatchProcessor processor = pluginRegistry
-        .registerClassAnnotationMatchProcessor(new DefaultClassAnnotationMatchProcessor(SlizaaParserFactory.class));
+    DefaultClassAnnotationMatchProcessor<IParserFactory> processor = pluginRegistry
+        .registerClassAnnotationMatchProcessor(
+            new DefaultClassAnnotationMatchProcessor<IParserFactory>(SlizaaParserFactory.class, cl -> {
+              try {
+                return (IParserFactory) cl.newInstance();
+              } catch (Exception e) {
+                return null;
+              }
+            }));
 
     //
-    assertThat(processor.getCollectedClasses()).containsExactly(DummyParserFactory.class);
+    assertThat(processor.getCollectedClasses()).hasSize(1);
     System.out.println(stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
   }
 

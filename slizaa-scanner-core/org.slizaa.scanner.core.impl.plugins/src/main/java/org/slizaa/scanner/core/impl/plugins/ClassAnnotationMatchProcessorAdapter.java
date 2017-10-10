@@ -40,7 +40,7 @@ public class ClassAnnotationMatchProcessorAdapter {
   public Class<? extends Annotation> getAnnotationToMatch() {
     return _processor.getAnnotationToMatch();
   }
-  
+
   /**
    * <p>
    * </p>

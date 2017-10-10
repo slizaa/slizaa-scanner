@@ -23,7 +23,7 @@ public class ModelImporterTest extends AbstractEclipseTest {
   @Test
   public void checkParserFactories() throws BundleException {
 
+    //
     assertThat(_modelImporterFactory.getAllParserFactories()).hasSize(1);
-    System.out.println(_modelImporterFactory.getAllParserFactories());
   }
 }
