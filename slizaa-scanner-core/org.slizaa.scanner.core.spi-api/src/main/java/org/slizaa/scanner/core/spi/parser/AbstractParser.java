@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.core.spi.parser;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 
 import java.util.LinkedList;
 import java.util.List;

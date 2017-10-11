@@ -22,6 +22,7 @@ import org.slizaa.scanner.core.spi.parser.AbstractParser;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IParserContext;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
+import org.slizaa.scanner.core.spi.parser.ParserType;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.resource.CoreModelRelationshipType;
 import org.slizaa.scanner.jtype.bytecode.internal.JTypeClassVisitor;

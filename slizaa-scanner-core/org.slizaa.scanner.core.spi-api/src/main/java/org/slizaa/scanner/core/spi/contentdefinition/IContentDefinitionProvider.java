@@ -19,9 +19,6 @@ import org.eclipse.core.runtime.AssertionFailedException;
  * Represents the definition of the system that should be analyzed. A {@link IContentDefinitionProvider} can be created
  * using the {@link ISystemDefinitionFactory}.
  * </p>
- * <p>
- * 
- * </p>
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  * 

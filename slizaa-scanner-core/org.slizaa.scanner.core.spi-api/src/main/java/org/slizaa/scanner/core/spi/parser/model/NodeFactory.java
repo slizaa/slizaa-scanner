@@ -10,19 +10,14 @@
  ******************************************************************************/
 package org.slizaa.scanner.core.spi.parser.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
+import static org.slizaa.scanner.core.spi.internal.Preconditions.checkState;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 
 /**
  * <p>
@@ -75,7 +70,7 @@ public class NodeFactory {
     private List<Label>                                             _labels;
 
     /** the contained children */
-    private LoadingCache<RelationshipType, List<IRelationship>>     _relationships;
+    private Map<RelationshipType, List<IRelationship>>              _relationships;
 
     /**
      * <p>
@@ -207,7 +202,7 @@ public class NodeFactory {
 
       Relationship result = new Relationship(targetBean, relationshipType);
       synchronized (relationships()) {
-        relationships().getUnchecked(relationshipType).add(result);
+        relationships().computeIfAbsent(relationshipType, rt -> new ArrayList<>()).add(result);
       }
       return result;
     }
@@ -217,14 +212,14 @@ public class NodeFactory {
      */
     public void clearRelationships() {
       synchronized (relationships()) {
-        relationships().invalidateAll();
+        relationships().clear();
       }
     }
 
     @Override
     public boolean containsRelationship(RelationshipType type, INode node) {
       return _relationships == null ? false
-          : _relationships.asMap().containsKey(type) && _relationships.asMap().get(type).contains(node);
+          : _relationships.containsKey(type) && _relationships.get(type).contains(node);
     }
 
     /**
@@ -254,19 +249,19 @@ public class NodeFactory {
      * @return
      */
     public Map<RelationshipType, List<IRelationship>> getRelationships() {
-      return _relationships == null ? EMPTY_MAP : _relationships.asMap();
+      return _relationships == null ? EMPTY_MAP : _relationships;
     }
 
     @Override
     public List<IRelationship> getRelationships(RelationshipType key) {
-      return _relationships == null || !_relationships.asMap().containsKey(checkNotNull(key)) ? Collections.emptyList()
-          : _relationships.asMap().get(key);
+      return _relationships == null || !_relationships.containsKey(checkNotNull(key)) ? Collections.emptyList()
+          : _relationships.get(key);
     }
 
     @Override
     public String toString() {
       return "NodeBean [_nodeId=" + _nodeId + ", _properties=" + _properties + ", _labels=" + _labels
-          + ", _relationships=" + (_relationships != null ? _relationships.asMap().toString() : "{}") + "]";
+          + ", _relationships=" + (_relationships != null ? _relationships.toString() : "{}") + "]";
     }
 
     /**
@@ -275,17 +270,13 @@ public class NodeFactory {
      * 
      * @return
      */
-    private LoadingCache<RelationshipType, List<IRelationship>> relationships() {
+    private Map<RelationshipType, List<IRelationship>> relationships() {
 
       //
       if (_relationships == null) {
 
         //
-        _relationships = CacheBuilder.newBuilder().build(new CacheLoader<RelationshipType, List<IRelationship>>() {
-          public List<IRelationship> load(RelationshipType key) {
-            return new LinkedList<>();
-          }
-        });
+        _relationships = new HashMap<>();
       }
       //
       return _relationships;

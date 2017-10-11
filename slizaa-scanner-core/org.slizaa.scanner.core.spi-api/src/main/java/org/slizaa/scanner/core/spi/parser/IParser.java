@@ -58,14 +58,4 @@ public interface IParser {
    */
   List<IProblem> parseResource(IContentDefinition contentDefinition, IResource resource, INode resourceBean,
       IParserContext parserContext);
-
-  /**
-   * <p>
-   * </p>
-   * 
-   * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
-   */
-  public enum ParserType {
-    BINARY, BINARY_AND_SOURCE, SOURCE;
-  }
 }

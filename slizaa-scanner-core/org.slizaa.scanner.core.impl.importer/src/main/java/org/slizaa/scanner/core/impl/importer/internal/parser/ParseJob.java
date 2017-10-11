@@ -25,7 +25,7 @@ import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
 import org.slizaa.scanner.core.spi.contentdefinition.IResource;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IProblem;
-import org.slizaa.scanner.core.spi.parser.IParser.ParserType;
+import org.slizaa.scanner.core.spi.parser.ParserType;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.resource.IResourceNode;

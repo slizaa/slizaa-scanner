@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.slizaa.scanner.core.spi.contentdefinition.internal;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
+import static org.slizaa.scanner.core.spi.internal.Preconditions.checkState;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

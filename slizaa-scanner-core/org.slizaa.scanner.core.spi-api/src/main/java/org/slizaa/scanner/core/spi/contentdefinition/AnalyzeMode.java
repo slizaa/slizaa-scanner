@@ -12,10 +12,10 @@ package org.slizaa.scanner.core.spi.contentdefinition;
 
 /**
  * <p>
- * Specifies how an {@link IContentDefinition} entry in a {@link IContentDefinitionProvider} should be analyzed.
+ * Specifies how an {@link IContentDefinition} entry returned by a {@link IContentDefinitionProvider} should be analyzed.
  * </p>
  * 
- * @author Nils Hartmann (nils@nilshartmann.net)
+ * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  * 
  * @noextend This class is not intended to be extended by clients.
  */

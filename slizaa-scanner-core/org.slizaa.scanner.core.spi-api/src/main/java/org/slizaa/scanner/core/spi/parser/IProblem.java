@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.slizaa.scanner.core.spi.parser;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.contentdefinition.IResource;
