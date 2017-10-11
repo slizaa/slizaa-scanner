@@ -13,7 +13,7 @@ package org.slizaa.scanner.core.spi.parser;
 import java.util.List;
 
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 
 /**
@@ -40,7 +40,7 @@ public interface IParser {
    * @param resource
    * @return
    */
-  boolean canParse(IResource resource);
+  boolean canParse(IFile resource);
 
   /**
    * <p>
@@ -56,6 +56,6 @@ public interface IParser {
    *          the parser context
    * @return
    */
-  List<IProblem> parseResource(IContentDefinition contentDefinition, IResource resource, INode resourceBean,
+  List<IProblem> parseResource(IContentDefinition contentDefinition, IFile resource, INode resourceBean,
       IParserContext parserContext);
 }

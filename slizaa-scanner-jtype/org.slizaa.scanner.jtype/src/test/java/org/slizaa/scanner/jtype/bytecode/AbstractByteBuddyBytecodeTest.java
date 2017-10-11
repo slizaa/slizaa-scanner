@@ -54,7 +54,7 @@ public abstract class AbstractByteBuddyBytecodeTest {
     INode moduleBean = NodeFactory.createNode();
 
     codeParser.parseResource(definitions.getContentDefinitions().get(0),
-        definitions.getContentDefinitions().get(0).getBinaryResources().iterator().next(), resourceBean,
+        definitions.getContentDefinitions().get(0).getBinaryFiles().iterator().next(), resourceBean,
         new IParserContext() {
           @Override
           public boolean parseReferences() {

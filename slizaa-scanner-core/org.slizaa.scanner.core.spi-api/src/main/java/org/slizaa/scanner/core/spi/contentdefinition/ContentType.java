@@ -1,6 +1,6 @@
 package org.slizaa.scanner.core.spi.contentdefinition;
 
-public enum ResourceType {
+public enum ContentType {
 
   /** source content */
   SOURCE,

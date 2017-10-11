@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 import org.neo4j.unsafe.batchinsert.BatchInserter;
 import org.neo4j.unsafe.batchinsert.BatchInserters;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.IRelationship;
@@ -55,7 +55,7 @@ public class BatchInserterFacade implements AutoCloseable {
   private Map<String, INode>             _directoriesMap;
 
   /** - */
-  private Map<IResource, INode>          _resourcesMap;
+  private Map<IFile, INode>          _resourcesMap;
 
   /** - */
   private Map<IContentDefinition, INode> _modulesMap;
@@ -120,7 +120,7 @@ public class BatchInserterFacade implements AutoCloseable {
    * @return
    */
   public INode getOrCreateResourceNode(final INode parentModuleNode,
-      final INode parentDirectoryNode, final IResource resource, final ResourceType resourceType) {
+      final INode parentDirectoryNode, final IFile resource, final ResourceType resourceType) {
 
     //
     return getOrCreateResourceNode(resource, () -> {
@@ -150,7 +150,7 @@ public class BatchInserterFacade implements AutoCloseable {
    * 
    * @return
    */
-  public Map<IResource, INode> getResourcesMap() {
+  public Map<IFile, INode> getResourcesMap() {
     return Collections.unmodifiableMap(_resourcesMap);
   }
 
@@ -264,7 +264,7 @@ public class BatchInserterFacade implements AutoCloseable {
    * @param nodeCreator
    * @return
    */
-  private INode getOrCreateResourceNode(IResource resourceId, Supplier<INode> nodeCreator) {
+  private INode getOrCreateResourceNode(IFile resourceId, Supplier<INode> nodeCreator) {
 
     //
     INode node = _resourcesMap.get(resourceId);

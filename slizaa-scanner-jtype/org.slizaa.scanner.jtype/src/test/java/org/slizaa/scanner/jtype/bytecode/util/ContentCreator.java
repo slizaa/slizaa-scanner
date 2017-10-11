@@ -14,7 +14,7 @@ public class ContentCreator {
 
     //
     Resource resource = new Resource(directory, name, supplier);
-    definition.getBinaryResources().add(resource);
+    definition.getBinaryFiles().add(resource);
 
     //
     return definitions;

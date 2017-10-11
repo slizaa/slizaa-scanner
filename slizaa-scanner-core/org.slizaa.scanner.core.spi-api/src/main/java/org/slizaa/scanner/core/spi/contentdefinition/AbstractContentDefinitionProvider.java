@@ -121,12 +121,12 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
     result.setVersion(contentVersion);
 
     for (File binaryPath : binaryPaths) {
-      result.addRootPath(binaryPath, ResourceType.BINARY);
+      result.addRootPath(binaryPath, ContentType.BINARY);
     }
 
     if (sourcePaths != null) {
       for (File sourcePath : sourcePaths) {
-        result.addRootPath(sourcePath, ResourceType.SOURCE);
+        result.addRootPath(sourcePath, ContentType.SOURCE);
       }
     }
 

@@ -11,7 +11,7 @@ import org.slizaa.scanner.core.contentdefinition.FileBasedContentDefinitionProvi
 import org.slizaa.scanner.core.contentdefinition.MvnBasedContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
-import org.slizaa.scanner.core.spi.contentdefinition.ResourceType;
+import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
 
 public class ContentDefinitionsUtils {
 

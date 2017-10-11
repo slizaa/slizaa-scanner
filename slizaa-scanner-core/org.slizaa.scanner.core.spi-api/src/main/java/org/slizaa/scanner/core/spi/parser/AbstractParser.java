@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 
 /**
@@ -77,7 +77,7 @@ public abstract class AbstractParser<P extends IParserFactory> implements IParse
    * @param resourceKey
    */
   @Override
-  public final List<IProblem> parseResource(IContentDefinition content, IResource resource,
+  public final List<IProblem> parseResource(IContentDefinition content, IFile resource,
       INode resourceBean, IParserContext context) {
 
     // Reset problem list
@@ -97,7 +97,7 @@ public abstract class AbstractParser<P extends IParserFactory> implements IParse
    * @param resource
    * @param context
    */
-  protected abstract void doParseResource(IContentDefinition content, IResource resource, INode resourceBean,
+  protected abstract void doParseResource(IContentDefinition content, IFile resource, INode resourceBean,
       IParserContext context);
 
   /**
@@ -107,6 +107,6 @@ public abstract class AbstractParser<P extends IParserFactory> implements IParse
    * @param resource
    * @return
    */
-  public abstract boolean canParse(IResource resource);
+  public abstract boolean canParse(IFile resource);
 
 }

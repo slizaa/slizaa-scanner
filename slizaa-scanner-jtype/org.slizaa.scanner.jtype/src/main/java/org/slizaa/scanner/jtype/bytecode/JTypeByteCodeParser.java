@@ -17,7 +17,7 @@ import java.util.Set;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassReader;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 import org.slizaa.scanner.core.spi.parser.AbstractParser;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IParserContext;
@@ -63,7 +63,7 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
    * {@inheritDoc}
    */
   @Override
-  public boolean canParse(IResource resource) {
+  public boolean canParse(IFile resource) {
 
     //
     if (!resource.getPath().endsWith(".class")) {
@@ -78,7 +78,7 @@ public class JTypeByteCodeParser extends AbstractParser<JTypeByteCodeParserFacto
    * {@inheritDoc}
    */
   @Override
-  protected void doParseResource(IContentDefinition content, IResource resource, INode resourceBean,
+  protected void doParseResource(IContentDefinition content, IFile resource, INode resourceBean,
       IParserContext context) {
 
     // tag parent directory as package

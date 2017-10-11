@@ -14,7 +14,7 @@ import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 
 import java.util.function.Supplier;
 
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ import org.slizaa.scanner.core.spi.contentdefinition.IResource;
  * 
  * @noextend This class is not intended to be extended by clients.
  */
-class DefaultResource implements IResource {
+class DefaultResource implements IFile {
 
   /** the root of the resource */
   private String           _root;

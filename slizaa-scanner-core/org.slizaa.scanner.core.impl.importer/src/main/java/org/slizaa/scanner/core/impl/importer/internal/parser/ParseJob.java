@@ -22,11 +22,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IProblem;
 import org.slizaa.scanner.core.spi.parser.ParserType;
-import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.resource.IResourceNode;
 import org.slizaa.scanner.core.spi.parser.model.resource.ResourceType;
@@ -55,7 +54,7 @@ public class ParseJob implements Callable<List<IProblem>> {
   private boolean               _canceled;
 
   /** - */
-  private INode       _moduleNode;
+  private INode                 _moduleNode;
 
   /**
    * <p>
@@ -67,8 +66,8 @@ public class ParseJob implements Callable<List<IProblem>> {
    * @param batchInserter
    * @param resourceCache
    */
-  public ParseJob(IContentDefinition content, INode moduleNode, Collection<Directory> directories,
-      IParser[] parser, BatchInserterFacade batchInserter, IProgressMonitor progressMonitor) {
+  public ParseJob(IContentDefinition content, INode moduleNode, Collection<Directory> directories, IParser[] parser,
+      BatchInserterFacade batchInserter, IProgressMonitor progressMonitor) {
 
     //
     checkNotNull(content);
@@ -154,17 +153,18 @@ public class ParseJob implements Callable<List<IProblem>> {
    * @param monitor
    * @return
    */
-  private List<IProblem> parse(IContentDefinition content, INode directoryParentNode,
-      Collection<IResource> resources, ResourceType resourceType, IParser[] parsers, IProgressMonitor monitor) {
+  private List<IProblem> parse(IContentDefinition content, INode directoryParentNode, Collection<IFile> resources,
+      ResourceType resourceType, IParser[] parsers, IProgressMonitor monitor) {
 
     //
     List<IProblem> result = new LinkedList<IProblem>();
 
     //
-    for (final IResource resource : resources) {
+    for (final IFile resource : resources) {
 
       // create a resource node for the resource
-      INode resourceNode = _batchInserter.getOrCreateResourceNode(_moduleNode, directoryParentNode, resource, resourceType);
+      INode resourceNode = _batchInserter.getOrCreateResourceNode(_moduleNode, directoryParentNode, resource,
+          resourceType);
 
       for (IParser parser : parsers) {
         if (matches(parser, resourceType)) {
@@ -172,7 +172,8 @@ public class ParseJob implements Callable<List<IProblem>> {
           //
           if (parser.canParse(resource)) {
 
-            List<IProblem> problems = parser.parseResource(content, resource, resourceNode, new ParserContext(_moduleNode, (INode) directoryParentNode, true));
+            List<IProblem> problems = parser.parseResource(content, resource, resourceNode,
+                new ParserContext(_moduleNode, (INode) directoryParentNode, true));
             resourceNode.putProperty(IResourceNode.PROPERTY_ERRONEOUS, problems != null && !problems.isEmpty());
           }
         }

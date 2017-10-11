@@ -34,7 +34,8 @@ import org.slizaa.scanner.core.api.importer.IModelImporter;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.IFileBasedContentDefinition;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 import org.slizaa.scanner.core.spi.parser.IProblem;
@@ -54,25 +55,25 @@ import com.google.common.cache.LoadingCache;
 public class ModelImporter implements IModelImporter {
 
   /** THREAD_COUNT */
-  static final int            THREAD_COUNT = Runtime.getRuntime().availableProcessors();
+  static final int                   THREAD_COUNT = Runtime.getRuntime().availableProcessors();
 
   /** - */
-  private final Logger        logger       = LoggerFactory.getLogger(ModelImporter.class);
+  private final Logger               logger       = LoggerFactory.getLogger(ModelImporter.class);
 
   /** - */
   private IContentDefinitionProvider _contentDefinitions;
 
   /** - */
-  private File                _directory;
+  private File                       _directory;
 
   /** - */
-  private IParserFactory[]    _parserFactories;
+  private IParserFactory[]           _parserFactories;
 
   /** - */
-  private List<IProblem>      _result;
+  private List<IProblem>             _result;
 
   /** - */
-  private ExecutorService     _executorService;
+  private ExecutorService            _executorService;
 
   /**
    * <p>
@@ -170,43 +171,52 @@ public class ModelImporter implements IModelImporter {
       final SubMonitor progressMonitor = SubMonitor.convert(submonitor,
           _contentDefinitions.getContentDefinitions().size());
 
-      for (IContentDefinition contentDefinition : _contentDefinitions.getContentDefinitions()) {
+      for (IContentDefinition definition : _contentDefinitions.getContentDefinitions()) {
 
         //
-        for (IParserFactory parserFactory : _parserFactories) {
-          try {
-            parserFactory.batchParseStartContentDefinition(contentDefinition);
-          } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (definition instanceof IFileBasedContentDefinition) {
+
+          //
+          IFileBasedContentDefinition fileBasedContentDefinition = (IFileBasedContentDefinition) definition;
+
+          //
+          for (IParserFactory parserFactory : _parserFactories) {
+            try {
+              parserFactory.batchParseStartContentDefinition(fileBasedContentDefinition);
+            } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+
+          //
+          batchInserter.clearResourceAndDirectoriesMap();
+
+          //
+          INode moduleNode = batchInserter.getOrCreateModuleNode(fileBasedContentDefinition);
+
+          //
+          _result = multiThreadedParse(fileBasedContentDefinition, moduleNode,
+              fileBasedContentDefinition.getBinaryFiles(),
+              AnalyzeMode.BINARIES_AND_SOURCES.equals(fileBasedContentDefinition.getAnalyzeMode())
+                  ? fileBasedContentDefinition.getSourceFiles()
+                  : Collections.emptySet(),
+              progressMonitor.newChild(1), batchInserter);
+
+          //
+          moduleNode.clearRelationships();
+
+          //
+          for (IParserFactory parserFactory : _parserFactories) {
+            try {
+              parserFactory.batchParseStopContentDefinition(fileBasedContentDefinition);
+            } catch (Exception e) {
+              //
+              e.printStackTrace();
+            }
           }
         }
 
-        //
-        batchInserter.clearResourceAndDirectoriesMap();
-
-        //
-        INode moduleNode = batchInserter.getOrCreateModuleNode(contentDefinition);
-
-        //
-        _result = multiThreadedParse(contentDefinition, moduleNode, contentDefinition.getBinaryResources(),
-            AnalyzeMode.BINARIES_AND_SOURCES.equals(contentDefinition.getAnalyzeMode())
-                ? contentDefinition.getSourceResources()
-                : Collections.emptySet(),
-            progressMonitor.newChild(1), batchInserter);
-
-        //
-        moduleNode.clearRelationships();
-
-        //
-        for (IParserFactory parserFactory : _parserFactories) {
-          try {
-            parserFactory.batchParseStopContentDefinition(contentDefinition);
-          } catch (Exception e) {
-            //
-            e.printStackTrace();
-          }
-        }
       }
 
     } catch (Exception e) {
@@ -298,7 +308,7 @@ public class ModelImporter implements IModelImporter {
    */
   @SuppressWarnings("unchecked")
   List<IProblem> multiThreadedParse(final IContentDefinition contentEntry, final INode moduleBean,
-      Collection<IResource> binaryResources, Collection<IResource> sourceResources, IProgressMonitor progressMonitor,
+      Collection<IFile> binaryResources, Collection<IFile> sourceResources, IProgressMonitor progressMonitor,
       BatchInserterFacade batchInserter) {
 
     if (progressMonitor != null) {
@@ -318,10 +328,10 @@ public class ModelImporter implements IModelImporter {
           });
 
       //
-      for (IResource resource : binaryResources) {
+      for (IFile resource : binaryResources) {
         directories.getUnchecked(resource.getDirectory()).addBinaryResource(resource);
       }
-      for (IResource resource : sourceResources) {
+      for (IFile resource : sourceResources) {
         directories.getUnchecked(resource.getDirectory()).addSourceResource(resource);
       }
 

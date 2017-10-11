@@ -38,5 +38,5 @@ public interface IContentDefinitionProvider {
    * 
    * @return a <b>unmodifiable</b> list with all the defined {@link IContentDefinition IContentDefinitions}.
    */
-  List<IContentDefinition> getContentDefinitions();
+  List<? extends IContentDefinition> getContentDefinitions();
 }

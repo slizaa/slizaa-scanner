@@ -61,46 +61,4 @@ public interface IContentDefinition {
    * @return the {@link AnalyzeMode} for this {@link IContentDefinition}
    */
   AnalyzeMode getAnalyzeMode();
-
-  /**
-   * <p>
-   * Returns a {@link Set} of all resources of the specified type
-   * </p>
-   * <p>
-   * If this content entry is not a resource content ( <code>isAnalyze()</code> returns <code>false</code>), an empty
-   * set will be returned.
-   * </p>
-   * 
-   * @param type
-   * @return a Set of resources, never null.
-   */
-  Collection<IResource> getResources(ResourceType type);
-
-  /**
-   * <p>
-   * Returns a {@link Set} of all binary resources. This is a convenience method for {@link #getResources(ResourceType)
-   * getResources(ContentType.BINARY)}
-   * </p>
-   * <p>
-   * If this content entry is not a resource content ( <code>isAnalyze()</code> returns <code>false</code>), an empty
-   * set will be returned.
-   * </p>
-   * 
-   * @return a Set of resources, never null.
-   */
-  Collection<IResource> getBinaryResources();
-
-  /**
-   * <p>
-   * Returns all source resources. This is a convenience method for {@link #getResources(ResourceType)
-   * getResources(ContentType.SOURCE)}
-   * </p>
-   * <p>
-   * If this content entry is not a resource content ( <code>isAnalyze()</code> returns <code>false</code>), an empty
-   * set will be returned.
-   * </p>
-   * 
-   * @return a Set of resources, never null.
-   */
-  Collection<IResource> getSourceResources();
 }

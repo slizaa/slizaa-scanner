@@ -13,7 +13,7 @@ package org.slizaa.scanner.core.spi.parser;
 import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 
 /**
  * <p>
@@ -35,7 +35,7 @@ public interface IProblem {
    * 
    * @return the {@link IProjectContentResource} of the associated resource.
    */
-  IResource getResource();
+  IFile getResource();
 
   /**
    * <p>
@@ -91,7 +91,7 @@ public interface IProblem {
   public static class DefaultProblem implements IProblem {
 
     /** - */
-    private final IResource _resource;
+    private final IFile _resource;
 
     /** - */
     private final String    _message;
@@ -100,7 +100,7 @@ public interface IProblem {
      * @param resource
      * @param message
      */
-    public DefaultProblem(IResource resource, String message) {
+    public DefaultProblem(IFile resource, String message) {
 
       checkNotNull(resource);
       checkNotNull(message);
@@ -113,7 +113,7 @@ public interface IProblem {
      * {@inheritDoc}
      */
     @Override
-    public IResource getResource() {
+    public IFile getResource() {
       return _resource;
     }
 

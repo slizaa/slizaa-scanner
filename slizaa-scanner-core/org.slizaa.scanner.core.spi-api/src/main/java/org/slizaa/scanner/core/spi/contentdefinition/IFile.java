@@ -13,16 +13,13 @@ package org.slizaa.scanner.core.spi.contentdefinition;
 /**
  * <p>
  * Defines the common interface for a resource. Normally a resource is either a file or a entry in an archive file. A
- * resource has a path and a <code>timestamp</code>. The {@link IResource} interface also provides convenience methods
+ * resource has a path and a <code>timestamp</code>. The {@link IFile} interface also provides convenience methods
  * to access the name of the resource and the path of the containing directory.
  * </p>
  * 
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
- * 
- * @noimplement This interface is not intended to be implemented by clients.
- * @noextend This interface is not intended to be extended by clients.
  */
-public interface IResource {
+public interface IFile {
 
   /**
    * <p>

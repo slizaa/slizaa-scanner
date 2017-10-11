@@ -7,15 +7,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
-import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
-import org.slizaa.scanner.core.spi.contentdefinition.ResourceType;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.IFileBasedContentDefinition;
 
-public class ContentDefinition implements IContentDefinition {
+public class ContentDefinition implements IFileBasedContentDefinition {
 
   /** - */
-  private Collection<IResource>      _binaryResources;
+  private Collection<IFile>          _binaryResources;
 
   /** - */
   private IContentDefinitionProvider _contentDefinitions;
@@ -51,7 +51,7 @@ public class ContentDefinition implements IContentDefinition {
   }
 
   @Override
-  public Collection<IResource> getResources(ResourceType type) {
+  public Collection<IFile> getFiles(ContentType type) {
 
     //
     switch (type) {
@@ -66,12 +66,12 @@ public class ContentDefinition implements IContentDefinition {
   }
 
   @Override
-  public Collection<IResource> getBinaryResources() {
-    return getResources(ResourceType.BINARY);
+  public Collection<IFile> getBinaryFiles() {
+    return getFiles(ContentType.BINARY);
   }
 
   @Override
-  public Collection<IResource> getSourceResources() {
-    return getResources(ResourceType.SOURCE);
+  public Collection<IFile> getSourceFiles() {
+    return getFiles(ContentType.SOURCE);
   }
 }

@@ -30,9 +30,9 @@ import java.util.zip.ZipFile;
 
 import org.eclipse.core.runtime.CoreException;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
-import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
-import org.slizaa.scanner.core.spi.contentdefinition.ResourceType;
+import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.IFileBasedContentDefinition;
 
 /**
  * <p>
@@ -47,37 +47,37 @@ import org.slizaa.scanner.core.spi.contentdefinition.ResourceType;
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  *
  */
-public final class FileBasedContentDefinition implements IContentDefinition {
+public final class FileBasedContentDefinition implements IFileBasedContentDefinition {
 
   /** the empty resource standin set */
-  private static final List<IResource> EMPTY_RESOURCE_SET = Collections.emptyList();
+  private static final List<IFile> EMPTY_RESOURCE_SET = Collections.emptyList();
 
   /** - */
-  private static final List<File>      EMPTY_ROOTPATH_SET = Collections.emptyList();
+  private static final List<File>  EMPTY_ROOTPATH_SET = Collections.emptyList();
 
   /** the name of this entry */
-  private String                       _name;
+  private String                   _name;
 
   /** the version of this entry */
-  private String                       _version;
+  private String                   _version;
 
   /** the analyze mode of this entry */
-  private AnalyzeMode                  _analyze;
+  private AnalyzeMode              _analyze;
 
   /** the binary pathes */
-  private List<File>                   _binaryPaths;
+  private List<File>               _binaryPaths;
 
   /** the source pathes */
-  private List<File>                   _sourcePaths;
+  private List<File>               _sourcePaths;
 
   /** indicates that the content has been initialized */
-  private boolean                      _isInitialized;
+  private boolean                  _isInitialized;
 
   /** the set of binary resource standins */
-  private Map<String, IResource>       _binaryResources;
+  private Map<String, IFile>       _binaryResources;
 
   /** the set of source resource standins */
-  private Map<String, IResource>       _sourceResources;
+  private Map<String, IFile>       _sourceResources;
 
   /**
    * <p>
@@ -128,7 +128,7 @@ public final class FileBasedContentDefinition implements IContentDefinition {
    * {@inheritDoc}
    */
   @Override
-  public final Collection<IResource> getBinaryResources() {
+  public final Collection<IFile> getBinaryFiles() {
     assertIsInitialized();
     return _binaryResources != null ? Collections.unmodifiableCollection(_binaryResources.values())
         : EMPTY_RESOURCE_SET;
@@ -138,7 +138,7 @@ public final class FileBasedContentDefinition implements IContentDefinition {
    * {@inheritDoc}
    */
   @Override
-  public final Collection<IResource> getSourceResources() {
+  public final Collection<IFile> getSourceFiles() {
     assertIsInitialized();
     return _sourceResources != null ? Collections.unmodifiableCollection(_sourceResources.values())
         : EMPTY_RESOURCE_SET;
@@ -148,15 +148,15 @@ public final class FileBasedContentDefinition implements IContentDefinition {
    * {@inheritDoc}
    */
   @Override
-  public Collection<IResource> getResources(ResourceType type) {
+  public Collection<IFile> getFiles(ContentType type) {
     assertIsInitialized();
 
     switch (type) {
     case BINARY: {
-      return getBinaryResources();
+      return getBinaryFiles();
     }
     case SOURCE: {
-      return getSourceResources();
+      return getSourceFiles();
     }
     default: {
       return null;
@@ -167,7 +167,7 @@ public final class FileBasedContentDefinition implements IContentDefinition {
   /**
    * {@inheritDoc}
    */
-  public IResource getResource(String path, ResourceType type) {
+  public IFile getResource(String path, ContentType type) {
     assertIsInitialized();
 
     switch (type) {
@@ -256,7 +256,7 @@ public final class FileBasedContentDefinition implements IContentDefinition {
         for (String filePath : getAllChildren(binaryPath)) {
 
           //
-          createNewResource(binaryPath, filePath, ResourceType.BINARY);
+          createNewResource(binaryPath, filePath, ContentType.BINARY);
         }
       }
     }
@@ -267,7 +267,7 @@ public final class FileBasedContentDefinition implements IContentDefinition {
         for (String filePath : getAllChildren(sourcePath)) {
 
           //
-          createNewResource(sourcePath, filePath, ResourceType.SOURCE);
+          createNewResource(sourcePath, filePath, ContentType.SOURCE);
         }
       }
     }
@@ -282,11 +282,11 @@ public final class FileBasedContentDefinition implements IContentDefinition {
    * 
    * @return
    */
-  private Map<String, IResource> binaryResourcesMap() {
+  private Map<String, IFile> binaryResourcesMap() {
 
     //
     if (_binaryResources == null) {
-      _binaryResources = new HashMap<String, IResource>();
+      _binaryResources = new HashMap<String, IFile>();
     }
 
     //
@@ -299,11 +299,11 @@ public final class FileBasedContentDefinition implements IContentDefinition {
    * 
    * @return
    */
-  private Map<String, IResource> sourceResourcesMap() {
+  private Map<String, IFile> sourceResourcesMap() {
 
     //
     if (_sourceResources == null) {
-      _sourceResources = new HashMap<String, IResource>();
+      _sourceResources = new HashMap<String, IFile>();
     }
 
     //
@@ -331,14 +331,14 @@ public final class FileBasedContentDefinition implements IContentDefinition {
    * @param rootPath
    * @param type
    */
-  public void addRootPath(File rootPath, ResourceType type) {
+  public void addRootPath(File rootPath, ContentType type) {
     checkNotNull(rootPath);
     checkNotNull(type);
 
     //
-    if (type.equals(ResourceType.BINARY)) {
+    if (type.equals(ContentType.BINARY)) {
       _binaryPaths.add(rootPath);
-    } else if (type.equals(ResourceType.SOURCE)) {
+    } else if (type.equals(ContentType.SOURCE)) {
       sourcePaths().add(rootPath);
     }
   }
@@ -418,16 +418,15 @@ public final class FileBasedContentDefinition implements IContentDefinition {
    * @param type
    * @return
    */
-  private IResource createNewResource(File root, String path, ResourceType type) {
+  private IFile createNewResource(File root, String path, ContentType type) {
 
     //
-    Map<String, IResource> resourcesMap = type.equals(ResourceType.BINARY) ? binaryResourcesMap()
-        : sourceResourcesMap();
+    Map<String, IFile> resourcesMap = type.equals(ContentType.BINARY) ? binaryResourcesMap() : sourceResourcesMap();
 
     //
     if (!resourcesMap.containsKey(path)) {
 
-      IResource result = new DefaultResource(root.getAbsolutePath(), path, () -> getContent(root, path));
+      IFile result = new DefaultResource(root.getAbsolutePath(), path, () -> getContent(root, path));
 
       // add the resource
       switch (type) {
@@ -457,7 +456,7 @@ public final class FileBasedContentDefinition implements IContentDefinition {
     }
   }
 
-  public void removeResource(IResource resource, ResourceType type) {
+  public void removeResource(IFile resource, ContentType type) {
 
     //
     // add the resource

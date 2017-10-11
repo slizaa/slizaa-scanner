@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 
 /**
  * <p>
@@ -29,10 +29,10 @@ public class Directory {
   private String          _path;
 
   /** - */
-  private List<IResource> _binaryResources;
+  private List<IFile> _binaryResources;
 
   /** - */
-  private List<IResource> _sourceResources;
+  private List<IFile> _sourceResources;
 
   /** - */
   private int             _count = 0;
@@ -49,8 +49,8 @@ public class Directory {
     _path = path;
 
     //
-    _binaryResources = new LinkedList<IResource>();
-    _sourceResources = new LinkedList<IResource>();
+    _binaryResources = new LinkedList<IFile>();
+    _sourceResources = new LinkedList<IFile>();
   }
 
   /**
@@ -69,7 +69,7 @@ public class Directory {
    * 
    * @param resourceStandin
    */
-  public void addBinaryResource(IResource resourceStandin) {
+  public void addBinaryResource(IFile resourceStandin) {
     _binaryResources.add(resourceStandin);
     _count++;
   }
@@ -80,7 +80,7 @@ public class Directory {
    * 
    * @param resourceStandin
    */
-  public void addSourceResource(IResource resourceStandin) {
+  public void addSourceResource(IFile resourceStandin) {
     _sourceResources.add(resourceStandin);
     _count++;
   }
@@ -91,7 +91,7 @@ public class Directory {
    * 
    * @return
    */
-  public List<IResource> getBinaryResources() {
+  public List<IFile> getBinaryResources() {
     return _binaryResources;
   }
 
@@ -101,7 +101,7 @@ public class Directory {
    * 
    * @return
    */
-  public List<IResource> getSourceResources() {
+  public List<IFile> getSourceResources() {
     return _sourceResources;
   }
 

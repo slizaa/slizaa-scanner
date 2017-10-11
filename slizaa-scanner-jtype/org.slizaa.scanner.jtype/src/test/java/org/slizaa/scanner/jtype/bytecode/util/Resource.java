@@ -4,9 +4,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.function.Supplier;
 
-import org.slizaa.scanner.core.spi.contentdefinition.IResource;
+import org.slizaa.scanner.core.spi.contentdefinition.IFile;
 
-public class Resource implements IResource {
+public class Resource implements IFile {
 
   /** - */
   private String           _directory;
