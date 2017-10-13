@@ -86,6 +86,7 @@ public abstract class AbstractEclipseTest {
 
         //
         mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.spi-api").versionAsInProject(),
+        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.contentdefinition").versionAsInProject(),
         mavenBundle("org.slizaa.scanner.assembly", "org.slizaa.scanner.eclipse").versionAsInProject().start(),
         bundle("reference:" + jtypeFile.toURI().toString()).start());
   }

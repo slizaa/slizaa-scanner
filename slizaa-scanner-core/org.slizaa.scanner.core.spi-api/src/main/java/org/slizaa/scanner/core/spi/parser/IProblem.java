@@ -13,7 +13,7 @@ package org.slizaa.scanner.core.spi.parser;
 import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 
 /**
  * <p>

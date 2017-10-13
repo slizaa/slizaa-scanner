@@ -46,4 +46,15 @@ public interface IModelImporterFactory {
    */
   IModelImporter createModelImporter(IContentDefinitionProvider systemDefinition, File databaseDirectory,
       IParserFactory... parserFactories);
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param systemDefinition
+   * @param databaseDirectory
+   * @return
+   */
+  IModelImporter createModelImporterWithAllParserFactories(IContentDefinitionProvider systemDefinition,
+      File databaseDirectory);
 }

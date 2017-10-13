@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 import org.neo4j.unsafe.batchinsert.BatchInserter;
 import org.neo4j.unsafe.batchinsert.BatchInserters;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 import org.slizaa.scanner.core.spi.parser.model.IRelationship;

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.slizaa.scanner.core.contentdefinition.utils.NameAndVersionInfo;
 import org.slizaa.scanner.core.spi.contentdefinition.AbstractContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
@@ -31,23 +30,18 @@ public class DirectoryBasedContentDefinitionProvider extends AbstractContentDefi
     _directoriesWithBinaryArtifacts = new ArrayList<>();
   }
 
-  
-  
   public boolean add(File e) {
     return _directoriesWithBinaryArtifacts.add(e);
   }
-
-
 
   public boolean addAll(Collection<? extends File> c) {
     return _directoriesWithBinaryArtifacts.addAll(c);
   }
 
-
-
   /**
-   * @param progressMonitor
+   * {@inheritDoc}
    */
+  @Override
   protected void onInitializeProjectContent() {
 
     // collect dirs
@@ -65,6 +59,14 @@ public class DirectoryBasedContentDefinitionProvider extends AbstractContentDefi
         }
       }
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void onDisposeProjectContent() {
+    //
   }
 
   /**

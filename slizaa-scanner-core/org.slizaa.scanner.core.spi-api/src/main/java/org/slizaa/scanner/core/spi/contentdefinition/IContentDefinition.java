@@ -10,9 +10,6 @@
  ******************************************************************************/
 package org.slizaa.scanner.core.spi.contentdefinition;
 
-import java.util.Collection;
-import java.util.Set;
-
 /**
  * <p>
  * </p>

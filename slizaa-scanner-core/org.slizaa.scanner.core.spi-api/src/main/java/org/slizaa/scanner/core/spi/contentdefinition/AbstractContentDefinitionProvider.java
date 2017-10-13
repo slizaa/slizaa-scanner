@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.slizaa.scanner.core.spi.contentdefinition.internal.FileBasedContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.internal.FileBasedContentDefinition;
 
 /**
  * <p>
@@ -55,10 +55,32 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
   public final List<IContentDefinition> getContentDefinitions() {
 
     //
-    initializeProjectContent();
+    initialize();
 
     //
     return Collections.unmodifiableList(_contentDefinitions);
+  }
+
+  /**
+   * <p>
+   * </p>
+   */
+  protected abstract void onInitializeProjectContent();
+
+  /**
+   * <p>
+   * </p>
+   */
+  protected abstract void onDisposeProjectContent();
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  protected List<IContentDefinition> contentDefinitions() {
+    return _contentDefinitions;
   }
 
   /**
@@ -68,7 +90,7 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
    * @param progressMonitor
    * @return
    */
-  private final void initializeProjectContent() {
+  protected final void initialize() {
 
     if (!_isInitialized) {
 
@@ -82,15 +104,16 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
    * <p>
    * </p>
    */
-  protected abstract void onInitializeProjectContent();
+  protected void dispose() {
 
-  /**
-   * <p>
-   * </p>
-   */
-  protected void clearContentDefinitions() {
-    _isInitialized = false;
-    _contentDefinitions.clear();
+    if (_isInitialized) {
+
+      onDisposeProjectContent();
+
+      _isInitialized = false;
+
+      _contentDefinitions.clear();
+    }
   }
 
   /**
@@ -138,15 +161,5 @@ public abstract class AbstractContentDefinitionProvider implements IContentDefin
 
     //
     return result;
-  }
-
-  /**
-   * <p>
-   * </p>
-   *
-   * @return
-   */
-  protected List<IContentDefinition> contentDefinitions() {
-    return _contentDefinitions;
   }
 }

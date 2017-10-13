@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.core.spi.contentdefinition;
+package org.slizaa.scanner.core.spi.contentdefinition.filebased;
 
 /**
  * <p>

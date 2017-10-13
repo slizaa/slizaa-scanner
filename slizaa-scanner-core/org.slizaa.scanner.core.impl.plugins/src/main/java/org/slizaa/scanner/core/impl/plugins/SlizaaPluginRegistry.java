@@ -5,10 +5,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
@@ -106,15 +104,15 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
   public <T extends IMethodAnnotationMatchProcessor> T registerMethodAnnotationMatchProcessor(T processor) {
 
     throw new UnsupportedOperationException();
-//    checkNotNull(processor);
-//
-//    //
-//    if (!_methodAnnotationMatchProcessors.contains(processor)) {
-//      _methodAnnotationMatchProcessors.add(processor);
-//    }
-//
-//    //
-//    return this;
+    // checkNotNull(processor);
+    //
+    // //
+    // if (!_methodAnnotationMatchProcessors.contains(processor)) {
+    // _methodAnnotationMatchProcessors.add(processor);
+    // }
+    //
+    // //
+    // return this;
   }
 
   /**
@@ -145,7 +143,9 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
     });
 
     //
-    scanSingleElement(type, codeSource, _classAnnotationMatchProcessors);
+    if (!_classAnnotationMatchProcessors.isEmpty()) {
+      scanSingleElement(type, codeSource, _classAnnotationMatchProcessors);
+    }
   }
 
   /**
@@ -200,6 +200,9 @@ public class SlizaaPluginRegistry implements ISlizaaPluginRegistry {
 
         // ignore parent class loaders
         .ignoreParentClassLoaders(true)
+
+        //
+        .registerClassLoaderHandler(EquinoxClassLoaderHandler.class)
 
         // set the class loader to scan
         .overrideClassLoaders(classLoader);

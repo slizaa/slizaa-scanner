@@ -13,7 +13,7 @@ package org.slizaa.scanner.core.spi.parser;
 import java.util.List;
 
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 import org.slizaa.scanner.core.spi.parser.model.INode;
 
 /**

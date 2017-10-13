@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.function.Supplier;
 
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 
 public class Resource implements IFile {
 

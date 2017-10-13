@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.core.spi.contentdefinition.internal;
+package org.slizaa.scanner.core.spi.contentdefinition.filebased.internal;
 
 import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 import static org.slizaa.scanner.core.spi.internal.Preconditions.checkState;
@@ -31,8 +31,8 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.runtime.CoreException;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
-import org.slizaa.scanner.core.spi.contentdefinition.IFileBasedContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFileBasedContentDefinition;
 
 /**
  * <p>
@@ -426,7 +426,7 @@ public final class FileBasedContentDefinition implements IFileBasedContentDefini
     //
     if (!resourcesMap.containsKey(path)) {
 
-      IFile result = new DefaultResource(root.getAbsolutePath(), path, () -> getContent(root, path));
+      IFile result = new DefaultFile(root.getAbsolutePath(), path, () -> getContent(root, path));
 
       // add the resource
       switch (type) {

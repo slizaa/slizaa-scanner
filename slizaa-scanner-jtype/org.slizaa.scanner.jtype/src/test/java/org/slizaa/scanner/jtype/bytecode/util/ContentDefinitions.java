@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
-import org.slizaa.scanner.core.spi.contentdefinition.IFileBasedContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFileBasedContentDefinition;
 
 public class ContentDefinitions implements IContentDefinitionProvider {
 

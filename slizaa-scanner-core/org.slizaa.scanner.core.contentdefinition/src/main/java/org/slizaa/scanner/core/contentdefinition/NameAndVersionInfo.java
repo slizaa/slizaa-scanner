@@ -8,7 +8,7 @@
  * Contributors:
  *     Gerd Wuetherich (gerd@gerd-wuetherich.de) - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.core.contentdefinition.utils;
+package org.slizaa.scanner.core.contentdefinition;
 
 import java.io.File;
 import java.io.IOException;

@@ -8,13 +8,13 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.core.spi.contentdefinition.internal;
+package org.slizaa.scanner.core.spi.contentdefinition.filebased.internal;
 
 import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 
 import java.util.function.Supplier;
 
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ import org.slizaa.scanner.core.spi.contentdefinition.IFile;
  * 
  * @noextend This class is not intended to be extended by clients.
  */
-class DefaultResource implements IFile {
+class DefaultFile implements IFile {
 
   /** the root of the resource */
   private String           _root;
@@ -38,13 +38,13 @@ class DefaultResource implements IFile {
 
   /**
    * <p>
-   * Creates a new instance of type {@link DefaultResource}.
+   * Creates a new instance of type {@link DefaultFile}.
    * </p>
    * 
    * @param root
    * @param path
    */
-  DefaultResource(String root, String path, Supplier<byte[]> contentSupplier) {
+  DefaultFile(String root, String path, Supplier<byte[]> contentSupplier) {
     _root = checkNotNull(root).replace('\\', '/');
     _path = checkNotNull(path);
     _contentSupplier = checkNotNull(contentSupplier);
@@ -107,7 +107,7 @@ class DefaultResource implements IFile {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    DefaultResource other = (DefaultResource) obj;
+    DefaultFile other = (DefaultFile) obj;
     if (_path == null) {
       if (other._path != null)
         return false;

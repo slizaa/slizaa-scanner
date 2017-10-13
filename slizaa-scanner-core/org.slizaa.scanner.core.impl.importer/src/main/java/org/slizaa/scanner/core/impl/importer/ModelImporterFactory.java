@@ -60,4 +60,13 @@ public class ModelImporterFactory implements IModelImporterFactory {
     //
     return new ModelImporter(systemDefniition, databaseDirectory, parserFactories);
   }
+
+  @Override
+  public IModelImporter createModelImporterWithAllParserFactories(IContentDefinitionProvider systemDefinition,
+      File databaseDirectory) {
+
+    //
+    return new ModelImporter(systemDefinition, databaseDirectory, getAllParserFactories());
+  }
+
 }

@@ -76,6 +76,14 @@ public class MvnBasedContentDefinitionProvider extends AbstractContentDefinition
 
     }
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void onDisposeProjectContent() {
+    //
+  }
 
   /**
    * <p>

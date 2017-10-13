@@ -17,7 +17,7 @@ import java.util.Set;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassReader;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 import org.slizaa.scanner.core.spi.parser.AbstractParser;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IParserContext;

@@ -26,6 +26,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.slizaa.scanner.core</groupId>
+			<artifactId>org.slizaa.scanner.core.contentdefinition</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.slizaa.scanner.jtype</groupId>
 			<artifactId>org.slizaa.scanner.jtype</artifactId>
 			<version>${project.version}</version>

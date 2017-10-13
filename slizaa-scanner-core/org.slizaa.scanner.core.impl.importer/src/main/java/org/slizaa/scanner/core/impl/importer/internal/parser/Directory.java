@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 
 /**
  * <p>

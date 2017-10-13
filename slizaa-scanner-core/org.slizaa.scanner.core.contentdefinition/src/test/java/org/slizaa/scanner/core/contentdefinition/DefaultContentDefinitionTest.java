@@ -6,8 +6,8 @@ import java.io.IOException;
 import org.junit.Test;
 import org.ops4j.pax.url.mvn.MavenResolvers;
 import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
-import org.slizaa.scanner.core.spi.contentdefinition.internal.FileBasedContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.internal.FileBasedContentDefinition;
 
 public class DefaultContentDefinitionTest {
 

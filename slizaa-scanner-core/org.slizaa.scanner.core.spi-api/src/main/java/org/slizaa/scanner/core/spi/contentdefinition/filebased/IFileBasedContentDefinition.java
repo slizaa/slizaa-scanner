@@ -8,10 +8,13 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.core.spi.contentdefinition;
+package org.slizaa.scanner.core.spi.contentdefinition.filebased;
 
 import java.util.Collection;
 import java.util.Set;
+
+import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
 
 /**
  * <p>

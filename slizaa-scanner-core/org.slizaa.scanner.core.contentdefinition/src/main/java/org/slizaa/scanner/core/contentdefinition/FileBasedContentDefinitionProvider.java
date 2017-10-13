@@ -55,4 +55,12 @@ public class FileBasedContentDefinitionProvider extends AbstractContentDefinitio
       e.printStackTrace();
     }
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void onDisposeProjectContent() {
+    //
+  }
 }

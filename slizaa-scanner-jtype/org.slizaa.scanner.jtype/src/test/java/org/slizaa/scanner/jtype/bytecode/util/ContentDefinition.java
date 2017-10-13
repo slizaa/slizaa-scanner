@@ -9,8 +9,8 @@ import java.util.Collections;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
-import org.slizaa.scanner.core.spi.contentdefinition.IFileBasedContentDefinition;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFileBasedContentDefinition;
 
 public class ContentDefinition implements IFileBasedContentDefinition {
 

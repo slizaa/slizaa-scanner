@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
-import org.slizaa.scanner.core.spi.contentdefinition.IFile;
+import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
 import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IProblem;
 import org.slizaa.scanner.core.spi.parser.ParserType;
