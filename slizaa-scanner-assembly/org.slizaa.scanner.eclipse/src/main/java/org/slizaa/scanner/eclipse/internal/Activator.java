@@ -1,5 +1,6 @@
 package org.slizaa.scanner.eclipse.internal;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.osgi.framework.Bundle;
@@ -10,8 +11,9 @@ import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.core.impl.importer.ModelImporterFactory;
-import org.slizaa.scanner.core.impl.plugins.DefaultClassAnnotationMatchProcessor;
-import org.slizaa.scanner.core.impl.plugins.SlizaaPluginRegistry;
+import org.slizaa.scanner.core.impl.plugins.ClasspathScannerFactory;
+import org.slizaa.scanner.core.impl.plugins.DefaultClassAnnotationHandler;
+import org.slizaa.scanner.core.impl.plugins.ScannerProcessors;
 import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 
@@ -20,16 +22,10 @@ import org.slizaa.scanner.core.spi.parser.IParserFactory;
 public class Activator implements BundleActivator {
 
   /** - */
-  private BundleContext                                        _bundleContext;
+  private BundleContext           _bundleContext;
 
   /** - */
-  private SlizaaScannerExtensionBundleTracker                  _tracker;
-
-  /** - */
-  private SlizaaPluginRegistry                                 _pluginRegistry;
-
-  /** - */
-  private DefaultClassAnnotationMatchProcessor<IParserFactory> _parserFactoryCollector;
+  private ClasspathScannerFactory _scannerFactory;
 
   @Override
   public void start(BundleContext context) throws Exception {
@@ -38,21 +34,14 @@ public class Activator implements BundleActivator {
     _bundleContext = context;
 
     //
-    _pluginRegistry = new SlizaaPluginRegistry().registerCodeSourceClassLoaderProvider(Bundle.class,
+    _scannerFactory = new ClasspathScannerFactory().registerCodeSourceClassLoaderProvider(Bundle.class,
         bundle -> bundle.adapt(BundleWiring.class).getClassLoader());
 
     //
-    _parserFactoryCollector = _pluginRegistry.registerClassAnnotationMatchProcessor(
-        new DefaultClassAnnotationMatchProcessor<>(SlizaaParserFactory.class, cl -> (IParserFactory) cl.newInstance()));
+    _scannerFactory.scan(Arrays.asList(_tracker.getBundles()), processors);
 
     //
-    _tracker = new SlizaaScannerExtensionBundleTracker(_bundleContext, _pluginRegistry);
-    _tracker.open();
-
-    //
-    context.registerService(IModelImporterFactory.class.getName(),
-        new ModelImporterFactory(() -> _parserFactoryCollector.getCollectedClasses().toArray(new IParserFactory[0])),
-        null);
+    context.registerService(IModelImporterFactory.class.getName(), new ModelImporterFactory(), null);
 
     //
     context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(() -> {
@@ -68,8 +57,6 @@ public class Activator implements BundleActivator {
    */
   @Override
   public void stop(BundleContext context) throws Exception {
-
-    _tracker.close();
     _bundleContext = null;
   }
 }
