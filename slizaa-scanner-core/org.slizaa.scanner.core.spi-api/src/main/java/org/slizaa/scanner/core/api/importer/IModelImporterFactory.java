@@ -28,14 +28,14 @@ public interface IModelImporterFactory {
    * Creates a new {@link IModelImporter} for the specified {@link IContentDefinitionProvider}.
    * </p>
    * 
-   * @param systemDefinition
-   *          the system definition that should be analyzed
+   * @param contentDefinitionProvider
+   *          the content definition of the system that should be analyzed
    * @param databaseDirectory
    *          the directory where the neo4j database should be stored
    * @param parserFactories
    *          the parser factories that provide the parsers that should be used while analyzing the defined system
    * @return a new {@link IModelImporter} instance
    */
-  IModelImporter createModelImporter(IContentDefinitionProvider systemDefinition, File databaseDirectory,
+  IModelImporter createModelImporter(IContentDefinitionProvider contentDefinitionProvider, File databaseDirectory,
       IParserFactory... parserFactories);
 }

@@ -13,12 +13,12 @@ package org.slizaa.scanner.core.api.importer;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IProblem;
 
 /**
  * <p>
- * {@link IModelImporter IModelImporters} can be used to parse a system defined by a system definition into the
- * underlying graph database.
+ * {@link IModelImporter IModelImporters} can be used to parse systems (defined by {@link IContentDefinitionProvider IContentDefinitionProviders}).
  * </p>
  * <p>
  * To create {@link IModelImporter} instances you have to use the {@link IModelImporterFactory}:

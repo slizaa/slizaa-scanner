@@ -195,6 +195,38 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.slizaa.scanner.neo4j</groupId>
+      <artifactId>org.slizaa.scanner.neo4j.testfwk</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>org.eclipse.osgi</artifactId>
+          <groupId>org.eclipse.platform</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>org.slizaa.scanner.core.contentdefinition</artifactId>
+          <groupId>org.slizaa.scanner.core</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>org.slizaa.scanner.neo4j.importer</artifactId>
+          <groupId>org.slizaa.scanner.neo4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>org.slizaa.scanner.neo4j.graphdbfactory</artifactId>
+          <groupId>org.slizaa.scanner.neo4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>org.slizaa.scanner.core.classpathscanner</artifactId>
+          <groupId>org.slizaa.scanner.core</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>pax-url-aether</artifactId>
+          <groupId>org.ops4j.pax.url</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>org.neo4j.driver</groupId>
       <artifactId>neo4j-java-driver</artifactId>
       <version>1.4.3</version>

@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.ops4j.pax.url.mvn.MavenResolvers;
 import org.slizaa.scanner.core.spi.contentdefinition.ContentType;
 import org.slizaa.scanner.core.spi.contentdefinition.filebased.IFile;
-import org.slizaa.scanner.core.spi.contentdefinition.filebased.internal.FileBasedContentDefinition;
+import org.slizaa.scanner.core.spi.internal.contentdefinition.filebased.FileBasedContentDefinition;
 
 public class DefaultContentDefinitionTest {
 

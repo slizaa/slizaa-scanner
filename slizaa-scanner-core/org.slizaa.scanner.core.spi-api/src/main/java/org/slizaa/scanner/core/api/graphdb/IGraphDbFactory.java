@@ -17,7 +17,6 @@ public interface IGraphDbFactory {
    *
    * @param port
    * @param storeDir
-   * @param extensionLoaders
    * @return
    */
   IGraphDb createGraphDb(int port, File storeDir);

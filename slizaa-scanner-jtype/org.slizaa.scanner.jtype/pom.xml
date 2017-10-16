@@ -70,19 +70,22 @@
 			<artifactId>neo4j-harness</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.slizaa.scanner.neo4j</groupId>
+			<artifactId>org.slizaa.scanner.neo4j.testfwk</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>	
 		<dependency>
 			<groupId>org.neo4j.driver</groupId>
 			<artifactId>neo4j-java-driver</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>

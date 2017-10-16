@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.slizaa.scanner.core.spi.contentdefinition.filebased.internal.FileBasedContentDefinition;
+import org.slizaa.scanner.core.spi.internal.contentdefinition.filebased.FileBasedContentDefinition;
 
 /**
  * <p>
