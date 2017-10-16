@@ -16,7 +16,6 @@
 
 	<modules>
 		<module>org.slizaa.scanner.neo4j.bom</module>
-		<module>org.slizaa.scanner.neo4j.cmdline</module>
 		<module>org.slizaa.scanner.neo4j.graphdbfactory</module>
 		<module>org.slizaa.scanner.neo4j.importer</module>
 		<module>org.slizaa.scanner.neo4j.testfwk</module>
