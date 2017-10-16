@@ -2,3 +2,4 @@ Slizaa-Extension: true
 Import-Package:!org.objectweb.asm.*,*
 Export-Package: !*.internal.*, org.slizaa.scanner.jtype.*
 -snapshot: BUILD-${tstamp}
+-includeresource: OSGI-OPT/src=src/main/java

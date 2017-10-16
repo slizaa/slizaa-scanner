@@ -49,8 +49,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner.core</groupId>
-			<artifactId>org.slizaa.scanner.core.impl.importer</artifactId>
+			<groupId>org.slizaa.scanner.neo4j</groupId>
+			<artifactId>org.slizaa.scanner.neo4j.importer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -59,8 +59,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner.core</groupId>
-			<artifactId>org.slizaa.scanner.core.impl.cmdline</artifactId>
+			<groupId>org.slizaa.scanner.neo4j</groupId>
+			<artifactId>org.slizaa.scanner.neo4j.cmdline</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

@@ -1,4 +1,0 @@
-Slizaa-Extension: true
-Export-Package: org.slizaa.scanner.core.classpathscanner
--includeresource: OSGI-OPT/src=src/main/java
--snapshot: BUILD-${tstamp}

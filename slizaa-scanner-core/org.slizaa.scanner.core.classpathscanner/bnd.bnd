@@ -1,0 +1,5 @@
+Slizaa-Extension: true
+Export-Package: org.slizaa.scanner.core.classpathscanner
+-includeresource: OSGI-OPT/src=src/main/java
+-includeresource: lib/fast-classpath-scanner.jar=fast-classpath-scanner*.jar;lib:=true
+-snapshot: BUILD-${tstamp}

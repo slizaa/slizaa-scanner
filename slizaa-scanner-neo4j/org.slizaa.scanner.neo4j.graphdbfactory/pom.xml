@@ -3,24 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.slizaa.scanner.jtype</groupId>
-		<artifactId>org.slizaa.scanner.jtype.parent</artifactId>
+		<groupId>org.slizaa.scanner.neo4j</groupId>
+		<artifactId>org.slizaa.scanner.neo4j.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>org.slizaa.scanner.jtype.itest</artifactId>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.slizaa.scanner.neo4j</groupId>
-				<artifactId>org.slizaa.scanner.neo4j.bom</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<artifactId>org.slizaa.scanner.neo4j.graphdbfactory</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -29,15 +17,23 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner.neo4j</groupId>
-			<artifactId>org.slizaa.scanner.neo4j.testfwk</artifactId>
-			<version>${project.version}</version>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner.jtype</groupId>
-			<artifactId>org.slizaa.scanner.jtype</artifactId>
-			<version>${project.version}</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-bolt</artifactId>
+		</dependency>
+
+		<!-- test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -49,10 +45,6 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
 		</dependency>
 	</dependencies>
 

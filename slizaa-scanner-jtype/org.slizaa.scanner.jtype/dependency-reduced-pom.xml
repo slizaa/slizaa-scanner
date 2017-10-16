@@ -210,8 +210,8 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.slizaa.scanner.core</groupId>
-        <artifactId>org.slizaa.scanner.core.bom</artifactId>
+        <groupId>org.slizaa.scanner.neo4j</groupId>
+        <artifactId>org.slizaa.scanner.neo4j.bom</artifactId>
         <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>

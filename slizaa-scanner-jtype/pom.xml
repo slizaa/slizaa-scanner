@@ -19,16 +19,4 @@
 		<module>org.slizaa.scanner.jtype.itest</module>
 	</modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.slizaa.scanner.core</groupId>
-				<artifactId>org.slizaa.scanner.core.bom</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 </project>

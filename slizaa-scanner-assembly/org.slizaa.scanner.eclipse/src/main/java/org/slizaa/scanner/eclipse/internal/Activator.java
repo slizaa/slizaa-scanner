@@ -9,13 +9,9 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.wiring.BundleWiring;
 import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
+import org.slizaa.scanner.core.classpathscanner.internal.ClasspathScannerFactory;
 import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.core.impl.importer.ModelImporterFactory;
-import org.slizaa.scanner.core.impl.plugins.ClasspathScannerFactory;
-import org.slizaa.scanner.core.impl.plugins.DefaultClassAnnotationHandler;
-import org.slizaa.scanner.core.impl.plugins.ScannerProcessors;
-import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
-import org.slizaa.scanner.core.spi.parser.IParserFactory;
 
 /**
  */
@@ -36,9 +32,6 @@ public class Activator implements BundleActivator {
     //
     _scannerFactory = new ClasspathScannerFactory().registerCodeSourceClassLoaderProvider(Bundle.class,
         bundle -> bundle.adapt(BundleWiring.class).getClassLoader());
-
-    //
-    _scannerFactory.scan(Arrays.asList(_tracker.getBundles()), processors);
 
     //
     context.registerService(IModelImporterFactory.class.getName(), new ModelImporterFactory(), null);
