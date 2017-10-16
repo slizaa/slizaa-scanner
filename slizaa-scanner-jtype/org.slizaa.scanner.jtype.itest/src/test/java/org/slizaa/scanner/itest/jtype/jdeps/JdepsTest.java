@@ -2,7 +2,7 @@ package org.slizaa.scanner.itest.jtype.jdeps;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.slizaa.scanner.core.testfwk.junit.ContentDefinitionsUtils.simpleBinaryFile;
+import static org.slizaa.scanner.neo4j.testfwk.junit.ContentDefinitionsUtils.simpleBinaryFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +20,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.neo4j.driver.v1.StatementResult;
-import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
-import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 import org.slizaa.scanner.itest.jtype.jdeps.internal.JavapWrapper;
+import org.slizaa.scanner.neo4j.testfwk.junit.SlizaaClientRule;
+import org.slizaa.scanner.neo4j.testfwk.junit.SlizaaTestServerRule;
 
 @Ignore
 @RunWith(Parameterized.class)

@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.graphdbfactory;
+package org.slizaa.scanner.neo4j.graphdbfactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

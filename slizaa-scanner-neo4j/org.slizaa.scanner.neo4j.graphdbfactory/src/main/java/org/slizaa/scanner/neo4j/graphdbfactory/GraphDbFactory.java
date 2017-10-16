@@ -1,10 +1,9 @@
-package org.slizaa.scanner.core.impl.graphdbfactory;
+package org.slizaa.scanner.neo4j.graphdbfactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -19,35 +18,26 @@ import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 
 public class GraphDbFactory implements IGraphDbFactory {
 
-  /** - */
-  private Supplier<List<Class<?>>> _neo4jExtensionsSupplier;
-
-  /**
-   * <p>
-   * Creates a new instance of type {@link GraphDbFactory}.
-   * </p>
-   *
-   * @param neo4jExtensionsSupplier
-   */
-  public GraphDbFactory(Supplier<List<Class<?>>> neo4jExtensionsSupplier) {
-    _neo4jExtensionsSupplier = checkNotNull(neo4jExtensionsSupplier);
-  }
-
   /**
    * {@inheritDoc}
    */
   @Override
   public IGraphDb createGraphDb(int port, File storeDir) {
-    return createGraphDb(port, storeDir, null);
+    return createGraphDb(port, storeDir, null, null);
   }
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @throws ClassNotFoundException
-   */
+  @Override
+  public IGraphDb createGraphDb(int port, File storeDir, List<Class<?>> dbExtensions) {
+    return createGraphDb(port, storeDir, null, dbExtensions);
+  }
+
   @Override
   public <T> IGraphDb createGraphDb(int port, File storeDir, T userObject) {
+    return createGraphDb(port, storeDir, userObject, null);
+  }
+
+  @Override
+  public <T> IGraphDb createGraphDb(int port, File storeDir, T userObject, List<Class<?>> dbExtensions) {
     checkNotNull(storeDir);
 
     GraphDatabaseFactory factory = new GraphDatabaseFactory();
@@ -62,21 +52,24 @@ public class GraphDbFactory implements IGraphDbFactory {
         .newGraphDatabase();
 
     //
-    Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
-        .resolveDependency(Procedures.class);
+    if (dbExtensions != null) {
 
-    //
-    for (Class<?> clazz : _neo4jExtensionsSupplier.get()) {
-      try {
-        proceduresService.registerFunction(clazz);
-        proceduresService.registerProcedure(clazz);
-      } catch (KernelException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      //
+      Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
+          .resolveDependency(Procedures.class);
+
+      for (Class<?> clazz : dbExtensions) {
+        try {
+          proceduresService.registerFunction(clazz);
+          proceduresService.registerProcedure(clazz);
+        } catch (KernelException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
       }
     }
 
     //
-    return new Neo4jGraphDb(graphDatabase, 5001, userObject);
+    return new Neo4jGraphDb(graphDatabase, port, userObject);
   }
 }

@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.testfwk.junit;
+package org.slizaa.scanner.neo4j.testfwk.junit;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

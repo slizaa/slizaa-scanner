@@ -1,4 +1,4 @@
-package org.slizaa.scanner.eclipse.internal;
+package org.slizaa.scanner.eclipse.itest;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

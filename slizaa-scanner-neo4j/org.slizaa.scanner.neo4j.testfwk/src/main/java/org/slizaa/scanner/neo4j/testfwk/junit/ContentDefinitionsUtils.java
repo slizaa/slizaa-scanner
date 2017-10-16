@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.testfwk.junit;
+package org.slizaa.scanner.neo4j.testfwk.junit;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;

@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.testfwk;
+package org.slizaa.scanner.neo4j.testfwk;
 
 import java.io.File;
 import java.io.IOException;

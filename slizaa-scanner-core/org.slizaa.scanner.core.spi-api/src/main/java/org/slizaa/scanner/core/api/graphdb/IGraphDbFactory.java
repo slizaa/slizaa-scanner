@@ -1,6 +1,7 @@
 package org.slizaa.scanner.core.api.graphdb;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * <p>
@@ -22,6 +23,14 @@ public interface IGraphDbFactory {
   IGraphDb createGraphDb(int port, File storeDir);
 
   /**
+   * @param port
+   * @param storeDir
+   * @param dbExtensions
+   * @return
+   */
+  IGraphDb createGraphDb(int port, File storeDir, List<Class<?>> dbExtensions);
+
+  /**
    * <p>
    * </p>
    *
@@ -31,4 +40,13 @@ public interface IGraphDbFactory {
    * @return
    */
   <T> IGraphDb createGraphDb(int port, File storeDir, T userObject);
+
+  /**
+   * @param port
+   * @param storeDir
+   * @param userObject
+   * @param dbExtensions
+   * @return
+   */
+  <T> IGraphDb createGraphDb(int port, File storeDir, T userObject, List<Class<?>> dbExtensions);
 }

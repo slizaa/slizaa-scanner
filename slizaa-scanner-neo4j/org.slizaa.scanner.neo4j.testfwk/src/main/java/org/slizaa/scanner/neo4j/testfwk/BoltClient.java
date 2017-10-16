@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.testfwk;
+package org.slizaa.scanner.neo4j.testfwk;
 
 import org.neo4j.driver.v1.Config;
 import org.neo4j.driver.v1.Config.EncryptionLevel;

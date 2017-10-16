@@ -11,7 +11,7 @@
 package org.slizaa.scanner.itest.jtype.simple;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.slizaa.scanner.core.testfwk.junit.ContentDefinitionsUtils.simpleBinaryFile;
+import static org.slizaa.scanner.neo4j.testfwk.junit.ContentDefinitionsUtils.simpleBinaryFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,8 +21,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.types.Node;
-import org.slizaa.scanner.core.testfwk.junit.SlizaaClientRule;
-import org.slizaa.scanner.core.testfwk.junit.SlizaaTestServerRule;
 import org.slizaa.scanner.itest.jtype.simple.example.AbstractExampleClass;
 import org.slizaa.scanner.itest.jtype.simple.example.ExampleClass;
 import org.slizaa.scanner.itest.jtype.simple.example.ExampleInterface;
@@ -30,6 +28,8 @@ import org.slizaa.scanner.itest.jtype.simple.example.SimpleClassWithOneField;
 import org.slizaa.scanner.itest.jtype.simple.example.SuperClass;
 import org.slizaa.scanner.itest.jtype.simple.example.SuperInterface;
 import org.slizaa.scanner.jtype.model.ITypeNode;
+import org.slizaa.scanner.neo4j.testfwk.junit.SlizaaClientRule;
+import org.slizaa.scanner.neo4j.testfwk.junit.SlizaaTestServerRule;
 
 public class JTypeParserTest {
 

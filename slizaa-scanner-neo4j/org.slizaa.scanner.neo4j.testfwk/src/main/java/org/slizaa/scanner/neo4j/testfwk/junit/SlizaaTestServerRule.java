@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.testfwk.junit;
+package org.slizaa.scanner.neo4j.testfwk.junit;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -19,11 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.classpathscanner.IClasspathScannerFactory;
 import org.slizaa.scanner.core.classpathscanner.internal.ClasspathScannerFactory;
-import org.slizaa.scanner.core.impl.graphdbfactory.GraphDbFactory;
-import org.slizaa.scanner.core.impl.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
+import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
+import org.slizaa.scanner.neo4j.importer.internal.parser.ModelImporter;
 
 /**
  * <p>
@@ -119,7 +118,7 @@ public class SlizaaTestServerRule implements TestRule {
         executer.parse(new SlizaaTestProgressMonitor());
 
         //
-        GraphDbFactory graphDbFactory = new GraphDbFactory(() -> Collections.emptyList());
+        GraphDbFactory graphDbFactory = new GraphDbFactory();
 
         //
         try (IGraphDb graphDb = graphDbFactory.createGraphDb(5001, _databaseDirectory)) {

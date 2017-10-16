@@ -8,7 +8,7 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.core.impl.importer.internal.parser;
+package org.slizaa.scanner.neo4j.importer.internal.parser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

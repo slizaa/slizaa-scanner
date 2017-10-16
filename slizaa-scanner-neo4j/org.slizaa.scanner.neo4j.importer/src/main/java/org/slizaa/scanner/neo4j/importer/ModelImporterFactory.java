@@ -8,15 +8,15 @@
  * Contributors:
  *    Slizaa project team - initial API and implementation
  ******************************************************************************/
-package org.slizaa.scanner.core.impl.importer;
+package org.slizaa.scanner.neo4j.importer;
 
 import java.io.File;
 
 import org.slizaa.scanner.core.api.importer.IModelImporter;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
-import org.slizaa.scanner.core.impl.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
+import org.slizaa.scanner.neo4j.importer.internal.parser.ModelImporter;
 
 /**
  * <p>

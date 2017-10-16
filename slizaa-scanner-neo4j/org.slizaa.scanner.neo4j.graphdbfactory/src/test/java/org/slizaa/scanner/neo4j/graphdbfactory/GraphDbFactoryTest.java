@@ -1,8 +1,6 @@
-package org.slizaa.scanner.core.impl.graphdbfactory;
+package org.slizaa.scanner.neo4j.graphdbfactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Collections;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +27,7 @@ public class GraphDbFactoryTest {
   public void testGraphDbFactory() {
 
     //
-    GraphDbFactory graphDbFactory = new GraphDbFactory(() -> Collections.emptyList());
+    GraphDbFactory graphDbFactory = new GraphDbFactory();
     IGraphDb graphDb = graphDbFactory.createGraphDb(5001, _temporaryFolder.getRoot(), null);
 
     //
