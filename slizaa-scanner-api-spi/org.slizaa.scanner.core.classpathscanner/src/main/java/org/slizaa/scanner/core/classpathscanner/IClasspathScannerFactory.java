@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner;
 
 import java.util.List;
 

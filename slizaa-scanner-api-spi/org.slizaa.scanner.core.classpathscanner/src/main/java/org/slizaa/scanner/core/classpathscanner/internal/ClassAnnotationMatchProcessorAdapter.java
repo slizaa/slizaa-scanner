@@ -1,14 +1,16 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slizaa.scanner.core.classpathscanner.IClassAnnotationMatchHandler;
+
 public class ClassAnnotationMatchProcessorAdapter {
 
   /** - */
-  private IClassAnnotationMatchProcessor _processor;
+  private IClassAnnotationMatchHandler _processor;
 
   /** - */
   private List<Class<?>>                 _result;
@@ -20,7 +22,7 @@ public class ClassAnnotationMatchProcessorAdapter {
    *
    * @param processor
    */
-  public ClassAnnotationMatchProcessorAdapter(IClassAnnotationMatchProcessor processor) {
+  public ClassAnnotationMatchProcessorAdapter(IClassAnnotationMatchHandler processor) {
 
     //
     checkNotNull(processor);

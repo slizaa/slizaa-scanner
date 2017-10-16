@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner;
 
 import static org.slizaa.scanner.core.spi.internal.Preconditions.checkNotNull;
 
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
  *
  * @param <T>
  */
-public class DefaultClassAnnotationHandler<T> implements IClassAnnotationMatchProcessor {
+public class DefaultClassAnnotationHandler<T> implements IClassAnnotationMatchHandler {
 
   /** - */
-  private Map<Object, Map<Class<?>, T>> _collectedClasses;
+  private Map<Object, Map<Class<?>, T>> _collectedResult;
 
   /** - */
   private Function<Class<?>, T>         _transformationFunction;
@@ -36,16 +36,14 @@ public class DefaultClassAnnotationHandler<T> implements IClassAnnotationMatchPr
 
     //
     _transformationFunction = checkNotNull(transformationFunction);
-
-    //
-    _collectedClasses = new HashMap<>();
+    _collectedResult = new HashMap<>();
   }
 
   @Override
   public void processMatch(Object codeSource, List<Class<?>> classesWithAnnotation) {
 
     //
-    Map<Class<?>, T> values = _collectedClasses.computeIfAbsent(codeSource, key -> new HashMap<>());
+    Map<Class<?>, T> values = _collectedResult.computeIfAbsent(codeSource, key -> new HashMap<>());
 
     //
     List<Class<?>> removedValues = new ArrayList<Class<?>>(values.keySet());
@@ -55,15 +53,15 @@ public class DefaultClassAnnotationHandler<T> implements IClassAnnotationMatchPr
     //
     classesWithAnnotation.forEach(key -> {
       if (!values.containsKey(key)) {
-          T value = _transformationFunction.apply(key);
-          if (value != null) {
-            values.put(key, value);
-          }
+        T value = _transformationFunction.apply(key);
+        if (value != null) {
+          values.put(key, value);
+        }
       }
     });
   }
 
   public List<T> getResult() {
-    return _collectedClasses.values().stream().flatMap(m -> m.values().stream()).collect(Collectors.toList());
+    return _collectedResult.values().stream().flatMap(m -> m.values().stream()).collect(Collectors.toList());
   }
 }

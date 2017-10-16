@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slizaa.scanner.core.classpathscanner.IClassAnnotationMatchHandler;
+import org.slizaa.scanner.core.classpathscanner.IClasspathScanner;
+import org.slizaa.scanner.core.classpathscanner.IMethodAnnotationMatchHandler;
 
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
@@ -21,7 +25,7 @@ public class ClasspathScanner implements IClasspathScanner {
   private Map<Class<?>, List<ClassAnnotationMatchProcessorAdapter>> _classAnnotationMatchProcessors;
 
   /** - */
-  private List<IMethodAnnotationMatchProcessor>                     _methodAnnotationMatchProcessors;
+  private List<IMethodAnnotationMatchHandler>                     _methodAnnotationMatchHandlers;
 
   /**
    * <p>
@@ -35,11 +39,11 @@ public class ClasspathScanner implements IClasspathScanner {
     _elementsToScan = checkNotNull(elementsToScan);
 
     _classAnnotationMatchProcessors = new HashMap<>();
-    _methodAnnotationMatchProcessors = new ArrayList<>();
+    _methodAnnotationMatchHandlers = new ArrayList<>();
   }
 
   @Override
-  public IClasspathScanner matchClassesWithAnnotation(Class<?> clazz, IClassAnnotationMatchProcessor processor) {
+  public IClasspathScanner matchClassesWithAnnotation(Class<?> clazz, IClassAnnotationMatchHandler processor) {
 
     //
     ClassAnnotationMatchProcessorAdapter adapter = new ClassAnnotationMatchProcessorAdapter(processor);

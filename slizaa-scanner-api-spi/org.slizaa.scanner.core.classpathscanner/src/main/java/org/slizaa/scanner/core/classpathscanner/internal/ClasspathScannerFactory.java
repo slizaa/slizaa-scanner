@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.slizaa.scanner.core.classpathscanner.IClasspathScanner;
+import org.slizaa.scanner.core.classpathscanner.IClasspathScannerFactory;
 
 public class ClasspathScannerFactory implements IClasspathScannerFactory {
 

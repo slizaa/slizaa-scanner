@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner;
 
 /**
  * <p>
@@ -16,7 +16,7 @@ public interface IClasspathScanner {
    * @param processor
    * @return
    */
-  IClasspathScanner matchClassesWithAnnotation(Class<?> clazz, IClassAnnotationMatchProcessor processor);
+  IClasspathScanner matchClassesWithAnnotation(Class<?> clazz, IClassAnnotationMatchHandler processor);
 
   /**
    * <p>

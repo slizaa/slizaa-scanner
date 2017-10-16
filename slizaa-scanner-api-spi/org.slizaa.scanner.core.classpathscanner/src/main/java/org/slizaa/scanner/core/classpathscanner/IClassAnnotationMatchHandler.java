@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
 @FunctionalInterface
-public interface IClassAnnotationMatchProcessor {
+public interface IClassAnnotationMatchHandler {
 
   /**
    * <p>

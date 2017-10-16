@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+import org.slizaa.scanner.core.classpathscanner.IClasspathScannerFactory;
+import org.slizaa.scanner.core.classpathscanner.internal.ClasspathScannerFactory;
 import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 

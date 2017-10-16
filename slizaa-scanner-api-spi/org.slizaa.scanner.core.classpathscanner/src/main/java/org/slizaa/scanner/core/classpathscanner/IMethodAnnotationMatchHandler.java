@@ -1,4 +1,4 @@
-package org.slizaa.scanner.core.impl.plugins;
+package org.slizaa.scanner.core.classpathscanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public interface IMethodAnnotationMatchProcessor {
+public interface IMethodAnnotationMatchHandler {
 
   Class<? extends Annotation> getAnnotationToMatch();
 
