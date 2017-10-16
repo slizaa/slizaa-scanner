@@ -23,22 +23,10 @@
 	</properties>
 
 	<modules>
+		<module>org.slizaa.scanner.core.feature</module>
 		<module>org.slizaa.scanner.eclipse.feature</module>
-		<module>org.slizaa.scanner.spi-api.feature</module>
 		<module>org.slizaa.scanner.p2</module>
 	</modules>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.slizaa.scanner.core</groupId>
-				<artifactId>org.slizaa.scanner.core.bom</artifactId>
-				<version>${project.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -64,14 +52,17 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
+			<version>21.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
+			<version>3.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
+			<version>3.11.3</version>
 		</dependency>
 	</dependencies>
 
