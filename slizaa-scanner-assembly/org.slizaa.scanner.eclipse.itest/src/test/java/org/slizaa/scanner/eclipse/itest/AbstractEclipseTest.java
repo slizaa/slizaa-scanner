@@ -79,7 +79,6 @@ public abstract class AbstractEclipseTest {
         mavenBundle("org.eclipse.platform", "org.eclipse.equinox.common").versionAsInProject(),
         mavenBundle("com.google.code.gson", "gson").versionAsInProject(),
         mavenBundle("org.ops4j.pax.url", "pax-url-aether").versionAsInProject(),
-        mavenBundle("io.github.lukehutch", "fast-classpath-scanner").versionAsInProject(),
 
         //
         wrappedBundle(mavenBundle("org.neo4j.driver", "neo4j-java-driver").versionAsInProject()),
@@ -87,6 +86,7 @@ public abstract class AbstractEclipseTest {
         //
         mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.spi-api").versionAsInProject(),
         mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.contentdefinition").versionAsInProject(),
+        mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.classpathscanner").versionAsInProject(),
         mavenBundle("org.slizaa.scanner.assembly", "org.slizaa.scanner.eclipse").versionAsInProject().start(),
         bundle("reference:" + jtypeFile.toURI().toString()).start());
   }

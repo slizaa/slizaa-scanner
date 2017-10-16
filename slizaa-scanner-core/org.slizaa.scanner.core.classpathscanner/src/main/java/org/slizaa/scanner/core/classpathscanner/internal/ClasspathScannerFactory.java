@@ -2,7 +2,7 @@ package org.slizaa.scanner.core.classpathscanner.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +55,8 @@ public class ClasspathScannerFactory implements IClasspathScannerFactory {
    * {@inheritDoc}
    */
   @Override
-  public IClasspathScanner createScanner(Object elementToScan) {
-    return new ClasspathScanner(this, Collections.singletonList(elementToScan));
+  public IClasspathScanner createScanner(Object... elementsToScan) {
+    return new ClasspathScanner(this, Arrays.asList(elementsToScan));
   }
 
   /**

@@ -27,6 +27,5 @@ public interface IClasspathScannerFactory {
    * @param elementToScan
    * @param processors
    */
-  IClasspathScanner createScanner(Object elementToScan);
-
+  IClasspathScanner createScanner(Object... elementsToScan);
 }
