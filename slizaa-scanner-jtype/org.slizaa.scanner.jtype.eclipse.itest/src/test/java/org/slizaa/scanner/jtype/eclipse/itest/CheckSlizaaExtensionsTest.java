@@ -16,6 +16,7 @@ import org.osgi.util.tracker.BundleTracker;
 import org.slizaa.scanner.core.classpathscanner.ClasspathScannerFactoryBuilder;
 import org.slizaa.scanner.core.classpathscanner.IClasspathScannerFactory;
 import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
+import org.slizaa.scanner.jtype.bytecode.JTypeByteCodeParserFactory;
 
 public class CheckSlizaaExtensionsTest extends AbstractJTypeTest {
 
@@ -49,8 +50,10 @@ public class CheckSlizaaExtensionsTest extends AbstractJTypeTest {
         (source, pf) -> scanResult.put(((Bundle) source).getSymbolicName(), pf)).scan();
 
     //
-    assertThat(scanResult).hasSize(1);
+    assertThat(scanResult).hasSize(2);
     assertThat(scanResult.get("org.slizaa.scanner.core.contentdefinition")).isNotNull().isEmpty();
+    assertThat(scanResult.get("org.slizaa.scanner.jtype")).isNotNull()
+        .containsExactly(JTypeByteCodeParserFactory.class);
   }
 
   /**

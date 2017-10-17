@@ -24,7 +24,7 @@
 
 	<modules>
 		<module>org.slizaa.scanner.core.feature</module>
-		<module>org.slizaa.scanner.eclipse.feature</module>
+		<module>org.slizaa.scanner.neo4j.eclipse.feature</module>
 		<module>org.slizaa.scanner.p2</module>
 	</modules>
 
@@ -40,8 +40,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slizaa.scanner.assembly</groupId>
-			<artifactId>org.slizaa.scanner.eclipse</artifactId>
+			<groupId>org.slizaa.scanner.neo4j</groupId>
+			<artifactId>org.slizaa.scanner.neo4j.eclipse</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
