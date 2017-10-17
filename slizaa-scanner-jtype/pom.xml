@@ -16,7 +16,7 @@
 
 	<modules>
 		<module>org.slizaa.scanner.jtype</module>
-		<module>org.slizaa.scanner.jtype.itest</module>
+		<module>org.slizaa.scanner.jtype.eclipse.itest</module>
 	</modules>
 
 </project>

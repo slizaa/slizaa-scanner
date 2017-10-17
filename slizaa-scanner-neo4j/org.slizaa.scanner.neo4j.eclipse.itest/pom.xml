@@ -38,11 +38,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
@@ -61,47 +56,44 @@
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-container-native</artifactId>
 			<version>${exam.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-junit4</artifactId>
 			<version>${exam.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-link-mvn</artifactId>
 			<version>${exam.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.url</groupId>
 			<artifactId>pax-url-aether</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.common</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
-			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
+			<scope>compile</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
