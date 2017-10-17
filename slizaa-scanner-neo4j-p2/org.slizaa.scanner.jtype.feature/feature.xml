@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.slizaa.scanner.neo4j.eclipse.feature"
-      label="org.slizaa.scanner.neo4j.eclipse.feature"
+      id="org.slizaa.scanner.jtype.feature"
+      label="org.slizaa.scanner.jtype.feature"
       version="1.0.0.qualifier">
 
    <description url="http://www.example.com/description">
@@ -220,12 +220,6 @@ If the disclaimer of warranty and limitation of liability provided above cannot 
 
 END OF TERMS AND CONDITIONS
    </license>
-
-   <plugin
-         id="org.slizaa.scanner.neo4j.eclipse"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
    <plugin
          id="org.slizaa.scanner.jtype"

@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.slizaa.scanner.p2</groupId>
-		<artifactId>org.slizaa.scanner.p2.parent</artifactId>
+		<groupId>org.slizaa.scanner.neo4j</groupId>
+		<artifactId>org.slizaa.scanner.neo4j.p2.parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>org.slizaa.scanner.neo4j.eclipse.feature</artifactId>
+	<artifactId>org.slizaa.scanner.jtype.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
 
 </project>
