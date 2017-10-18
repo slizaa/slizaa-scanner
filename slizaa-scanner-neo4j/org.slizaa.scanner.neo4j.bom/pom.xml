@@ -1,5 +1,5 @@
 <!--
-  Copyright (C) 2017 wuetherich
+  Copyright (C) 2017 Gerd Wuetherich
   
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -24,6 +24,44 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Parent POM for the org.slizaa.scanner.neo4j artifacts.</description>
+	<url>http://www.slizaa.org</url>
+	<inceptionYear>2017</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL) - Version 3</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>wuetherich</id>
+			<name>Gerd Wuetherich</name>
+			<email>gerd@slizaa.org</email>
+			<url>http://www.gerd-wuetherich.de</url>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/slizaa/slizaa-scanner-neo4j.git</connection>
+		<developerConnection>scm:git:ssh://github.com:slizaa/slizaa-scanner-neo4j.git</developerConnection>
+		<url>http://github.com/slizaa/slizaa-scanner-neo4j</url>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<properties>
 		<neo4j-version>3.2.3</neo4j-version>
