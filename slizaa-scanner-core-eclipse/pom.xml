@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.slizaa.scanner.core</groupId>
-	<artifactId>org.slizaa.scanner.core.p2.parent</artifactId>
+	<artifactId>org.slizaa.scanner.core.eclipse.parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
@@ -18,8 +18,8 @@
 	</properties>
 
 	<modules>
-		<module>org.slizaa.scanner.core.feature</module>
-		<module>org.slizaa.scanner.core.p2</module>
+		<module>org.slizaa.scanner.core.eclipse.feature</module>
+		<module>org.slizaa.scanner.core.eclipse.repository</module>
 	</modules>
 
 	<dependencies>
