@@ -1,7 +1,7 @@
 jdk:
 - oraclejdk8
 script:
-- mvn clean install -f slizaa-scanner-neo4j/pom.xml
+- mvn clean deploy -f slizaa-scanner-neo4j/pom.xml
 - mvn clean install -f slizaa-scanner-neo4j-eclipse/pom.xml
 env:
   global:

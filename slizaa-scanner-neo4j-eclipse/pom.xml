@@ -40,7 +40,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slizaa.scanner.neo4j</groupId>
-			<artifactId>org.slizaa.scanner.neo4j.eclipse</artifactId>
+			<artifactId>org.slizaa.scanner.neo4j.osgi</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

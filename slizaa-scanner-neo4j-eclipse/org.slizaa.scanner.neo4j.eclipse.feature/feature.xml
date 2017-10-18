@@ -222,7 +222,7 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <plugin
-         id="org.slizaa.scanner.neo4j.eclipse"
+         id="org.slizaa.scanner.neo4j.osgi"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
