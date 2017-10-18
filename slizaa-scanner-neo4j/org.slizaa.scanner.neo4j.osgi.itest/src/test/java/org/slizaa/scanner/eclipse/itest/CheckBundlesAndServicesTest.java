@@ -14,39 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.slizaa.scanner.neo4j.graphdbfactory;
+package org.slizaa.scanner.eclipse.itest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slizaa.scanner.core.api.graphdb.IGraphDb;
+import org.osgi.framework.BundleException;
+import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
+import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
 
-/**
- * <p>
- * </p>
- *
- * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
- */
-public class GraphDbFactoryTest {
-
-  /** - */
-  @Rule
-  public TemporaryFolder _temporaryFolder = new TemporaryFolder();
+public class CheckBundlesAndServicesTest extends AbstractEclipseTest {
 
   /**
    * <p>
    * </p>
+   * 
+   * @throws BundleException
    */
   @Test
-  public void testGraphDbFactory() {
+  public void testBundleAndServices() throws BundleException {
 
-    //
-    GraphDbFactory graphDbFactory = new GraphDbFactory();
-    IGraphDb graphDb = graphDbFactory.newGraphDb(5001, _temporaryFolder.getRoot()).create();
+    // checkStart
+    startAllBundles();
 
-    //
-    assertThat(graphDb).isNotNull();
+    // checkServices
+    assertThat(bundleContext().getServiceReference(IModelImporterFactory.class)).isNotNull();
+    assertThat(bundleContext().getServiceReference(IGraphDbFactory.class)).isNotNull();
   }
 }

@@ -14,39 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.slizaa.scanner.neo4j.graphdbfactory;
+package org.slizaa.scanner.neo4j.osgi.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slizaa.scanner.core.api.graphdb.IGraphDb;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
+import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
+import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
+import org.slizaa.scanner.neo4j.importer.ModelImporterFactory;
 
 /**
- * <p>
- * </p>
- *
- * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
-public class GraphDbFactoryTest {
+public class Activator implements BundleActivator {
 
-  /** - */
-  @Rule
-  public TemporaryFolder _temporaryFolder = new TemporaryFolder();
+  @Override
+  public void start(BundleContext context) throws Exception {
+
+    //
+    context.registerService(IModelImporterFactory.class.getName(), new ModelImporterFactory(), null);
+    context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(), null);
+  }
 
   /**
-   * <p>
-   * </p>
+   * {@inheritDoc}
    */
-  @Test
-  public void testGraphDbFactory() {
-
-    //
-    GraphDbFactory graphDbFactory = new GraphDbFactory();
-    IGraphDb graphDb = graphDbFactory.newGraphDb(5001, _temporaryFolder.getRoot()).create();
-
-    //
-    assertThat(graphDb).isNotNull();
+  @Override
+  public void stop(BundleContext context) throws Exception {
   }
 }

@@ -19,8 +19,8 @@
 		<module>org.slizaa.scanner.neo4j.graphdbfactory</module>
 		<module>org.slizaa.scanner.neo4j.importer</module>
 		<module>org.slizaa.scanner.neo4j.testfwk</module>
-		<module>org.slizaa.scanner.neo4j.eclipse</module>
-		<module>org.slizaa.scanner.neo4j.eclipse.itest</module>
+		<module>org.slizaa.scanner.neo4j.osgi</module>
+		<module>org.slizaa.scanner.neo4j.osgi.itest</module>
 	</modules>
 
 	<dependencyManagement>
