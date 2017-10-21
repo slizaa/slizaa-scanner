@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ftp_ip=ftp.wuetherich.com
-target_dir=org.slizaa.scanner.neo4j
+target_dir=slizaa-scanner-neo4j
 
 echo TRAVIS_BUILD_DIR: $TRAVIS_BUILD_DIR
 
