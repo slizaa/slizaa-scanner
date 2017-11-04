@@ -39,6 +39,7 @@ import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.neo4j.importer.internal.parser.ModelImporter;
+import org.slizaa.scanner.neo4j.testfwk.internal.ZipUtil;
 
 /**
  * <p>
@@ -50,6 +51,9 @@ public class SlizaaTestServerRule implements TestRule {
 
   /** - */
   private File                                 _databaseDirectory;
+
+  /** - */
+  private IGraphDb                             _graphDb;
 
   /** - */
   private Supplier<IContentDefinitionProvider> _contentDefinitionsSupplier;
@@ -134,14 +138,34 @@ public class SlizaaTestServerRule implements TestRule {
         executer.parse(new SlizaaTestProgressMonitor());
 
         //
-        GraphDbFactory graphDbFactory = new GraphDbFactory();
-
-        //
-        try (IGraphDb graphDb = graphDbFactory.newGraphDb(5001, _databaseDirectory).create()) {
+        _graphDb = new GraphDbFactory().newGraphDb(5001, _databaseDirectory).create();
+        try {
           base.evaluate();
+        } finally {
+          try {
+            _graphDb.close();
+          } catch (Exception e) {
+            // ignore
+          }
         }
       }
     };
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param file
+   * @throws Exception
+   */
+  public void exportDatabaseAsZipFile(String file, boolean restart) throws Exception {
+    _graphDb.shutdown();
+    
+    ZipUtil.zipFile(_databaseDirectory.getAbsolutePath(), checkNotNull(file), true);
+    if (restart) {
+      _graphDb = new GraphDbFactory().newGraphDb(5001, _databaseDirectory).create();
+    }
   }
 
   /**
