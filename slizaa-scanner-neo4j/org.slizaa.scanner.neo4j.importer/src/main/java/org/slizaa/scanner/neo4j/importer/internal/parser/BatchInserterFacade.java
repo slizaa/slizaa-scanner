@@ -107,7 +107,7 @@ public class BatchInserterFacade implements AutoCloseable {
 
       //
       INode moduleNode = NodeFactory.createNode();
-      moduleNode.addLabel(CoreModelElementType.MODULE);
+      moduleNode.addLabel(CoreModelElementType.Module);
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_NAME, contentDefinition.getName());
       moduleNode.putProperty(INode.FQN, contentDefinition.getName());
       moduleNode.putProperty(IModuleNode.PROPERTY_MODULE_VERSION, contentDefinition.getVersion());
@@ -131,7 +131,7 @@ public class BatchInserterFacade implements AutoCloseable {
     //
     return getOrCreateResourceNode(resource, () -> {
       INode resourceNode = NodeFactory.createNode();
-      resourceNode.addLabel(CoreModelElementType.RESOURCE);
+      resourceNode.addLabel(CoreModelElementType.Resource);
       resourceNode.addLabel(resourceType);
       resourceNode.putProperty(INode.NAME, resource.getName());
       resourceNode.putProperty(INode.FQN, resource.getPath());
@@ -244,7 +244,7 @@ public class BatchInserterFacade implements AutoCloseable {
 
       //
       INode directoryNode = NodeFactory.createNode();
-      directoryNode.addLabel(CoreModelElementType.DIRECTORY);
+      directoryNode.addLabel(CoreModelElementType.Directory);
       directoryNode.putProperty(INode.FQN, path);
       String name = path.lastIndexOf('/') != -1 ? path.substring(path.lastIndexOf('/') + 1) : path;
       directoryNode.putProperty(INode.NAME, name);

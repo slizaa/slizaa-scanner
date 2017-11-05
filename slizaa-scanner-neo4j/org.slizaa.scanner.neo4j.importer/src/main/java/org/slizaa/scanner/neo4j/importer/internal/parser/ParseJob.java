@@ -121,7 +121,7 @@ public class ParseJob implements Callable<List<IProblem>> {
         //
         if (!directory.getSourceResources().isEmpty()) {
           problems.addAll(parse(_content, _batchInserter.getDirectoriesMap().get(directory.getPath()),
-              directory.getSourceResources(), ResourceType.SOURCE, _parser, _progressMonitor));
+              directory.getSourceResources(), ResourceType.Source, _parser, _progressMonitor));
         }
       }
 
@@ -139,7 +139,7 @@ public class ParseJob implements Callable<List<IProblem>> {
         //
         if (!directory.getBinaryResources().isEmpty()) {
           problems.addAll(parse(_content, _batchInserter.getOrCreateDirectoyNode(directory, _moduleNode),
-              directory.getBinaryResources(), ResourceType.BINARY, _parser, _progressMonitor));
+              directory.getBinaryResources(), ResourceType.Binary, _parser, _progressMonitor));
         }
       }
     } catch (Exception e) {
@@ -220,7 +220,7 @@ public class ParseJob implements Callable<List<IProblem>> {
 
     //
     return parser.getParserType().equals(ParserType.BINARY_AND_SOURCE)
-        || (ResourceType.SOURCE.equals(resourceType) && parser.getParserType().equals(ParserType.SOURCE))
-        || (ResourceType.BINARY.equals(resourceType) && parser.getParserType().equals(ParserType.BINARY));
+        || (ResourceType.Source.equals(resourceType) && parser.getParserType().equals(ParserType.SOURCE))
+        || (ResourceType.Binary.equals(resourceType) && parser.getParserType().equals(ParserType.BINARY));
   }
 }
