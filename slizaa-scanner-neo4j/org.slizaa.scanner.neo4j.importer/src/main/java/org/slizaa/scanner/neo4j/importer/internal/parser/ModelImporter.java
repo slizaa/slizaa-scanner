@@ -36,6 +36,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slizaa.scanner.core.api.cypherregistry.ICypherStatement;
 import org.slizaa.scanner.core.api.importer.IModelImporter;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
@@ -73,7 +74,10 @@ public class ModelImporter implements IModelImporter {
   private File                       _directory;
 
   /** - */
-  private IParserFactory[]           _parserFactories;
+  private List<IParserFactory>       _parserFactories;
+
+  /** - */
+  private List<ICypherStatement>     _cypherStatements;
 
   /** - */
   private List<IProblem>             _result;
@@ -86,7 +90,8 @@ public class ModelImporter implements IModelImporter {
    * Creates a new instance of type {@link ModelImporter}.
    * </p>
    */
-  public ModelImporter(IContentDefinitionProvider systemDefinition, File directory, IParserFactory... parserFactories) {
+  public ModelImporter(IContentDefinitionProvider systemDefinition, File directory,
+      List<IParserFactory> parserFactories, List<ICypherStatement> cypherStatements) {
 
     checkNotNull(systemDefinition);
     checkNotNull(directory);
@@ -256,7 +261,7 @@ public class ModelImporter implements IModelImporter {
         .newEmbeddedDatabaseBuilder(getDatabaseDirectory()).newGraphDatabase();
 
     // create the sub-monitor
-    final SubMonitor subMonitor = SubMonitor.convert(progressMonitor, _parserFactories.length);
+    final SubMonitor subMonitor = SubMonitor.convert(progressMonitor, _parserFactories.size());
 
     //
     for (IParserFactory parserFactory : _parserFactories) {
@@ -286,7 +291,7 @@ public class ModelImporter implements IModelImporter {
         .newEmbeddedDatabaseBuilder(getDatabaseDirectory()).newGraphDatabase();
 
     // create the sub-monitor
-    final SubMonitor subMonitor = SubMonitor.convert(progressMonitor, _parserFactories.length);
+    final SubMonitor subMonitor = SubMonitor.convert(progressMonitor, _parserFactories.size());
 
     //
     for (IParserFactory parserFactory : _parserFactories) {
@@ -367,9 +372,9 @@ public class ModelImporter implements IModelImporter {
       ParseJob[] jobs = new ParseJob[THREAD_COUNT];
       for (int i = 0; i < jobs.length; i++) {
 
-        IParser[] parsers = new IParser[_parserFactories.length];
-        for (int j = 0; j < _parserFactories.length; j++) {
-          parsers[j] = _parserFactories[j].createParser(_contentDefinitions);
+        IParser[] parsers = new IParser[_parserFactories.size()];
+        for (int j = 0; j < _parserFactories.size(); j++) {
+          parsers[j] = _parserFactories.get(j).createParser(_contentDefinitions);
         }
 
         jobs[i] = new ParseJob(contentEntry, moduleBean, packageFragmentsParts[i], parsers, batchInserter,

@@ -17,7 +17,9 @@
 package org.slizaa.scanner.neo4j.importer;
 
 import java.io.File;
+import java.util.List;
 
+import org.slizaa.scanner.core.api.cypherregistry.ICypherStatement;
 import org.slizaa.scanner.core.api.importer.IModelImporter;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
@@ -36,10 +38,10 @@ public class ModelImporterFactory implements IModelImporterFactory {
    * {@inheritDoc}
    */
   @Override
-  public IModelImporter createModelImporter(IContentDefinitionProvider systemDefniition, File databaseDirectory,
-      IParserFactory... parserFactories) {
+  public IModelImporter createModelImporter(IContentDefinitionProvider contentDefinitionProvider,
+      File databaseDirectory, List<IParserFactory> parserFactories, List<ICypherStatement> cypherStatements) {
 
     //
-    return new ModelImporter(systemDefniition, databaseDirectory, parserFactories);
+    return new ModelImporter(contentDefinitionProvider, databaseDirectory, parserFactories, cypherStatements);
   }
 }
