@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.QueryExecutionException;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,11 +97,13 @@ public class ModelImporter implements IModelImporter {
     checkNotNull(systemDefinition);
     checkNotNull(directory);
     checkNotNull(parserFactories);
+    checkNotNull(cypherStatements);
 
     // set the project
     _contentDefinitions = systemDefinition;
     _directory = directory;
     _parserFactories = parserFactories;
+    _cypherStatements = cypherStatements;
   }
 
   /**
@@ -300,6 +303,19 @@ public class ModelImporter implements IModelImporter {
       try {
         parserFactory.batchParseStop(_contentDefinitions, graphDatabaseService, subMonitor);
       } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+
+    //
+    // TODO
+    for (ICypherStatement cypherStatement : _cypherStatements) {
+      try {
+        if (cypherStatement.getStatement() != null) {
+          System.out.println("Executing statement '" + cypherStatement.getStatement() + "'.");
+          graphDatabaseService.execute(cypherStatement.getStatement());
+        }
+      } catch (QueryExecutionException e) {
         e.printStackTrace();
       }
     }

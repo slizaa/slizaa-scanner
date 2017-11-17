@@ -31,9 +31,12 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slizaa.scanner.core.api.cypherregistry.ICypherStatement;
 import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.classpathscanner.IClasspathScannerFactory;
 import org.slizaa.scanner.core.classpathscanner.internal.ClasspathScannerFactory;
+import org.slizaa.scanner.core.cypherregistry.DefaultCypherStatement;
+import org.slizaa.scanner.core.cypherregistry.SlizaaCypherFileParser;
 import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
@@ -119,6 +122,8 @@ public class SlizaaTestServerRule implements TestRule {
 
         //
         List<IParserFactory> parserFactories = new ArrayList<>();
+        List<ICypherStatement> cypherStatements = new ArrayList<>();
+
         scannerFactory.createScanner(this.getClass().getClassLoader())
             .matchClassesWithAnnotation(SlizaaParserFactory.class, (source, classes) -> {
               classes.forEach(c -> {
@@ -129,11 +134,31 @@ public class SlizaaTestServerRule implements TestRule {
                   e.printStackTrace();
                 }
               });
-            }).scan();
+            })
+            //
+            .matchFiles("cypher",
+
+                // parse the statements
+                (relativePath, inputStream, lengthBytes) -> {
+                  DefaultCypherStatement statement = SlizaaCypherFileParser.parse(relativePath, inputStream);
+                  statement.setRelativePath(relativePath);
+                  return statement;
+                },
+
+                // fill the collector
+                (codeSource, statementList) -> {
+                  for (ICypherStatement cypherStatement : statementList) {
+                    if (cypherStatement.isValid()) {
+                      ((DefaultCypherStatement) cypherStatement).setCodeSource(codeSource);
+                      cypherStatements.add(cypherStatement);
+                    }
+                  }
+                })
+            .scan();
 
         // parse
         ModelImporter executer = new ModelImporter(_contentDefinitionsSupplier.get(), _databaseDirectory,
-            parserFactories.toArray(new IParserFactory[0]));
+            parserFactories, cypherStatements);
 
         executer.parse(new SlizaaTestProgressMonitor());
 
@@ -161,7 +186,7 @@ public class SlizaaTestServerRule implements TestRule {
    */
   public void exportDatabaseAsZipFile(String file, boolean restart) throws Exception {
     _graphDb.shutdown();
-    
+
     ZipUtil.zipFile(_databaseDirectory.getAbsolutePath(), checkNotNull(file), true);
     if (restart) {
       _graphDb = new GraphDbFactory().newGraphDb(5001, _databaseDirectory).create();
