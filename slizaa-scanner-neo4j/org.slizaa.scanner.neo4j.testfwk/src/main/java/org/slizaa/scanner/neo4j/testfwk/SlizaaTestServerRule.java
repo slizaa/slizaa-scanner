@@ -1,18 +1,15 @@
 /*******************************************************************************
  * Copyright (C) 2017 Gerd Wuetherich
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package org.slizaa.scanner.neo4j.testfwk;
 
@@ -37,7 +34,7 @@ import org.slizaa.scanner.core.classpathscanner.IClasspathScannerFactory;
 import org.slizaa.scanner.core.classpathscanner.internal.ClasspathScannerFactory;
 import org.slizaa.scanner.core.cypherregistry.DefaultCypherStatement;
 import org.slizaa.scanner.core.cypherregistry.SlizaaCypherFileParser;
-import org.slizaa.scanner.core.spi.annotations.SlizaaParserFactory;
+import org.slizaa.scanner.core.spi.annotations.ParserFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
@@ -69,12 +66,7 @@ public class SlizaaTestServerRule implements TestRule {
    * @param contentDefinitions
    */
   public SlizaaTestServerRule(IContentDefinitionProvider contentDefinitions) {
-    this(createDatabaseDirectory(), new Supplier<IContentDefinitionProvider>() {
-      @Override
-      public IContentDefinitionProvider get() {
-        return contentDefinitions;
-      }
-    });
+    this(createDatabaseDirectory(), () -> contentDefinitions);
   }
 
   public SlizaaTestServerRule(Supplier<IContentDefinitionProvider> contentDefinitions) {
@@ -91,8 +83,8 @@ public class SlizaaTestServerRule implements TestRule {
    */
   private SlizaaTestServerRule(File workingDirectory, Supplier<IContentDefinitionProvider> contentDefinitions) {
     checkNotNull(contentDefinitions);
-    _databaseDirectory = checkNotNull(workingDirectory);
-    _contentDefinitionsSupplier = checkNotNull(contentDefinitions);
+    this._databaseDirectory = checkNotNull(workingDirectory);
+    this._contentDefinitionsSupplier = checkNotNull(contentDefinitions);
   }
 
   /**
@@ -102,7 +94,7 @@ public class SlizaaTestServerRule implements TestRule {
    * @return
    */
   public File getDatabaseDirectory() {
-    return _databaseDirectory;
+    return this._databaseDirectory;
   }
 
   /**
@@ -125,7 +117,7 @@ public class SlizaaTestServerRule implements TestRule {
         List<ICypherStatement> cypherStatements = new ArrayList<>();
 
         scannerFactory.createScanner(this.getClass().getClassLoader())
-            .matchClassesWithAnnotation(SlizaaParserFactory.class, (source, classes) -> {
+            .matchClassesWithAnnotation(ParserFactory.class, (source, classes) -> {
               classes.forEach(c -> {
                 try {
                   parserFactories.add((IParserFactory) c.newInstance());
@@ -157,18 +149,19 @@ public class SlizaaTestServerRule implements TestRule {
             .scan();
 
         // parse
-        ModelImporter executer = new ModelImporter(_contentDefinitionsSupplier.get(), _databaseDirectory,
-            parserFactories, cypherStatements);
+        ModelImporter executer = new ModelImporter(SlizaaTestServerRule.this._contentDefinitionsSupplier.get(),
+            SlizaaTestServerRule.this._databaseDirectory, parserFactories, cypherStatements);
 
         executer.parse(new SlizaaTestProgressMonitor());
 
         //
-        _graphDb = new GraphDbFactory().newGraphDb(5001, _databaseDirectory).create();
+        SlizaaTestServerRule.this._graphDb = new GraphDbFactory()
+            .newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create();
         try {
           base.evaluate();
         } finally {
           try {
-            _graphDb.close();
+            SlizaaTestServerRule.this._graphDb.close();
           } catch (Exception e) {
             // ignore
           }
@@ -185,11 +178,11 @@ public class SlizaaTestServerRule implements TestRule {
    * @throws Exception
    */
   public void exportDatabaseAsZipFile(String file, boolean restart) throws Exception {
-    _graphDb.shutdown();
+    this._graphDb.shutdown();
 
-    ZipUtil.zipFile(_databaseDirectory.getAbsolutePath(), checkNotNull(file), true);
+    ZipUtil.zipFile(this._databaseDirectory.getAbsolutePath(), checkNotNull(file), true);
     if (restart) {
-      _graphDb = new GraphDbFactory().newGraphDb(5001, _databaseDirectory).create();
+      this._graphDb = new GraphDbFactory().newGraphDb(5001, this._databaseDirectory).create();
     }
   }
 
@@ -224,18 +217,18 @@ public class SlizaaTestServerRule implements TestRule {
 
     @Override
     public void beginTask(String name, int totalWork) {
-      logger.info("beginTask({}{})", name, totalWork);
-      _totalWork = totalWork;
+      this.logger.info("beginTask({}{})", name, totalWork);
+      this._totalWork = totalWork;
     }
 
     @Override
     public void done() {
-      logger.info("done()");
+      this.logger.info("done()");
     }
 
     @Override
     public void internalWorked(double work) {
-      logger.info("internalWorked({})", work);
+      this.logger.info("internalWorked({})", work);
     }
 
     @Override
@@ -249,20 +242,20 @@ public class SlizaaTestServerRule implements TestRule {
 
     @Override
     public void setTaskName(String name) {
-      logger.info("setTaskName()");
+      this.logger.info("setTaskName()");
     }
 
     @Override
     public void subTask(String name) {
-      logger.info("subTask({})", name);
+      this.logger.info("subTask({})", name);
     }
 
     @Override
     public void worked(int work) {
       // logger.info("worked({})", work);
-      _worked = _worked + work;
-      double r = (_worked / _totalWork) * 100;
-      logger.info("{}%)", r);
+      this._worked = this._worked + work;
+      double r = (this._worked / this._totalWork) * 100;
+      this.logger.info("{}%)", r);
     }
   }
 }
