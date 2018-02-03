@@ -310,7 +310,7 @@ public class ModelImporter implements IModelImporter {
     for (ICypherStatement cypherStatement : this._cypherStatements) {
       try {
         if (cypherStatement.getStatement() != null) {
-          subMonitor.subTask("Executing statement '" + cypherStatement.getFullyQualifiedName() + "'.");
+          subMonitor.subTask("Executing statement '" + cypherStatement.getFullyQualifiedName() + "'...");
           graphDatabaseService.execute(cypherStatement.getStatement());
         }
       } catch (QueryExecutionException e) {
