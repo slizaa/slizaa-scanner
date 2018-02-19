@@ -88,6 +88,12 @@ public abstract class AbstractEclipseTest {
 
         //
         wrappedBundle(mavenBundle("org.neo4j.driver", "neo4j-java-driver").versionAsInProject()),
+        wrappedBundle(mavenBundle("io.netty", "netty-transport").versionAsInProject()),
+        wrappedBundle(mavenBundle("io.netty", "netty-buffer").versionAsInProject()),
+        wrappedBundle(mavenBundle("io.netty", "netty-common").versionAsInProject()),
+        wrappedBundle(mavenBundle("io.netty", "netty-resolver").versionAsInProject()),
+        wrappedBundle(mavenBundle("io.netty", "netty-codec").versionAsInProject()),
+        wrappedBundle(mavenBundle("io.netty", "netty-handler").versionAsInProject()),
 
         //
         mavenBundle("org.slizaa.scanner.core", "org.slizaa.scanner.core.spi-api").versionAsInProject(),
