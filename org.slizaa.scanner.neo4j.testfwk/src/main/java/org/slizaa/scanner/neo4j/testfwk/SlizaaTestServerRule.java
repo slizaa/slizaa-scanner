@@ -195,7 +195,7 @@ public class SlizaaTestServerRule implements TestRule {
           try {
             SlizaaTestServerRule.this._graphDb.close();
           } catch (Exception e) {
-            // ignore
+            e.printStackTrace();
           }
         }
       }

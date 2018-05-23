@@ -126,8 +126,7 @@ public class ModelImporter implements IModelImporter {
 
   @Override
   public IGraphDb getGraphDb() {
-    // TODO Auto-generated method stub
-    return null;
+    return this._graphDb;
   }
 
   @Override
