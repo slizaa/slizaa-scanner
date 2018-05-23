@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -35,6 +36,7 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.core.api.cypherregistry.ICypherStatement;
+import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.api.importer.IModelImporter;
 import org.slizaa.scanner.core.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinition;
@@ -45,6 +47,8 @@ import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 import org.slizaa.scanner.core.spi.parser.IProblem;
 import org.slizaa.scanner.core.spi.parser.model.INode;
+import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
+import org.slizaa.scanner.neo4j.graphdbfactory.Neo4jGraphDb;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.cache.CacheBuilder;
@@ -79,6 +83,9 @@ public class ModelImporter implements IModelImporter {
 
   /** - */
   private List<IProblem>             _result;
+
+  /** - */
+  private IGraphDb                   _graphDb;
 
   /** - */
   private ExecutorService            _executorService;
@@ -117,19 +124,25 @@ public class ModelImporter implements IModelImporter {
     return this._directory;
   }
 
-  /**
-   * <p>
-   * </p>
-   *
-   * @param monitor
-   * @return
-   */
   @Override
-  public List<IProblem> parse(IProgressMonitor monitor) {
+  public IGraphDb getGraphDb() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<IProblem> parse(IProgressMonitor monitor, Supplier<IGraphDb> graphDbSupplier) {
 
     // create new null monitor if necessary
     if (monitor == null) {
       monitor = new NullProgressMonitor();
+    }
+
+    //
+    boolean shutdownDatabase = false;
+    if (graphDbSupplier == null) {
+      shutdownDatabase = true;
+      graphDbSupplier = () -> new GraphDbFactory().newGraphDb(getDatabaseDirectory()).create();
     }
 
     // create the sub-monitor
@@ -159,7 +172,7 @@ public class ModelImporter implements IModelImporter {
       // Step 3: Post-Processing
       //
       monitor.subTask("Post-Processing...");
-      stopBatchParse(progressMonitor.newChild(33));
+      stopBatchParse(progressMonitor.newChild(33), graphDbSupplier, shutdownDatabase);
       this.logger.debug("Finished post-processing: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
     } finally {
@@ -170,6 +183,24 @@ public class ModelImporter implements IModelImporter {
     return this._result;
   }
 
+  /**
+   * <p>
+   * </p>
+   *
+   * @param monitor
+   * @return
+   */
+  @Override
+  public List<IProblem> parse(IProgressMonitor monitor) {
+    return parse(monitor, null);
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param submonitor
+   */
   private void internalParse(final SubMonitor submonitor) {
 
     // create the sub-monitor
@@ -237,7 +268,7 @@ public class ModelImporter implements IModelImporter {
     finally {
 
       //
-      this.logger.debug("Save to disk...");
+      this.logger.debug("Stopping executor service...");
       this._executorService.shutdown();
       this._executorService = null;
 
@@ -284,11 +315,14 @@ public class ModelImporter implements IModelImporter {
    *
    * @param progressMonitor
    */
-  private void stopBatchParse(SubMonitor progressMonitor) {
+  private void stopBatchParse(SubMonitor progressMonitor, Supplier<IGraphDb> graphDbSupplier,
+      boolean shutdownDatabase) {
 
     //
-    GraphDatabaseService graphDatabaseService = new GraphDatabaseFactory()
-        .newEmbeddedDatabaseBuilder(getDatabaseDirectory()).newGraphDatabase();
+    this._graphDb = checkNotNull(graphDbSupplier).get();
+    GraphDatabaseService graphDatabaseService = this._graphDb instanceof Neo4jGraphDb
+        ? ((Neo4jGraphDb) this._graphDb).getDatabaseService()
+        : null;
 
     // create the sub-monitor
     final SubMonitor subMonitor = SubMonitor.convert(progressMonitor,
@@ -307,19 +341,24 @@ public class ModelImporter implements IModelImporter {
 
     //
     // TODO
-    for (ICypherStatement cypherStatement : this._cypherStatements) {
-      try {
-        if (cypherStatement.getStatement() != null) {
-          subMonitor.subTask("Executing statement '" + cypherStatement.getFullyQualifiedName() + "'...");
-          graphDatabaseService.execute(cypherStatement.getStatement());
+    if (graphDatabaseService != null) {
+      for (ICypherStatement cypherStatement : this._cypherStatements) {
+        try {
+          if (cypherStatement.getStatement() != null) {
+            subMonitor.subTask("Executing statement '" + cypherStatement.getFullyQualifiedName() + "'...");
+            graphDatabaseService.execute(cypherStatement.getStatement());
+          }
+        } catch (QueryExecutionException e) {
+          e.printStackTrace();
         }
-      } catch (QueryExecutionException e) {
-        e.printStackTrace();
       }
     }
 
     //
-    graphDatabaseService.shutdown();
+    if (shutdownDatabase) {
+      subMonitor.subTask("Shutdown graph database");
+      graphDatabaseService.shutdown();
+    }
   }
 
   /**

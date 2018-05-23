@@ -72,6 +72,14 @@ public class GraphDbFactory implements IGraphDbFactory {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  @Override
+  public IGraphDbBuilder newGraphDb(File databaseDir) {
+    return new GraphDbBuilder(-1, databaseDir, this._databaseExtensionsSupplier);
+  }
+
+  /**
    * <p>
    * </p>
    *
@@ -93,6 +101,17 @@ public class GraphDbFactory implements IGraphDbFactory {
 
     /** - */
     private Supplier<List<Class<?>>> _databaseExtensionsSupplier;
+
+    /**
+     * <p>
+     * Creates a new instance of type {@link GraphDbBuilder}.
+     * </p>
+     *
+     * @param storeDir
+     */
+    public GraphDbBuilder(File storeDir) {
+      this(-1, storeDir, null);
+    }
 
     /**
      * <p>
@@ -152,17 +171,31 @@ public class GraphDbFactory implements IGraphDbFactory {
     @Override
     public IGraphDb create() {
 
+      //
       GraphDatabaseFactory factory = new GraphDatabaseFactory();
       factory.setUserLogProvider(FormattedLogProvider.toOutputStream(System.out));
 
-      BoltConnector bolt = new BoltConnector("0");
+      //
+      GraphDatabaseService graphDatabase = null;
 
       //
-      GraphDatabaseService graphDatabase = factory.newEmbeddedDatabaseBuilder(this._storeDir)
-          .setConfig(bolt.type, ConnectorType.BOLT.name()).setConfig(bolt.enabled, "true")
-          .setConfig(bolt.listen_address, "localhost:" + this._port).setConfig(bolt.encryption_level, "DISABLED")
-          .newGraphDatabase();
+      if (this._port != -1) {
 
+        //
+        BoltConnector bolt = new BoltConnector("0");
+        graphDatabase = factory.newEmbeddedDatabaseBuilder(this._storeDir)
+            .setConfig(bolt.type, ConnectorType.BOLT.name()).setConfig(bolt.enabled, "true")
+            .setConfig(bolt.listen_address, "localhost:" + this._port).setConfig(bolt.encryption_level, "DISABLED")
+            .newGraphDatabase();
+      }
+      //
+      else {
+
+        //
+        graphDatabase = factory.newEmbeddedDatabaseBuilder(this._storeDir).newGraphDatabase();
+      }
+
+      //
       registerDatabaseExtensions(graphDatabase);
 
       // the Neo4jGraphDb

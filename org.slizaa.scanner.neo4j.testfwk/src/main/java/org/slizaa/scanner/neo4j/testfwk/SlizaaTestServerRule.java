@@ -93,7 +93,7 @@ public class SlizaaTestServerRule implements TestRule {
   public SlizaaTestServerRule withExtensionClass(Class<?> extensionClass) {
 
     //
-    _extensionClasses.add(checkNotNull(extensionClass));
+    this._extensionClasses.add(checkNotNull(extensionClass));
 
     //
     return this;
@@ -179,12 +179,16 @@ public class SlizaaTestServerRule implements TestRule {
         ModelImporter executer = new ModelImporter(SlizaaTestServerRule.this._contentDefinitionsSupplier.get(),
             SlizaaTestServerRule.this._databaseDirectory, parserFactories, cypherStatements);
 
-        executer.parse(new SlizaaTestProgressMonitor());
+        executer
+            .parse(new SlizaaTestProgressMonitor(),
+                () -> new GraphDbFactory().newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory)
+                    .withConfiguration(GraphDbFactory.SLIZAA_NEO4J_EXTENSIONCLASSES,
+                        SlizaaTestServerRule.this._extensionClasses)
+                    .create());
 
         //
-        SlizaaTestServerRule.this._graphDb = new GraphDbFactory()
-            .newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory)
-            .withConfiguration(GraphDbFactory.SLIZAA_NEO4J_EXTENSIONCLASSES, _extensionClasses).create();
+        SlizaaTestServerRule.this._graphDb = executer.getGraphDb();
+
         try {
           base.evaluate();
         } finally {
