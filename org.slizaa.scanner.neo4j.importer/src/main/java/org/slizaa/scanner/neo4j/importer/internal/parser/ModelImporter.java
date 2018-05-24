@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.QueryExecutionException;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -344,8 +345,15 @@ public class ModelImporter implements IModelImporter {
       for (ICypherStatement cypherStatement : this._cypherStatements) {
         try {
           if (cypherStatement.getStatement() != null) {
+
+            //
             subMonitor.subTask("Executing statement '" + cypherStatement.getFullyQualifiedName() + "'...");
-            graphDatabaseService.execute(cypherStatement.getStatement());
+
+            //
+            try (Transaction transaction = graphDatabaseService.beginTx()) {
+              graphDatabaseService.execute(cypherStatement.getStatement());
+              transaction.success();
+            }
           }
         } catch (QueryExecutionException e) {
           e.printStackTrace();
