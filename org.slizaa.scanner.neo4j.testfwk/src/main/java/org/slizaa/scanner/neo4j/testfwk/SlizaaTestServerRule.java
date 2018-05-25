@@ -179,12 +179,9 @@ public class SlizaaTestServerRule implements TestRule {
         ModelImporter executer = new ModelImporter(SlizaaTestServerRule.this._contentDefinitionsSupplier.get(),
             SlizaaTestServerRule.this._databaseDirectory, parserFactories, cypherStatements);
 
-        executer
-            .parse(new SlizaaTestProgressMonitor(),
-                () -> new GraphDbFactory().newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory)
-                    .withConfiguration(GraphDbFactory.SLIZAA_NEO4J_EXTENSIONCLASSES,
-                        SlizaaTestServerRule.this._extensionClasses)
-                    .create());
+        executer.parse(new SlizaaTestProgressMonitor(),
+            () -> new GraphDbFactory(() -> SlizaaTestServerRule.this._extensionClasses)
+                .newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create());
 
         //
         SlizaaTestServerRule.this._graphDb = executer.getGraphDb();
