@@ -16,6 +16,7 @@ package org.slizaa.scanner.neo4j.graphdbfactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +35,14 @@ import org.neo4j.logging.FormattedLogProvider;
 import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 
+import apoc.create.Create;
+
+/**
+ * <p>
+ * </p>
+ *
+ * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
+ */
 public class GraphDbFactory implements IGraphDbFactory {
 
   /** - */
@@ -101,29 +110,6 @@ public class GraphDbFactory implements IGraphDbFactory {
 
     /** - */
     private Supplier<List<Class<?>>> _databaseExtensionsSupplier;
-
-    /**
-     * <p>
-     * Creates a new instance of type {@link GraphDbBuilder}.
-     * </p>
-     *
-     * @param storeDir
-     */
-    public GraphDbBuilder(File storeDir) {
-      this(-1, storeDir, null);
-    }
-
-    /**
-     * <p>
-     * Creates a new instance of type {@link GraphDbBuilder}.
-     * </p>
-     *
-     * @param port
-     * @param storeDir
-     */
-    public GraphDbBuilder(int port, File storeDir) {
-      this(port, storeDir, null);
-    }
 
     /**
      * <p>
@@ -213,7 +199,7 @@ public class GraphDbFactory implements IGraphDbFactory {
       //
       List<Class<?>> extensionsToRegister = new LinkedList<>();
 
-      //
+      // step 1: _configuration.get(SLIZAA_NEO4J_EXTENSIONCLASSES)
       Object dbExtensions = this._configuration.get(SLIZAA_NEO4J_EXTENSIONCLASSES);
       if (dbExtensions != null && dbExtensions instanceof List && !((List<?>) dbExtensions).isEmpty()) {
 
@@ -221,21 +207,24 @@ public class GraphDbFactory implements IGraphDbFactory {
         List<Class<?>> classes = ((List<?>) dbExtensions).stream().filter(e -> e instanceof Class<?>)
             .map(e -> (Class<?>) e).collect(Collectors.toList());
 
-        // ...and register them
+        // ...and add them extension list
         extensionsToRegister.addAll(classes);
       }
 
-      //
+      // step 2: _databaseExtensionsSupplier
       if (this._databaseExtensionsSupplier != null) {
 
         // extract the classes...
         List<Class<?>> classes = this._databaseExtensionsSupplier.get();
 
-        // ...and register them
+        // ...and add them extension list
         if (classes != null) {
           extensionsToRegister.addAll(classes);
         }
       }
+
+      // step 3: neo4j APOC list
+      extensionsToRegister.addAll(apocClasses());
 
       // get the procedure service
       Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
@@ -247,10 +236,49 @@ public class GraphDbFactory implements IGraphDbFactory {
           proceduresService.registerFunction(element);
           proceduresService.registerProcedure(element);
         } catch (KernelException e) {
-          // TODO Auto-generated catch block
           e.printStackTrace();
         }
       }
     }
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  private List<Class<?>> apocClasses() {
+
+    //
+    List<Class<?>> result = new ArrayList<Class<?>>();
+    result.add(Create.class);
+    return result;
+
+    // //
+    // IClasspathScannerFactory factory = ClasspathScannerFactoryBuilder.newClasspathScannerFactory()
+    // .registerCodeSourceClassLoaderProvider(Bundle.class, (b) -> {
+    // return b.adapt(BundleWiring.class).getClassLoader();
+    // }).create();
+    //
+    // //
+    // ClassLoader classLoader = Create.class.getProtectionDomain().getClassLoader();
+    //
+    // // scan the bundle
+    // factory
+    //
+    // //
+    // .createScanner(this._bundle)
+    //
+    // //
+    // .matchClassesWithMethodAnnotation(annotationType, (b, exts) -> {
+    // this._extensionsWithMethodAnnotation.put(annotationType, exts);
+    // })
+    //
+    // //
+    // .scan();
+    //
+    // //
+    // return this._extensionsWithMethodAnnotation.get(annotationType);
   }
 }

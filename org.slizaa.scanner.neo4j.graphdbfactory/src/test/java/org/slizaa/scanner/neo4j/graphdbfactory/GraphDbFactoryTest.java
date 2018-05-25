@@ -45,7 +45,7 @@ public class GraphDbFactoryTest {
     //
     GraphDbFactory graphDbFactory = new GraphDbFactory();
     IGraphDb graphDb = graphDbFactory.newGraphDb(5001, _temporaryFolder.getRoot()).create();
-
+    
     //
     assertThat(graphDb).isNotNull();
   }

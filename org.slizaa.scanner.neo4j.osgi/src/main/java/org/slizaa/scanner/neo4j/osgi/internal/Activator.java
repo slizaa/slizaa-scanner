@@ -13,7 +13,6 @@
  ******************************************************************************/
 package org.slizaa.scanner.neo4j.osgi.internal;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,8 +26,6 @@ import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
 import org.slizaa.scanner.core.classpathscanner.IClasspathScannerService;
 import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.neo4j.importer.ModelImporterFactory;
-
-import apoc.create.Create;
 
 /**
  */
@@ -50,9 +47,6 @@ public class Activator implements BundleActivator {
       // create the result list
       List<Class<?>> result = new LinkedList<>();
 
-      // add all apoc
-      result.addAll(apocClasses());
-
       //
       IClasspathScannerService classpathScannerService = this._classpathScannerService.getService();
       if (classpathScannerService != null) {
@@ -72,49 +66,5 @@ public class Activator implements BundleActivator {
   @Override
   public void stop(BundleContext context) throws Exception {
     this._classpathScannerService.close();
-  }
-
-  /**
-   * <p>
-   * </p>
-   *
-   * @return
-   */
-  private List<Class<?>> apocClasses() {
-
-    //
-    List<Class<?>> result = new ArrayList<Class<?>>();
-
-    //
-    result.add(Create.class);
-
-    //
-    return result;
-
-    // //
-    // IClasspathScannerFactory factory = ClasspathScannerFactoryBuilder.newClasspathScannerFactory()
-    // .registerCodeSourceClassLoaderProvider(Bundle.class, (b) -> {
-    // return b.adapt(BundleWiring.class).getClassLoader();
-    // }).create();
-    //
-    // //
-    // ClassLoader classLoader = Create.class.getProtectionDomain().getClassLoader();
-    //
-    // // scan the bundle
-    // factory
-    //
-    // //
-    // .createScanner(this._bundle)
-    //
-    // //
-    // .matchClassesWithMethodAnnotation(annotationType, (b, exts) -> {
-    // this._extensionsWithMethodAnnotation.put(annotationType, exts);
-    // })
-    //
-    // //
-    // .scan();
-    //
-    // //
-    // return this._extensionsWithMethodAnnotation.get(annotationType);
   }
 }

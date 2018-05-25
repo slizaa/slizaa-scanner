@@ -48,6 +48,10 @@
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-bolt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.neo4j.procedure</groupId>
+			<artifactId>apoc</artifactId>
+		</dependency>		
 
 		<!-- test -->
 		<dependency>

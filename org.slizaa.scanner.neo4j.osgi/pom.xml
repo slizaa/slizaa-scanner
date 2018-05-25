@@ -50,10 +50,6 @@
 			<artifactId>neo4j-bolt</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.neo4j.procedure</groupId>
-			<artifactId>apoc</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
 		</dependency>
