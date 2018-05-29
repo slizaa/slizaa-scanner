@@ -106,7 +106,7 @@
 						<Embed-Dependency>*;scope=compile|runtime;artifactId=!guava|org.eclipse.equinox.common|org.eclipse.osgi|org.slizaa.scanner.core.*</Embed-Dependency>
 						<Embed-Transitive>true</Embed-Transitive>
 						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
-						<Export-Package>!org.neo4j.graphdb.factory,!*internal*,!*impl*,org.neo4j.graphdb.*,org.neo4j.procedure.*,org.neo4j.logging.*</Export-Package>
+						<Export-Package>!org.neo4j.graphdb.factory,!*internal*,!*impl*,org.neo4j.graphdb.*,org.neo4j.procedure.*,org.neo4j.logging.*,apoc.result</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
