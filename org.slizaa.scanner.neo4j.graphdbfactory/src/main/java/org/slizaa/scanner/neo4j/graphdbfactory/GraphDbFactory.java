@@ -27,7 +27,6 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.kernel.configuration.BoltConnector;
 import org.neo4j.kernel.configuration.Connector.ConnectorType;
-import org.neo4j.kernel.configuration.HttpConnector;
 import org.neo4j.kernel.impl.proc.Procedures;
 import org.neo4j.kernel.internal.GraphDatabaseAPI;
 import org.neo4j.logging.FormattedLogProvider;
@@ -47,35 +46,12 @@ import apoc.create.Create;
  */
 public class GraphDbFactory implements IGraphDbFactory {
 
-  // private Supplier<List<Class<?>>> _databaseExtensionsSupplier;
-
-  /**
-   * <p>
-   * Creates a new instance of type {@link GraphDbFactory}.
-   * </p>
-   *
-   */
-  public GraphDbFactory() {
-    // this(null);
-  }
-
-  // /**
-  // * <p>
-  // * Creates a new instance of type {@link GraphDbFactory}.
-  // * </p>
-  // *
-  // * @param databaseExtensionsSupplier
-  // */
-  // public GraphDbFactory(Supplier<List<Class<?>>> databaseExtensionsSupplier) {
-  // this._databaseExtensionsSupplier = databaseExtensionsSupplier;
-  // }
-
   /**
    * {@inheritDoc}
    */
   @Override
   public IGraphDbBuilder newGraphDb(int port, File storeDir) {
-    return new GraphDbBuilder(port, storeDir /* , this._databaseExtensionsSupplier */ );
+    return new GraphDbBuilder(port, storeDir);
   }
 
   /**
@@ -83,7 +59,7 @@ public class GraphDbFactory implements IGraphDbFactory {
    */
   @Override
   public IGraphDbBuilder newGraphDb(File databaseDir) {
-    return new GraphDbBuilder(-1, databaseDir /* , this._databaseExtensionsSupplier */);
+    return new GraphDbBuilder(-1, databaseDir);
   }
 
   /**
@@ -117,10 +93,9 @@ public class GraphDbFactory implements IGraphDbFactory {
      * @param port
      * @param storeDir
      */
-    public GraphDbBuilder(int port, File storeDir /* , Supplier<List<Class<?>>> databaseExtensionsSupplier */) {
+    public GraphDbBuilder(int port, File storeDir) {
       this._port = port;
       this._storeDir = checkNotNull(storeDir);
-      // this._databaseExtensionsSupplier = databaseExtensionsSupplier;
     }
 
     /**
@@ -167,15 +142,9 @@ public class GraphDbFactory implements IGraphDbFactory {
 
         //
         BoltConnector bolt = new BoltConnector("0");
-        HttpConnector httpConnector = new HttpConnector();
         graphDatabase = factory.newEmbeddedDatabaseBuilder(this._storeDir)
             .setConfig(bolt.type, ConnectorType.BOLT.name()).setConfig(bolt.enabled, "true")
             .setConfig(bolt.listen_address, "localhost:" + this._port).setConfig(bolt.encryption_level, "DISABLED")
-            .setConfig(httpConnector.listen_address, "localhost:7474").setConfig(httpConnector.enabled, "true")
-            .setConfig(httpConnector.type, ConnectorType.HTTP.name())
-            // opts.put("dbms.connector.http.type", "HTTP");
-            // opts.put("dbms.connector.http.enabled", "true");
-            // opts.put("dbms.connector.http.listen_address", httpAddress + ":" + httpPort);
             .newGraphDatabase();
       }
       //
