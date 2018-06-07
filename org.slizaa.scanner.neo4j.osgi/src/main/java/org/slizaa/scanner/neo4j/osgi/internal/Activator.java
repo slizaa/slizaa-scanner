@@ -13,17 +13,10 @@
  ******************************************************************************/
 package org.slizaa.scanner.neo4j.osgi.internal;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.neo4j.procedure.Procedure;
-import org.neo4j.procedure.UserFunction;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
-import org.slizaa.scanner.core.classpathscanner.IClasspathScannerService;
 import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
 import org.slizaa.scanner.neo4j.importer.ModelImporterFactory;
 
@@ -31,33 +24,12 @@ import org.slizaa.scanner.neo4j.importer.ModelImporterFactory;
  */
 public class Activator implements BundleActivator {
 
-  /** - */
-  private ServiceTracker<IClasspathScannerService, IClasspathScannerService> _classpathScannerService;
-
   @Override
   public void start(BundleContext context) throws Exception {
 
-    this._classpathScannerService = new ServiceTracker<>(context, IClasspathScannerService.class, null);
-    this._classpathScannerService.open();
-
     //
     context.registerService(IModelImporterFactory.class.getName(), new ModelImporterFactory(), null);
-    context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(() -> {
-
-      // create the result list
-      List<Class<?>> result = new LinkedList<>();
-
-      //
-      IClasspathScannerService classpathScannerService = this._classpathScannerService.getService();
-      if (classpathScannerService != null) {
-        result.addAll(classpathScannerService.getExtensionsWithMethodAnnotation(Procedure.class));
-        result.addAll(classpathScannerService.getExtensionsWithMethodAnnotation(UserFunction.class));
-      }
-
-      // return the result
-      return result;
-
-    }), null);
+    context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(), null);
   }
 
   /**
@@ -65,6 +37,6 @@ public class Activator implements BundleActivator {
    */
   @Override
   public void stop(BundleContext context) throws Exception {
-    this._classpathScannerService.close();
+    //
   }
 }

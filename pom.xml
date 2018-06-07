@@ -61,6 +61,7 @@
 		<module>org.slizaa.scanner.neo4j.osgi</module>
 		<module>org.slizaa.scanner.neo4j.osgi.itest</module>
 		<module>org.slizaa.scanner.neo4j.eclipse.repo</module>
+		<module>org.slizaa.scanner.neo4j.apoc</module>
 	</modules>
 
 	<dependencyManagement>

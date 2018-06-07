@@ -132,6 +132,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.slizaa.scanner.core</groupId>
+			<artifactId>org.slizaa.scanner.core.classpathscanner</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.slizaa.scanner.neo4j</groupId>
 			<artifactId>org.slizaa.scanner.neo4j.osgi</artifactId>
 			<version>${project.version}</version>

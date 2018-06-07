@@ -26,8 +26,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
-import org.neo4j.procedure.Procedure;
-import org.neo4j.procedure.UserFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.core.api.cypherregistry.ICypherStatement;
@@ -60,9 +58,6 @@ public class SlizaaTestServerRule implements TestRule {
   /** - */
   private Supplier<IContentDefinitionProvider> _contentDefinitionsSupplier;
 
-  /** - */
-  private List<Class<?>>                       _extensionClasses;
-
   /**
    * <p>
    * Creates a new instance of type {@link SlizaaTestServerRule}.
@@ -87,22 +82,6 @@ public class SlizaaTestServerRule implements TestRule {
 
   /**
    * <p>
-   * </p>
-   *
-   * @param extensionClass
-   * @return
-   */
-  public SlizaaTestServerRule withExtensionClass(Class<?> extensionClass) {
-
-    //
-    this._extensionClasses.add(checkNotNull(extensionClass));
-
-    //
-    return this;
-  }
-
-  /**
-   * <p>
    * Creates a new instance of type {@link SlizaaTestServerRule}.
    * </p>
    *
@@ -113,7 +92,6 @@ public class SlizaaTestServerRule implements TestRule {
     checkNotNull(contentDefinitions);
     this._databaseDirectory = checkNotNull(workingDirectory);
     this._contentDefinitionsSupplier = checkNotNull(contentDefinitions);
-    this._extensionClasses = new ArrayList<Class<?>>();
   }
 
   /**
@@ -144,7 +122,6 @@ public class SlizaaTestServerRule implements TestRule {
         //
         List<IParserFactory> parserFactories = new ArrayList<>();
         List<ICypherStatement> cypherStatements = new ArrayList<>();
-        List<Class<?>> extensionClasses = new ArrayList<>();
 
         scannerFactory.createScanner(this.getClass().getClassLoader())
             .matchClassesWithAnnotation(ParserFactory.class, (source, classes) -> {
@@ -154,20 +131,6 @@ public class SlizaaTestServerRule implements TestRule {
                 } catch (Exception e) {
                   // TODO Auto-generated catch block
                   e.printStackTrace();
-                }
-              });
-            }).matchClassesWithMethodAnnotation(Procedure.class, (source, classes) -> {
-              classes.forEach(c -> {
-                if (!extensionClasses.contains(c) && !c.getName().startsWith("org.neo4j")
-                    && !c.getName().startsWith("apoc")) {
-                  extensionClasses.add(c);
-                }
-              });
-            }).matchClassesWithMethodAnnotation(UserFunction.class, (source, classes) -> {
-              classes.forEach(c -> {
-                if (!extensionClasses.contains(c) && !c.getName().startsWith("org.neo4j")
-                    && !c.getName().startsWith("apoc")) {
-                  extensionClasses.add(c);
                 }
               });
             })
@@ -196,13 +159,8 @@ public class SlizaaTestServerRule implements TestRule {
         ModelImporter executer = new ModelImporter(SlizaaTestServerRule.this._contentDefinitionsSupplier.get(),
             SlizaaTestServerRule.this._databaseDirectory, parserFactories, cypherStatements);
 
-        for (Class<?> clazz : SlizaaTestServerRule.this._extensionClasses) {
-          if (!extensionClasses.contains(clazz)) {
-            extensionClasses.add(clazz);
-          }
-        }
-        executer.parse(new SlizaaTestProgressMonitor(), () -> new GraphDbFactory(() -> extensionClasses)
-            .newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create());
+        executer.parse(new SlizaaTestProgressMonitor(),
+            () -> new GraphDbFactory().newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create());
 
         //
         SlizaaTestServerRule.this._graphDb = executer.getGraphDb();

@@ -33,6 +33,9 @@ import org.neo4j.kernel.internal.GraphDatabaseAPI;
 import org.neo4j.logging.FormattedLogProvider;
 import org.slizaa.scanner.core.api.graphdb.IGraphDb;
 import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
+import org.slizaa.scanner.neo4j.apoc.CreateDerived;
+import org.slizaa.scanner.neo4j.apoc.SlizaaImportExportProcedures;
+import org.slizaa.scanner.neo4j.apoc.arch.SlizaaArchProcedures;
 
 import apoc.create.Create;
 
@@ -44,8 +47,7 @@ import apoc.create.Create;
  */
 public class GraphDbFactory implements IGraphDbFactory {
 
-  /** - */
-  private Supplier<List<Class<?>>> _databaseExtensionsSupplier;
+  // private Supplier<List<Class<?>>> _databaseExtensionsSupplier;
 
   /**
    * <p>
@@ -54,26 +56,26 @@ public class GraphDbFactory implements IGraphDbFactory {
    *
    */
   public GraphDbFactory() {
-    this(null);
+    // this(null);
   }
 
-  /**
-   * <p>
-   * Creates a new instance of type {@link GraphDbFactory}.
-   * </p>
-   *
-   * @param databaseExtensionsSupplier
-   */
-  public GraphDbFactory(Supplier<List<Class<?>>> databaseExtensionsSupplier) {
-    this._databaseExtensionsSupplier = databaseExtensionsSupplier;
-  }
+  // /**
+  // * <p>
+  // * Creates a new instance of type {@link GraphDbFactory}.
+  // * </p>
+  // *
+  // * @param databaseExtensionsSupplier
+  // */
+  // public GraphDbFactory(Supplier<List<Class<?>>> databaseExtensionsSupplier) {
+  // this._databaseExtensionsSupplier = databaseExtensionsSupplier;
+  // }
 
   /**
    * {@inheritDoc}
    */
   @Override
   public IGraphDbBuilder newGraphDb(int port, File storeDir) {
-    return new GraphDbBuilder(port, storeDir, this._databaseExtensionsSupplier);
+    return new GraphDbBuilder(port, storeDir /* , this._databaseExtensionsSupplier */ );
   }
 
   /**
@@ -81,7 +83,7 @@ public class GraphDbFactory implements IGraphDbFactory {
    */
   @Override
   public IGraphDbBuilder newGraphDb(File databaseDir) {
-    return new GraphDbBuilder(-1, databaseDir, this._databaseExtensionsSupplier);
+    return new GraphDbBuilder(-1, databaseDir /* , this._databaseExtensionsSupplier */);
   }
 
   /**
@@ -115,10 +117,10 @@ public class GraphDbFactory implements IGraphDbFactory {
      * @param port
      * @param storeDir
      */
-    public GraphDbBuilder(int port, File storeDir, Supplier<List<Class<?>>> databaseExtensionsSupplier) {
+    public GraphDbBuilder(int port, File storeDir /* , Supplier<List<Class<?>>> databaseExtensionsSupplier */) {
       this._port = port;
       this._storeDir = checkNotNull(storeDir);
-      this._databaseExtensionsSupplier = databaseExtensionsSupplier;
+      // this._databaseExtensionsSupplier = databaseExtensionsSupplier;
     }
 
     /**
@@ -236,7 +238,15 @@ public class GraphDbFactory implements IGraphDbFactory {
 
     //
     List<Class<?>> result = new ArrayList<Class<?>>();
+
+    // add neo4j apoc
     result.add(Create.class);
+
+    // add slizaa apoc
+    result.add(SlizaaImportExportProcedures.class);
+    result.add(CreateDerived.class);
+    result.add(SlizaaArchProcedures.class);
+
     return result;
   }
 }
