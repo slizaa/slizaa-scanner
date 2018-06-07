@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -44,9 +43,6 @@ import apoc.create.Create;
  * @author Gerd W&uuml;therich (gerd@gerd-wuetherich.de)
  */
 public class GraphDbFactory implements IGraphDbFactory {
-
-  /** - */
-  public static final String       SLIZAA_NEO4J_EXTENSIONCLASSES = "slizaa.neo4j.extensionclasses";
 
   /** - */
   private Supplier<List<Class<?>>> _databaseExtensionsSupplier;
@@ -199,19 +195,7 @@ public class GraphDbFactory implements IGraphDbFactory {
       //
       List<Class<?>> extensionsToRegister = new LinkedList<>();
 
-      // step 1: _configuration.get(SLIZAA_NEO4J_EXTENSIONCLASSES)
-      Object dbExtensions = this._configuration.get(SLIZAA_NEO4J_EXTENSIONCLASSES);
-      if (dbExtensions != null && dbExtensions instanceof List && !((List<?>) dbExtensions).isEmpty()) {
-
-        // extract the classes...
-        List<Class<?>> classes = ((List<?>) dbExtensions).stream().filter(e -> e instanceof Class<?>)
-            .map(e -> (Class<?>) e).collect(Collectors.toList());
-
-        // ...and add them extension list
-        extensionsToRegister.addAll(classes);
-      }
-
-      // step 2: _databaseExtensionsSupplier
+      // step 1: _databaseExtensionsSupplier
       if (this._databaseExtensionsSupplier != null) {
 
         // extract the classes...
@@ -223,7 +207,7 @@ public class GraphDbFactory implements IGraphDbFactory {
         }
       }
 
-      // step 3: neo4j APOC list
+      // step 2: neo4j APOC list
       extensionsToRegister.addAll(apocClasses());
 
       // get the procedure service
@@ -254,31 +238,5 @@ public class GraphDbFactory implements IGraphDbFactory {
     List<Class<?>> result = new ArrayList<Class<?>>();
     result.add(Create.class);
     return result;
-
-    // //
-    // IClasspathScannerFactory factory = ClasspathScannerFactoryBuilder.newClasspathScannerFactory()
-    // .registerCodeSourceClassLoaderProvider(Bundle.class, (b) -> {
-    // return b.adapt(BundleWiring.class).getClassLoader();
-    // }).create();
-    //
-    // //
-    // ClassLoader classLoader = Create.class.getProtectionDomain().getClassLoader();
-    //
-    // // scan the bundle
-    // factory
-    //
-    // //
-    // .createScanner(this._bundle)
-    //
-    // //
-    // .matchClassesWithMethodAnnotation(annotationType, (b, exts) -> {
-    // this._extensionsWithMethodAnnotation.put(annotationType, exts);
-    // })
-    //
-    // //
-    // .scan();
-    //
-    // //
-    // return this._extensionsWithMethodAnnotation.get(annotationType);
   }
 }

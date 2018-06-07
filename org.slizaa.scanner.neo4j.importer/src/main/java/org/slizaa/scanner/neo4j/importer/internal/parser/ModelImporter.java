@@ -299,7 +299,8 @@ public class ModelImporter implements IModelImporter {
 
       //
       try {
-        parserFactory.batchParseStart(this._contentDefinitions, graphDatabaseService, subMonitor);
+        parserFactory.batchParseStart(this._contentDefinitions,
+            new CypherStatementExecutorAdapter(graphDatabaseService), subMonitor);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -333,7 +334,7 @@ public class ModelImporter implements IModelImporter {
 
       //
       try {
-        parserFactory.batchParseStop(this._contentDefinitions, graphDatabaseService, subMonitor.newChild(1));
+        parserFactory.batchParseStop(this._contentDefinitions, new CypherStatementExecutorAdapter(graphDatabaseService), subMonitor.newChild(1));
       } catch (Exception e) {
         e.printStackTrace();
       }
