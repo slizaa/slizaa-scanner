@@ -25,9 +25,9 @@ import java.util.function.Supplier;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.kernel.api.exceptions.KernelException;
 import org.neo4j.kernel.configuration.BoltConnector;
 import org.neo4j.kernel.configuration.Connector.ConnectorType;
+import org.neo4j.kernel.configuration.HttpConnector;
 import org.neo4j.kernel.impl.proc.Procedures;
 import org.neo4j.kernel.internal.GraphDatabaseAPI;
 import org.neo4j.logging.FormattedLogProvider;
@@ -167,9 +167,15 @@ public class GraphDbFactory implements IGraphDbFactory {
 
         //
         BoltConnector bolt = new BoltConnector("0");
+        HttpConnector httpConnector = new HttpConnector();
         graphDatabase = factory.newEmbeddedDatabaseBuilder(this._storeDir)
             .setConfig(bolt.type, ConnectorType.BOLT.name()).setConfig(bolt.enabled, "true")
             .setConfig(bolt.listen_address, "localhost:" + this._port).setConfig(bolt.encryption_level, "DISABLED")
+            .setConfig(httpConnector.listen_address, "localhost:7474").setConfig(httpConnector.enabled, "true")
+            .setConfig(httpConnector.type, ConnectorType.HTTP.name())
+            // opts.put("dbms.connector.http.type", "HTTP");
+            // opts.put("dbms.connector.http.enabled", "true");
+            // opts.put("dbms.connector.http.listen_address", httpAddress + ":" + httpPort);
             .newGraphDatabase();
       }
       //
@@ -221,7 +227,7 @@ public class GraphDbFactory implements IGraphDbFactory {
         try {
           proceduresService.registerFunction(element);
           proceduresService.registerProcedure(element);
-        } catch (KernelException e) {
+        } catch (Exception e) {
           e.printStackTrace();
         }
       }
