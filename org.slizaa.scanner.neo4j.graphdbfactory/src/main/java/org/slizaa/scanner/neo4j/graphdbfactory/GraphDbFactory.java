@@ -46,12 +46,35 @@ import apoc.create.Create;
  */
 public class GraphDbFactory implements IGraphDbFactory {
 
+  private Supplier<List<Class<?>>> _databaseExtensionsSupplier;
+
+  /**
+   * <p>
+   * Creates a new instance of type {@link GraphDbFactory}.
+   * </p>
+   *
+   */
+  public GraphDbFactory() {
+    this(null);
+  }
+
+  /**
+   * <p>
+   * Creates a new instance of type {@link GraphDbFactory}.
+   * </p>
+   *
+   * @param databaseExtensionsSupplier
+   */
+  public GraphDbFactory(Supplier<List<Class<?>>> databaseExtensionsSupplier) {
+    this._databaseExtensionsSupplier = databaseExtensionsSupplier;
+  }
+
   /**
    * {@inheritDoc}
    */
   @Override
   public IGraphDbBuilder newGraphDb(int port, File storeDir) {
-    return new GraphDbBuilder(port, storeDir);
+    return new GraphDbBuilder(port, storeDir, this._databaseExtensionsSupplier);
   }
 
   /**
@@ -59,7 +82,7 @@ public class GraphDbFactory implements IGraphDbFactory {
    */
   @Override
   public IGraphDbBuilder newGraphDb(File databaseDir) {
-    return new GraphDbBuilder(-1, databaseDir);
+    return new GraphDbBuilder(-1, databaseDir, this._databaseExtensionsSupplier);
   }
 
   /**
@@ -93,9 +116,10 @@ public class GraphDbFactory implements IGraphDbFactory {
      * @param port
      * @param storeDir
      */
-    public GraphDbBuilder(int port, File storeDir) {
+    public GraphDbBuilder(int port, File storeDir, Supplier<List<Class<?>>> databaseExtensionsSupplier) {
       this._port = port;
       this._storeDir = checkNotNull(storeDir);
+      this._databaseExtensionsSupplier = databaseExtensionsSupplier;
     }
 
     /**

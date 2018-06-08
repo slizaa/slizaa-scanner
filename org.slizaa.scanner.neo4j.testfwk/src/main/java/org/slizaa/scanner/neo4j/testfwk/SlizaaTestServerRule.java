@@ -58,6 +58,9 @@ public class SlizaaTestServerRule implements TestRule {
   /** - */
   private Supplier<IContentDefinitionProvider> _contentDefinitionsSupplier;
 
+  /** - */
+  private List<Class<?>>                       _extensionClasses;
+
   /**
    * <p>
    * Creates a new instance of type {@link SlizaaTestServerRule}.
@@ -82,6 +85,22 @@ public class SlizaaTestServerRule implements TestRule {
 
   /**
    * <p>
+   * </p>
+   *
+   * @param extensionClass
+   * @return
+   */
+  public SlizaaTestServerRule withExtensionClass(Class<?> extensionClass) {
+
+    //
+    this._extensionClasses.add(checkNotNull(extensionClass));
+
+    //
+    return this;
+  }
+
+  /**
+   * <p>
    * Creates a new instance of type {@link SlizaaTestServerRule}.
    * </p>
    *
@@ -92,6 +111,7 @@ public class SlizaaTestServerRule implements TestRule {
     checkNotNull(contentDefinitions);
     this._databaseDirectory = checkNotNull(workingDirectory);
     this._contentDefinitionsSupplier = checkNotNull(contentDefinitions);
+    this._extensionClasses = new ArrayList<Class<?>>();
   }
 
   /**
@@ -159,8 +179,8 @@ public class SlizaaTestServerRule implements TestRule {
         ModelImporter executer = new ModelImporter(SlizaaTestServerRule.this._contentDefinitionsSupplier.get(),
             SlizaaTestServerRule.this._databaseDirectory, parserFactories, cypherStatements);
 
-        executer.parse(new SlizaaTestProgressMonitor(),
-            () -> new GraphDbFactory().newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create());
+        executer.parse(new SlizaaTestProgressMonitor(), () -> new GraphDbFactory(() -> _extensionClasses)
+            .newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create());
 
         //
         SlizaaTestServerRule.this._graphDb = executer.getGraphDb();
