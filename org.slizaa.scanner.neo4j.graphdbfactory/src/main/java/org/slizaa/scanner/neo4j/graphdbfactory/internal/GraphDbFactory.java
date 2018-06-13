@@ -11,7 +11,7 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.slizaa.scanner.neo4j.graphdbfactory;
+package org.slizaa.scanner.neo4j.graphdbfactory.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

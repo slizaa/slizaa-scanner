@@ -22,6 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slizaa.scanner.core.api.graphdb.IGraphDb;
+import org.slizaa.scanner.neo4j.graphdbfactory.internal.GraphDbFactory;
 
 /**
  * <p>

@@ -48,8 +48,8 @@ import org.slizaa.scanner.core.spi.parser.IParser;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
 import org.slizaa.scanner.core.spi.parser.IProblem;
 import org.slizaa.scanner.core.spi.parser.model.INode;
-import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
-import org.slizaa.scanner.neo4j.graphdbfactory.Neo4jGraphDb;
+import org.slizaa.scanner.neo4j.graphdbfactory.internal.GraphDbFactory;
+import org.slizaa.scanner.neo4j.graphdbfactory.internal.Neo4jGraphDb;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.cache.CacheBuilder;

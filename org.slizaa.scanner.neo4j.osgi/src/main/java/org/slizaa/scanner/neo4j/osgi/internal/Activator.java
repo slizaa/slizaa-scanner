@@ -17,8 +17,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
 import org.slizaa.scanner.core.api.importer.IModelImporterFactory;
-import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
-import org.slizaa.scanner.neo4j.importer.ModelImporterFactory;
+import org.slizaa.scanner.neo4j.graphdbfactory.internal.GraphDbFactory;
+import org.slizaa.scanner.neo4j.importer.internal.ModelImporterFactory;
 
 /**
  */
