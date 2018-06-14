@@ -37,7 +37,7 @@ import org.slizaa.scanner.core.cypherregistry.SlizaaCypherFileParser;
 import org.slizaa.scanner.core.spi.annotations.ParserFactory;
 import org.slizaa.scanner.core.spi.contentdefinition.IContentDefinitionProvider;
 import org.slizaa.scanner.core.spi.parser.IParserFactory;
-import org.slizaa.scanner.neo4j.graphdbfactory.GraphDbFactory;
+import org.slizaa.scanner.neo4j.graphdbfactory.internal.GraphDbFactory;
 import org.slizaa.scanner.neo4j.importer.internal.parser.ModelImporter;
 import org.slizaa.scanner.neo4j.testfwk.internal.ZipUtil;
 
@@ -179,8 +179,9 @@ public class SlizaaTestServerRule implements TestRule {
         ModelImporter executer = new ModelImporter(SlizaaTestServerRule.this._contentDefinitionsSupplier.get(),
             SlizaaTestServerRule.this._databaseDirectory, parserFactories, cypherStatements);
 
-        executer.parse(new SlizaaTestProgressMonitor(), () -> new GraphDbFactory(() -> _extensionClasses)
-            .newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create());
+        executer.parse(new SlizaaTestProgressMonitor(),
+            () -> new GraphDbFactory(() -> SlizaaTestServerRule.this._extensionClasses)
+                .newGraphDb(5001, SlizaaTestServerRule.this._databaseDirectory).create());
 
         //
         SlizaaTestServerRule.this._graphDb = executer.getGraphDb();
