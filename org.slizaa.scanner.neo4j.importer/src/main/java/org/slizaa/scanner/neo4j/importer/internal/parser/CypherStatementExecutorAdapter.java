@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Transaction;
 import org.slizaa.scanner.core.spi.parser.ICypherStatementExecutor;
 
 /**
@@ -30,7 +29,7 @@ public class CypherStatementExecutorAdapter implements ICypherStatementExecutor 
    * @param graphDatabaseService
    */
   public CypherStatementExecutorAdapter(GraphDatabaseService graphDatabaseService) {
-    _graphDatabaseService = checkNotNull(graphDatabaseService);
+    this._graphDatabaseService = checkNotNull(graphDatabaseService);
   }
 
   /**
@@ -38,13 +37,8 @@ public class CypherStatementExecutorAdapter implements ICypherStatementExecutor 
    */
   @Override
   public IResult executeCypherStatement(String cypherStatement) {
-
-    //
-    try (Transaction transaction = _graphDatabaseService.beginTx()) {
-      org.neo4j.graphdb.Result result = _graphDatabaseService.execute(checkNotNull(cypherStatement));
-      return new ResultAdapter(result);
-    }
-
+    org.neo4j.graphdb.Result result = this._graphDatabaseService.execute(checkNotNull(cypherStatement));
+    return new ResultAdapter(result);
   }
 
   /**
@@ -66,12 +60,12 @@ public class CypherStatementExecutorAdapter implements ICypherStatementExecutor 
      * @param result
      */
     public ResultAdapter(org.neo4j.graphdb.Result result) {
-      _result = checkNotNull(result);
+      this._result = checkNotNull(result);
     }
 
     @Override
     public List<String> keys() {
-      return _result.columns();
+      return this._result.columns();
     }
 
     @Override
@@ -81,8 +75,8 @@ public class CypherStatementExecutorAdapter implements ICypherStatementExecutor 
       Map<String, Object> result = null;
 
       //
-      if (_result.hasNext()) {
-        result = _result.next();
+      if (this._result.hasNext()) {
+        result = this._result.next();
       }
       //
       else {
@@ -91,7 +85,7 @@ public class CypherStatementExecutorAdapter implements ICypherStatementExecutor 
       }
 
       //
-      if (_result.hasNext()) {
+      if (this._result.hasNext()) {
         // TODO
         throw new RuntimeException();
       }
@@ -105,7 +99,7 @@ public class CypherStatementExecutorAdapter implements ICypherStatementExecutor 
      */
     @Override
     public List<Map<String, Object>> list() {
-      return _result.stream().collect(Collectors.toList());
+      return this._result.stream().collect(Collectors.toList());
     }
 
     /**
@@ -113,7 +107,7 @@ public class CypherStatementExecutorAdapter implements ICypherStatementExecutor 
      */
     @Override
     public <T> List<T> list(Function<Map<String, Object>, T> mapFunction) {
-      return _result.stream().map(mapFunction).collect(Collectors.toList());
+      return this._result.stream().map(mapFunction).collect(Collectors.toList());
     }
   }
 }
