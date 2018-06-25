@@ -101,7 +101,7 @@
 							org.eclipse.osgi;bundle-version="3.11.2",
 							com.google.gson;bundle-version="2.5.0",
 							org.slizaa.scanner.core.spi-api,
-							org.slizaa.scanner.core.classpathscanner</Require-Bundle>
+							org.slizaa.core.classpathscanner</Require-Bundle>
 						<!-- embed all compile and runtime scope dependencies -->
 						<Embed-Dependency>*;scope=compile|runtime;artifactId=!guava|org.eclipse.equinox.common|org.eclipse.osgi|org.slizaa.scanner.core.*</Embed-Dependency>
 						<Embed-Transitive>true</Embed-Transitive>

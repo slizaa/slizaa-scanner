@@ -132,8 +132,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.slizaa.scanner.core</groupId>
-			<artifactId>org.slizaa.scanner.core.classpathscanner</artifactId>
+			<groupId>org.slizaa.core</groupId>
+			<artifactId>org.slizaa.core.classpathscanner</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
