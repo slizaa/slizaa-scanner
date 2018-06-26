@@ -23,7 +23,7 @@ public class Extensions_MoveModule_Test {
 
   /** - */
   @ClassRule
-  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(simpleBinaryFile("jtype", "1.2.3",
+  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(simpleBinaryFile("test", "1.2.3",
       Extensions_MoveModule_Test.class.getProtectionDomain().getCodeSource().getLocation().getFile()));
 
   /** - */
@@ -38,7 +38,7 @@ public class Extensions_MoveModule_Test {
 
     // test
     records = this._client.getSession().run(
-        "MATCH (m:Module {name: 'jtype', version: '1.2.3'}) MATCH (g:Group {fqn: 'spunk/dunk'}) CALL slizaa.arch.moveModule(m, g) RETURN m,g")
+        "MATCH (m:Module {name: 'asdasd', version: '1.2.3'}) MATCH (g:Group {fqn: 'spunk/dunk'}) CALL slizaa.arch.moveModule(m, g) RETURN m,g")
         .list();
     assertThat(records).hasSize(1);
   }

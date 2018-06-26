@@ -22,7 +22,7 @@ public class Extensions_MoveResource_Test {
 
   /** - */
   @ClassRule
-  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(simpleBinaryFile("jtype", "1.2.3",
+  public static SlizaaTestServerRule _server = new SlizaaTestServerRule(simpleBinaryFile("test", "1.2.3",
       Extensions_MoveResource_Test.class.getProtectionDomain().getCodeSource().getLocation().getFile()));
 
   /** - */
