@@ -15,13 +15,22 @@ package org.slizaa.scanner.neo4j.graphdbfactory.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -208,8 +217,11 @@ public class GraphDbFactory implements IGraphDbFactory {
         }
       }
 
-      // step 2: neo4j APOC list
-      extensionsToRegister.addAll(apocClasses());
+      // step 2: neo4j & slizaa-core apoc classess
+      extensionsToRegister.addAll(apocListClasses());
+
+      // step 3: neo4j & slizaa-core apoc classess
+      extensionsToRegister.addAll(coreApocClasses());
 
       // get the procedure service
       Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
@@ -233,7 +245,61 @@ public class GraphDbFactory implements IGraphDbFactory {
    *
    * @return
    */
-  private List<Class<?>> apocClasses() {
+  private Collection<? extends Class<?>> apocListClasses() {
+
+    //
+    List<Class<?>> result = new ArrayList<Class<?>>();
+
+    //
+    ClassLoader classLoader = this.getClass().getClassLoader();
+
+    //
+    try {
+
+      //
+      Enumeration<URL> apocLists = classLoader.getResources("apoc.list");
+
+      //
+      while (apocLists.hasMoreElements()) {
+
+        URL url = apocLists.nextElement();
+        System.out.println(url.toExternalForm());
+
+        //
+        try (InputStream stream = url.openStream()) {
+
+          //
+          List<Class<?>> classesList = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).lines()
+              .map(className -> {
+                try {
+                  return classLoader.loadClass(className);
+                } catch (Exception e) {
+                  return null;
+                }
+              }).filter(v -> v != null).collect(Collectors.toList());
+
+          //
+          result.addAll(classesList);
+        }
+      }
+    }
+
+    //
+    catch (IOException e) {
+      // TODO
+      e.printStackTrace();
+    }
+
+    return result;
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @return
+   */
+  private List<Class<?>> coreApocClasses() {
 
     //
     List<Class<?>> result = new ArrayList<Class<?>>();
