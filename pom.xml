@@ -57,10 +57,9 @@
 		<module>org.slizaa.scanner.neo4j.bom</module>
 		<module>org.slizaa.scanner.neo4j.graphdbfactory</module>
 		<module>org.slizaa.scanner.neo4j.importer</module>
-		<module>org.slizaa.scanner.neo4j.testfwk</module>
 		<module>org.slizaa.scanner.neo4j.osgi</module>
 		<module>org.slizaa.scanner.neo4j.osgi.itest</module>
-		<module>org.slizaa.scanner.neo4j.p2.repo</module>
+		<module>org.slizaa.scanner.neo4j.p2-repo</module>
 		<module>org.slizaa.scanner.neo4j.apoc</module>
 	</modules>
 

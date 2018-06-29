@@ -14,7 +14,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>org.slizaa.scanner.neo4j.p2.repo</artifactId>
+	<artifactId>org.slizaa.scanner.neo4j.p2-repo</artifactId>
 	<packaging>pom</packaging>
 
 	<build>
@@ -33,9 +33,9 @@
 						<configuration>
 							<featureDefinitions>
 								<feature>
-									<id>org.slizaa.scanner.neo4j.eclipse.feature</id>
+									<id>org.slizaa.scanner.neo4j.feature</id>
 									<version>${project.version}</version>
-									<label>org.slizaa.scanner.neo4j.eclipse.feature</label>
+									<label>org.slizaa.scanner.neo4j.feature</label>
 									<providerName>${project.groupId}</providerName>
 									<description>${project.description}</description>
 									<license url="http://www.gnu.org/licenses/gpl-3.0.html">
