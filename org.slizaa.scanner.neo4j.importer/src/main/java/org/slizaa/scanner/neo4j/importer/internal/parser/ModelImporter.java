@@ -236,6 +236,10 @@ public class ModelImporter implements IModelImporter {
 
           //
           INode moduleNode = batchInserter.getOrCreateModuleNode(fileBasedContentDefinition);
+          moduleNode.putProperty("binaryRootPaths",
+              asString(((IFileBasedContentDefinition) definition).getBinaryRootPaths()));
+          moduleNode.putProperty("sourceRootPaths",
+              asString(((IFileBasedContentDefinition) definition).getSourceRootPaths()));
 
           //
           this._result = multiThreadedParse(fileBasedContentDefinition, moduleNode,
@@ -334,7 +338,8 @@ public class ModelImporter implements IModelImporter {
 
       //
       try {
-        parserFactory.batchParseStop(this._contentDefinitions, new CypherStatementExecutorAdapter(graphDatabaseService), subMonitor.newChild(1));
+        parserFactory.batchParseStop(this._contentDefinitions, new CypherStatementExecutorAdapter(graphDatabaseService),
+            subMonitor.newChild(1));
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -469,5 +474,27 @@ public class ModelImporter implements IModelImporter {
 
     //
     return result;
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param binaryRootPaths
+   * @return
+   */
+  private String asString(Collection<File> paths) {
+
+    //
+    StringBuffer result = new StringBuffer();
+
+    //
+    for (File path : paths) {
+      result.append(path.getAbsolutePath());
+      result.append(File.pathSeparatorChar);
+    }
+
+    //
+    return result.toString();
   }
 }
