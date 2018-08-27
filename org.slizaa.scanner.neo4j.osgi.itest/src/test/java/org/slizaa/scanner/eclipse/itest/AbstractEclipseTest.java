@@ -111,8 +111,12 @@ public abstract class AbstractEclipseTest {
    * @throws BundleException
    */
   protected void startAllBundles() throws BundleException {
+
+    //
     for (Bundle bundle : bundleContext.getBundles()) {
-      bundle.start();
+      if (bundle.getHeaders().get("Fragment-Host") == null) {
+        bundle.start();
+      }
     }
   }
 }

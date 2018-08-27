@@ -259,26 +259,29 @@ public class GraphDbFactory implements IGraphDbFactory {
       //
       Enumeration<URL> apocLists = classLoader.getResources("apoc.list");
 
-      //
-      while (apocLists.hasMoreElements()) {
-
-        URL url = apocLists.nextElement();
+      if (apocLists != null) {
 
         //
-        try (InputStream stream = url.openStream()) {
+        while (apocLists.hasMoreElements()) {
+
+          URL url = apocLists.nextElement();
 
           //
-          List<Class<?>> classesList = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).lines()
-              .map(className -> {
-                try {
-                  return classLoader.loadClass(className);
-                } catch (Exception e) {
-                  return null;
-                }
-              }).filter(v -> v != null).collect(Collectors.toList());
+          try (InputStream stream = url.openStream()) {
 
-          //
-          result.addAll(classesList);
+            //
+            List<Class<?>> classesList = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))
+                .lines().map(className -> {
+                  try {
+                    return classLoader.loadClass(className);
+                  } catch (Exception e) {
+                    return null;
+                  }
+                }).filter(v -> v != null).collect(Collectors.toList());
+
+            //
+            result.addAll(classesList);
+          }
         }
       }
     }
