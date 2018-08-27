@@ -223,6 +223,11 @@ public class GraphDbFactory implements IGraphDbFactory {
       // step 3: neo4j & slizaa-core apoc classess
       extensionsToRegister.addAll(coreApocClasses());
 
+      //
+      for (Class<?> clazz : extensionsToRegister) {
+        System.out.println("Register extension class: " + clazz.getName());
+      }
+
       // get the procedure service
       Procedures proceduresService = ((GraphDatabaseAPI) graphDatabase).getDependencyResolver()
           .resolveDependency(Procedures.class);
