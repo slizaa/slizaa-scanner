@@ -263,7 +263,6 @@ public class GraphDbFactory implements IGraphDbFactory {
       while (apocLists.hasMoreElements()) {
 
         URL url = apocLists.nextElement();
-        System.out.println(url.toExternalForm());
 
         //
         try (InputStream stream = url.openStream()) {

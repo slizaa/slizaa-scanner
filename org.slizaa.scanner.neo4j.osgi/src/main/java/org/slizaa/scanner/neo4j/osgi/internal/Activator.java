@@ -13,6 +13,17 @@
  ******************************************************************************/
 package org.slizaa.scanner.neo4j.osgi.internal;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.slizaa.scanner.core.api.graphdb.IGraphDbFactory;
@@ -25,11 +36,11 @@ import org.slizaa.scanner.neo4j.importer.internal.ModelImporterFactory;
 public class Activator implements BundleActivator {
 
   @Override
-  public void start(BundleContext context) throws Exception {
+  public void start(final BundleContext context) throws Exception {
 
     //
     context.registerService(IModelImporterFactory.class.getName(), new ModelImporterFactory(), null);
-    context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(), null);
+    context.registerService(IGraphDbFactory.class.getName(), new GraphDbFactory(resolveExtensionsSupplier(context)), null);
   }
 
   /**
@@ -38,5 +49,56 @@ public class Activator implements BundleActivator {
   @Override
   public void stop(BundleContext context) throws Exception {
     //
+  }
+
+  /**
+   * <p>
+   * </p>
+   *
+   * @param context
+   * @return
+   */
+  private Supplier<List<Class<?>>> resolveExtensionsSupplier(BundleContext context) {
+
+    //
+    return () -> {
+
+      //
+      List<Class<?>> result = new ArrayList<Class<?>>();
+
+      //
+      Enumeration<URL> apocLists = context.getBundle().findEntries("/", "apoc.list", false);
+
+      //
+      while (apocLists.hasMoreElements()) {
+
+        //
+        URL url = apocLists.nextElement();
+
+        //
+        try (InputStream stream = url.openStream()) {
+
+          //
+          List<Class<?>> classesList = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).lines()
+              .map(className -> {
+                try {
+                  return context.getBundle().loadClass(className);
+                } catch (Exception e) {
+                  return null;
+                }
+              }).filter(v -> v != null).collect(Collectors.toList());
+
+          //
+          result.addAll(classesList);
+        }
+        //
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+
+      //
+      return result;
+    };
   }
 }
