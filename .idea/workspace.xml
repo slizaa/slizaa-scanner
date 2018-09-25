@@ -4,37 +4,37 @@
     <list default="true" id="702d398f-88f0-446a-af33-0b8a08f7a373" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/.classpath" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/.project" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/src/test/java/org/slizaa/scanner/eclipse/itest/AbstractEclipseTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/src/test/java/org/slizaa/scanner/eclipse/itest/CheckBundlesAndServicesTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/src/test/java/org/slizaa/scanner/eclipse/itest/CheckSlizaaExtensionsTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/.classpath" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/.project" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/.settings/org.eclipse.pde.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/src/main/java/org/slizaa/scanner/neo4j/osgi/internal/Activator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/src/main/resources/META-INF/p2.inf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.p2-repo/.project" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.p2-repo/GPL_v3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/org.slizaa.scanner.neo4j.p2-repo/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/src/test/java/org/slizaa/scanner/eclipse/itest/AbstractEclipseTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/src/test/java/org/slizaa/scanner/eclipse/itest/CheckBundlesAndServicesTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/src/test/java/org/slizaa/scanner/eclipse/itest/CheckSlizaaExtensionsTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/.settings/org.eclipse.pde.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/src/main/java/org/slizaa/scanner/neo4j/osgi/internal/Activator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.osgi/src/main/resources/META-INF/p2.inf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.p2-repo/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.p2-repo/GPL_v3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/org.slizaa.neo4j.p2-repo/pom.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi.itest/target/" />
-    <ignored path="$PROJECT_DIR$/org.slizaa.scanner.neo4j.apoc/target/" />
-    <ignored path="$PROJECT_DIR$/org.slizaa.scanner.neo4j.osgi/target/" />
-    <ignored path="$PROJECT_DIR$/org.slizaa.scanner.neo4j.p2-repo/target/" />
+    <ignored path="$PROJECT_DIR$/org.slizaa.neo4j.osgi.itest/target/" />
+    <ignored path="$PROJECT_DIR$/org.slizaa.neo4j.apoc/target/" />
+    <ignored path="$PROJECT_DIR$/org.slizaa.neo4j.osgi/target/" />
+    <ignored path="$PROJECT_DIR$/org.slizaa.neo4j.p2-repo/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
-    <ignored path="$PROJECT_DIR$/org.slizaa.scanner.neo4j.importer/target/" />
-    <ignored path="$PROJECT_DIR$/org.slizaa.scanner.neo4j.bom/target/" />
-    <ignored path="$PROJECT_DIR$/org.slizaa.scanner.neo4j.graphdbfactory/target/" />
+    <ignored path="$PROJECT_DIR$/org.slizaa.neo4j.importer/target/" />
+    <ignored path="$PROJECT_DIR$/org.slizaa.neo4j.bom/target/" />
+    <ignored path="$PROJECT_DIR$/org.slizaa.neo4j.graphdbfactory/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,11 +96,11 @@
       <expand>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="org.slizaa.scanner.neo4j:org.slizaa.scanner.neo4j.parent" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="org.slizaa.neo4j:org.slizaa.neo4j.parent" type="9519ce18:MavenProjectsStructure$ProjectNode" />
         </path>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="org.slizaa.scanner.neo4j:org.slizaa.scanner.neo4j.parent" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="org.slizaa.neo4j:org.slizaa.neo4j.parent" type="9519ce18:MavenProjectsStructure$ProjectNode" />
           <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
         </path>
       </expand>
@@ -123,7 +123,7 @@
         <subPane>
           <expand>
             <path>
-              <item name="org.slizaa.scanner.neo4j.parent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="org.slizaa.neo4j.parent" type="b2602c69:ProjectViewProjectNode" />
               <item name="slizaa-scanner-neo4j" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>

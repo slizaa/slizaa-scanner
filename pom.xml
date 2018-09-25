@@ -4,15 +4,15 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.slizaa.scanner.neo4j</groupId>
-	<artifactId>org.slizaa.scanner.neo4j.parent</artifactId>
+	<groupId>org.slizaa.neo4j</groupId>
+	<artifactId>org.slizaa.neo4j.parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
 	<!-- -->
 	<name>${project.groupId}:${project.artifactId}</name>
-	<description>Parent POM for the org.slizaa.scanner.neo4j artifacts.</description>
+	<description>Parent POM for the org.slizaa.neo4j artifacts.</description>
 	<url>http://www.slizaa.org</url>
 	<inceptionYear>2017</inceptionYear>
 
@@ -56,17 +56,17 @@
 	</properties>
 
 	<modules>
-		<module>org.slizaa.scanner.neo4j.bom</module>
-		<module>org.slizaa.scanner.neo4j.graphdbfactory</module>
-		<module>org.slizaa.scanner.neo4j.importer</module>
-		<module>org.slizaa.scanner.neo4j.apoc</module>
+		<module>org.slizaa.neo4j.bom</module>
+		<module>org.slizaa.neo4j.graphdbfactory</module>
+		<module>org.slizaa.neo4j.importer</module>
+		<module>org.slizaa.neo4j.apoc</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.slizaa.scanner.neo4j</groupId>
-				<artifactId>org.slizaa.scanner.neo4j.bom</artifactId>
+				<groupId>org.slizaa.neo4j</groupId>
+				<artifactId>org.slizaa.neo4j.bom</artifactId>
 				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
