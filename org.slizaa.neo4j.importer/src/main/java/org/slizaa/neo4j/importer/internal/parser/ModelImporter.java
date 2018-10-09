@@ -27,9 +27,6 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.QueryExecutionException;
 import org.neo4j.graphdb.Transaction;
@@ -39,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.slizaa.scanner.api.cypherregistry.ICypherStatement;
 import org.slizaa.scanner.api.graphdb.IGraphDb;
 import org.slizaa.scanner.api.importer.IModelImporter;
+import org.slizaa.scanner.api.util.IProgressMonitor;
 import org.slizaa.scanner.spi.contentdefinition.AnalyzeMode;
 import org.slizaa.scanner.spi.contentdefinition.IContentDefinition;
 import org.slizaa.scanner.spi.contentdefinition.IContentDefinitionProvider;
