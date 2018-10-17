@@ -6,7 +6,6 @@ import org.junit.rules.TemporaryFolder;
 import org.slizaa.scanner.api.importer.IModelImporter;
 import org.slizaa.scanner.api.util.DefaultProgressMonitor;
 import org.slizaa.scanner.api.util.IProgressMonitor;
-import org.slizaa.scanner.api.util.NullProgressMonitor;
 import org.slizaa.scanner.contentdefinition.MvnBasedContentDefinitionProvider;
 
 import java.io.File;

@@ -218,7 +218,6 @@ public class ParseJob implements Callable<List<IProblem>> {
       // resource has been processed
       if (monitor != null) {
         monitor.advance(1);
-        ((DefaultProgressMonitor)monitor).dump();
       }
     }
 

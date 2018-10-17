@@ -165,7 +165,7 @@ public class ModelImporter implements IModelImporter {
     // Step 1: Pre-Processing
     //
     try (IProgressMonitor subMonitor = monitor.subTask("Pre-Processing...")
-        .withParentConsumptionInPercentage(20)
+        .withParentConsumptionInPercentage(10)
         .withTotalWorkTicks(100)
         .create()) {
 
@@ -177,7 +177,7 @@ public class ModelImporter implements IModelImporter {
     // Step 2: Parse elements
     //
     try (IProgressMonitor subMonitor = monitor.subTask("Parsing...")
-        .withParentConsumptionInPercentage(50)
+        .withParentConsumptionInPercentage(80)
         .withTotalWorkTicks(100)
         .create()) {
 
@@ -189,7 +189,7 @@ public class ModelImporter implements IModelImporter {
     // Step 3: Post-Processing
     //
     try (IProgressMonitor subMonitor = monitor.subTask("Post-Processing...")
-        .withParentConsumptionInPercentage(30)
+        .withParentConsumptionInPercentage(10)
         .withTotalWorkTicks(100)
         .create()) {
 
