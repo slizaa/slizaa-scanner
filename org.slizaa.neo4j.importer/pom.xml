@@ -27,6 +27,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.slizaa.core</groupId>
+            <artifactId>org.slizaa.core.progressmonitor</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.slizaa.neo4j</groupId>
             <artifactId>org.slizaa.neo4j.graphdbfactory</artifactId>
             <version>${project.version}</version>

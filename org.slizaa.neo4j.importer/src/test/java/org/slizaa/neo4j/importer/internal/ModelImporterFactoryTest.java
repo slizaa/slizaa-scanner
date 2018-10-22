@@ -3,9 +3,9 @@ package org.slizaa.neo4j.importer.internal;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.slizaa.core.progressmonitor.DefaultProgressMonitor;
+import org.slizaa.core.progressmonitor.IProgressMonitor;
 import org.slizaa.scanner.api.importer.IModelImporter;
-import org.slizaa.scanner.api.util.DefaultProgressMonitor;
-import org.slizaa.scanner.api.util.IProgressMonitor;
 import org.slizaa.scanner.contentdefinition.MvnBasedContentDefinitionProvider;
 
 import java.io.File;

@@ -18,8 +18,7 @@ package org.slizaa.neo4j.importer.internal.parser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slizaa.scanner.api.util.DefaultProgressMonitor;
-import org.slizaa.scanner.api.util.IProgressMonitor;
+import org.slizaa.core.progressmonitor.IProgressMonitor;
 import org.slizaa.scanner.spi.contentdefinition.IContentDefinition;
 import org.slizaa.scanner.spi.contentdefinition.filebased.IFile;
 import org.slizaa.scanner.spi.parser.IParser;
