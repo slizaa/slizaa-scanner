@@ -197,6 +197,11 @@ public class ParseJob implements Callable<List<IProblem>> {
     //
     for (final IFile resource : resources) {
 
+      //
+      if (monitor != null) {
+        monitor.step(String.format("Parsing '%s'...", resource.getPath()));
+      }
+
       // create a resource node for the resource
       INode resourceNode = _batchInserter.getOrCreateResourceNode(_moduleNode, directoryParentNode, resource,
           resourceType);

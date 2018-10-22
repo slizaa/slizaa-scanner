@@ -228,7 +228,7 @@ public class ModelImporter implements IModelImporter {
       this._executorService = Executors.newFixedThreadPool(THREAD_COUNT);
 
       //
-      try (IProgressMonitor subMonitor = progressMonitor.subTask("Parse...")
+      try (IProgressMonitor subMonitor = progressMonitor.subTask("Parsing...")
           .withParentConsumptionInPercentage(100)
           .withTotalWorkTicks(this._contentDefinitions.getContentDefinitions().size())
           .create()) {
@@ -267,7 +267,7 @@ public class ModelImporter implements IModelImporter {
                 AnalyzeMode.BINARIES_AND_SOURCES.equals(fileBasedContentDefinition.getAnalyzeMode())
                     ? fileBasedContentDefinition.getSourceFiles()
                     : Collections.emptySet(),
-                subMonitor.subTask("Parse...")
+                subMonitor.subTask("Parsing...")
                     .withParentConsumptionInWorkTicks(1)
                     .withTotalWorkTicks(100)
                     .create(),

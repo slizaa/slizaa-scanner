@@ -41,8 +41,7 @@ public class ModelImporterFactoryTest {
         databaseDirectory, Collections.emptyList(),
         Collections.emptyList());
 
-    IProgressMonitor progressMonitor = new DefaultProgressMonitor( "Parsing...", 100, (progressContext) -> System.out.println(String.format("%s%% (%s)", progressContext.getWorkDoneInPercentage(), progressContext.getCurrentStep())));
-    // IProgressMonitor progressMonitor = new NullProgressMonitor();
+    IProgressMonitor progressMonitor = new DefaultProgressMonitor( "Parsing...", 100, DefaultProgressMonitor.consoleLogger());
     modelImporter.parse(progressMonitor);
   }
 }
