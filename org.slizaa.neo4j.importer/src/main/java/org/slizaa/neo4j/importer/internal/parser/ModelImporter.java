@@ -233,7 +233,8 @@ public class ModelImporter implements IModelImporter {
           .withTotalWorkTicks(this._contentDefinitions.getContentDefinitions().size())
           .create()) {
 
-        for (IContentDefinition definition : this._contentDefinitions.getContentDefinitions()) {
+        List<IContentDefinition> contentDefinitions = this._contentDefinitions.getContentDefinitions();
+        for (IContentDefinition definition : contentDefinitions) {
 
           //
           if (definition instanceof IFileBasedContentDefinition) {

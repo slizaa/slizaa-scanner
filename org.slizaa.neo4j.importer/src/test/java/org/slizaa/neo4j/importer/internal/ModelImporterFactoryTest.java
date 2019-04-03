@@ -7,6 +7,7 @@ import org.slizaa.core.progressmonitor.DefaultProgressMonitor;
 import org.slizaa.core.progressmonitor.IProgressMonitor;
 import org.slizaa.scanner.api.importer.IModelImporter;
 import org.slizaa.scanner.contentdefinition.MvnBasedContentDefinitionProvider;
+import org.slizaa.scanner.contentdefinition.MvnBasedContentDefinitionProviderFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,9 +28,9 @@ public class ModelImporterFactoryTest {
     File databaseDirectory = temporaryFolder.newFolder();
 
     //
-    MvnBasedContentDefinitionProvider contentDefinitionProvider = new MvnBasedContentDefinitionProvider();
-    contentDefinitionProvider.addArtifact("org.springframework", "spring-core", "5.0.9.RELEASE");
-    contentDefinitionProvider.addArtifact("org.springframework", "spring-context", "5.0.9.RELEASE");
+    MvnBasedContentDefinitionProvider contentDefinitionProvider = new MvnBasedContentDefinitionProviderFactory().emptyContentDefinitionProvider();
+    contentDefinitionProvider.addArtifact("org.springframework:spring-core:5.0.9.RELEASE");
+    contentDefinitionProvider.addArtifact("org.springframework:spring-context:5.0.9.RELEASE");
 
     // delete all contained files
     Files.walk(databaseDirectory.toPath(), FileVisitOption.FOLLOW_LINKS).sorted(Comparator.reverseOrder())
